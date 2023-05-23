@@ -2,6 +2,7 @@ package ar.com.semillero.semillatronalfa;
 
 import ar.com.semillero.semillatronalfa.entities.Event;
 import ar.com.semillero.semillatronalfa.entities.EventDetails;
+import ar.com.semillero.semillatronalfa.enums.events.Destinations;
 import ar.com.semillero.semillatronalfa.repositories.EventDetailsRepository;
 import ar.com.semillero.semillatronalfa.repositories.EventRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,18 @@ public class SemillatronApplication {
 
 
         }
+    @Bean
+    public CommandLineRunner initData(EventRepository eventRepository, EventDetailsRepository eventDetailsRepository){
+        return (args) -> {
+
+            Event event = new Event(new Date(), "Curso Java", true, "Status", "Semillero", "Approach", "Curso");
+            EventDetails details = new EventDetails("Test Instructor", "Semillero", Destinations.SEMILLERO.toString(), 120, "online", event);
+
+            event.setDetails(details);
+            eventRepository.save(event);
+
+    };
+    }
 
 
 

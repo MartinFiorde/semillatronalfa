@@ -1,5 +1,6 @@
 package ar.com.semillero.semillatronalfa.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,26 +21,19 @@ public class EventDetails {
     @Setter(value= AccessLevel.NONE)
     private String id;
 
-    @Column(name = "instructor")
     private String instructor;
-
-    @Column(name = "origen")
     private String origin;
-
-    @Column(name = "destinatarios")
     private String destination;
-
-    @Column(name = "duracion")
-    private double duration;
-
-    @Column(name = "modalidad")
+    private int duration;
     private String modality;
 
     @OneToOne
     @JoinColumn(name = "event_id")
+    @Getter(value= AccessLevel.NONE)
+    @JsonIgnore
     private Event event;
 
-    public EventDetails(String instructor, String origin, String destination, double duration, String modality, Event event) {
+    public EventDetails(String instructor, String origin, String destination, int duration, String modality, Event event) {
         this.instructor = instructor;
         this.origin = origin;
         this.destination = destination;
@@ -47,4 +41,5 @@ public class EventDetails {
         this.modality = modality;
         this.event = event;
     }
+
 }

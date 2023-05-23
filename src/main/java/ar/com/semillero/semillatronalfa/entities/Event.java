@@ -8,9 +8,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "evento")
+@Table(name = "event")
 @NoArgsConstructor
 @Data
+@Getter
 public class Event {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -19,43 +20,27 @@ public class Event {
     @Setter(value= AccessLevel.NONE)
     private String id;
 
-    @Column(name = "fecha")
     private Date date;
-
-    @Column(name = "titulo")
     private String title;
-
-    @Column(name = "ofrecida_por_semillero")
-    private Boolean offeredBy;
-
-    @Column(name = "estado")
+    private Boolean offeredBySemillero;
     private String status;
-
-    @Column(name = "organizador")
     private String organizedBy;
-
-    @Column(name = "tipo")
     private String type;
-
-    @Column(name = "enfoque")
     private String approach;
 
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    @JsonIgnore
     private EventDetails details;
 
     public Event(Date date, String title,
-                 Boolean offeredBy, String status,
+                 Boolean offeredBySemillero, String status,
                  String organizedBy, String approach,
                  String type) {
         this.date = date;
         this.title = title;
-        this.offeredBy = offeredBy;
+        this.offeredBySemillero = offeredBySemillero;
         this.status = status;
         this.organizedBy = organizedBy;
         this.approach = approach;
         this.type = type;
     }
-
-
 }
