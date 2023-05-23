@@ -1,17 +1,13 @@
 package ar.com.semillero.semillatronalfa.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class EventDetails {
     @Id
@@ -33,13 +29,11 @@ public class EventDetails {
     @JsonIgnore
     private Event event;
 
-    public EventDetails(String instructor, String origin, String destination, int duration, String modality, Event event) {
+    public EventDetails(String instructor, String origin, String destination, int duration, String modality) {
         this.instructor = instructor;
         this.origin = origin;
         this.destination = destination;
         this.duration = duration;
         this.modality = modality;
-        this.event = event;
     }
-
 }

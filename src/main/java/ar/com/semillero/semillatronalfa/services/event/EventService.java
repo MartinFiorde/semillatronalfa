@@ -9,5 +9,8 @@ public interface EventService {
 
     List<Event> findEvents();
 
+    void addEvent(Event event);
+
+    Event findEventById(String id);
 
 }

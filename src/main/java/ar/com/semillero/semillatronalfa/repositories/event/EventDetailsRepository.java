@@ -1,4 +1,4 @@
-package ar.com.semillero.semillatronalfa.repositories;
+package ar.com.semillero.semillatronalfa.repositories.event;
 
 import ar.com.semillero.semillatronalfa.entities.EventDetails;
 import org.springframework.data.jpa.repository.JpaRepository;

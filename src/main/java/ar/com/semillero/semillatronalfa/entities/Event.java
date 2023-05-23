@@ -1,6 +1,5 @@
 package ar.com.semillero.semillatronalfa.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,7 +10,6 @@ import java.util.Date;
 @Table(name = "event")
 @NoArgsConstructor
 @Data
-@Getter
 public class Event {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -34,7 +32,7 @@ public class Event {
     public Event(Date date, String title,
                  Boolean offeredBySemillero, String status,
                  String organizedBy, String approach,
-                 String type) {
+                 String type, EventDetails details) {
         this.date = date;
         this.title = title;
         this.offeredBySemillero = offeredBySemillero;
@@ -42,5 +40,6 @@ public class Event {
         this.organizedBy = organizedBy;
         this.approach = approach;
         this.type = type;
+        this.details = details;
     }
 }
