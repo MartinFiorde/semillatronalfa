@@ -1,5 +1,6 @@
-package ar.com.semillero.semillatronalfa.entities;
+package ar.com.semillero.semillatronalfa.entities.event;
 
+import ar.com.semillero.semillatronalfa.entities.event.Event;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

@@ -1,8 +1,9 @@
-package ar.com.semillero.semillatronalfa.entities;
+package ar.com.semillero.semillatronalfa.entities.event;
 
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class Event {
     private String organizedBy;
     private String type;
     private String approach;
+    private boolean isActive = true;
 
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private EventDetails details;
