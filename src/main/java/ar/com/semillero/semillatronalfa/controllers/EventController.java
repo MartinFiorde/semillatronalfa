@@ -1,6 +1,6 @@
 package ar.com.semillero.semillatronalfa.controllers;
 
-import ar.com.semillero.semillatronalfa.entities.Event;
+import ar.com.semillero.semillatronalfa.entities.event.Event;
 import ar.com.semillero.semillatronalfa.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,12 +24,18 @@ public class EventController {
     @GetMapping("/list")
     @ResponseBody
     public List<Event> findEvents() {
-        return eventService.findEvents();
+        return eventService.findEventList();
     }
 
     @PostMapping("/create")
     @ResponseBody
     public void createEvent(@RequestBody Event event) {
         eventService.addEvent(event);
+    }
+
+    @PatchMapping("/event/{id}")
+    @ResponseBody
+    public void deleteEvent(@PathVariable String id) {
+        eventService.deleteEvent(id);
     }
 }

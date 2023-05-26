@@ -1,10 +1,13 @@
-package ar.com.semillero.semillatronalfa.entities;
+package ar.com.semillero.semillatronalfa.entities.event;
+
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "event")
@@ -18,18 +21,20 @@ public class Event {
     @Setter(value= AccessLevel.NONE)
     private String id;
 
-    private Date date;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate date;
     private String title;
     private Boolean offeredBySemillero;
     private String status;
     private String organizedBy;
     private String type;
     private String approach;
+    private boolean isActive = true;
 
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private EventDetails details;
 
-    public Event(Date date, String title,
+    public Event(LocalDate date, String title,
                  Boolean offeredBySemillero, String status,
                  String organizedBy, String approach,
                  String type, EventDetails details) {
