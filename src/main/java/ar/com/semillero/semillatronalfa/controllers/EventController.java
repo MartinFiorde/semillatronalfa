@@ -1,7 +1,6 @@
 package ar.com.semillero.semillatronalfa.controllers;
 
 import ar.com.semillero.semillatronalfa.entities.Event;
-import ar.com.semillero.semillatronalfa.entities.EventDetails;
 import ar.com.semillero.semillatronalfa.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
