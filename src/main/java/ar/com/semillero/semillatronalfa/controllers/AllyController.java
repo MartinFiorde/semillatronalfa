@@ -1,5 +1,6 @@
 package ar.com.semillero.semillatronalfa.controllers;
 
+import ar.com.semillero.semillatronalfa.dtos.allies.AllyDto;
 import ar.com.semillero.semillatronalfa.entities.ally.Ally;
 import ar.com.semillero.semillatronalfa.services.ally.AllyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,14 @@ public class AllyController {
 
     @GetMapping("/list")
     @ResponseBody
-    List<Ally> getAllies() {
+    List<AllyDto> getAllies() {
         return allyService.findAllies();
+    }
+
+    @GetMapping("/ally/{id}")
+    @ResponseBody
+    AllyDto getAlly(@PathVariable String id) {
+        return allyService.findAllyById(id);
     }
 
     @PostMapping("/create")

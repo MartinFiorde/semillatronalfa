@@ -1,5 +1,6 @@
 package ar.com.semillero.semillatronalfa.controllers;
 
+import ar.com.semillero.semillatronalfa.dtos.event.EventDto;
 import ar.com.semillero.semillatronalfa.entities.event.Event;
 import ar.com.semillero.semillatronalfa.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,13 @@ public class EventController {
 
     @GetMapping("/event/{id}")
     @ResponseBody
-    public Event findEventById(@PathVariable String id) {
+    public EventDto findEventById(@PathVariable String id) {
         return eventService.findEventById(id);
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public List<Event> findEvents() {
+    public List<EventDto> findEvents() {
         return eventService.findEventList();
     }
 
