@@ -12,25 +12,25 @@ import ar.com.semillero.semillatronalfa.repositories.Proyect.ProjectRepository;
 public class ProjectImplementation implements ProjectService {
 
 	@Autowired
-	ProjectRepository eventRepository;
+	ProjectRepository proyectRepository;
 
 	@Override
 	public List<Project> findProjects() {
-		return eventRepository.findAll();
+		return proyectRepository.findAll();
 	}
 
 	@Override
 	public List<Project> findProjectList() {
-		return eventRepository.getProjectList();
+		return proyectRepository.getProjectList();
 	}
 
 	@Override
 	public Project findProjectById(String id) {
-		return eventRepository.findById(id).orElse(null);
+		return proyectRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public void addProject(Project event) {
+	public void addProject(Project proyect) {
 		// TODO Auto-generated method stub
 
 	}

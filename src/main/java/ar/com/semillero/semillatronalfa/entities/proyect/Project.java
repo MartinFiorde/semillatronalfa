@@ -2,12 +2,9 @@ package ar.com.semillero.semillatronalfa.entities.proyect;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Data

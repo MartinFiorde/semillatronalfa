@@ -12,7 +12,7 @@ public interface ProjectService {
 
 	List<Project> findProjectList();
 
-	void addProject(Project event);
+	void addProject(Project project);
 
 	Project findProjectById(String id);
 
