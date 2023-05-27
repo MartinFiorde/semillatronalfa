@@ -1,7 +1,6 @@
 package ar.com.semillero.semillatronalfa.entities.seed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -16,7 +16,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 }
 */
-/*
+
 package ar.com.semillero.semillatronalfa;
 
 import java.util.Arrays;
@@ -49,4 +49,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-}*/
+}

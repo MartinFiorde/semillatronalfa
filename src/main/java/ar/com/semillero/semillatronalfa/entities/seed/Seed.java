@@ -40,6 +40,8 @@ public class Seed {
 
     @OneToOne(mappedBy = "seedId", cascade = CascadeType.ALL)
     private SeedPostulationData postulationData;
+    
+    private boolean isActive = true;
 
     // REHACER CONSTRUCTOR AL INCORPORAR DATO COMMISSION
     public Seed(SeedFollowUp followUp, SeedPersonalData personalData, SeedContactData contactData, SeedPostulationData postulationData) {
