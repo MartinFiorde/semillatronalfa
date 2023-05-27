@@ -1,6 +1,7 @@
 package ar.com.semillero.semillatronalfa.entities.seed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -25,13 +26,13 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @NoArgsConstructor
 public class SeedFollowUp {
-    
+
     @OneToOne
     @JoinColumn
     @Getter(value = AccessLevel.NONE)
     @JsonIgnore
     private Seed seedId;
-    
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -39,30 +40,28 @@ public class SeedFollowUp {
     @Column(nullable = false)
     private String id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date postulationDate;
-    
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date postulationDate3;
+    private LocalDateTime postulationDate; // Reemplazo de la vieja clase Date: https://www.baeldung.com/migrating-to-java-8-date-time-api
+
     @OneToOne(mappedBy = "seedFollowUpId", cascade = CascadeType.ALL)
     private SeedStatus status;
-    
+
     private Boolean recommendation;
-    
+
     private Boolean certification;
-    
+
     @ElementCollection
     @CollectionTable(name = "follow_up_comments", joinColumns = @JoinColumn(name = "id"))
     @Column
     private List<String> comments;
 
-    public SeedFollowUp(Date postulationDate, Boolean recommendation, Boolean certification, List<String> comments) {
+    public SeedFollowUp(LocalDateTime postulationDate, SeedStatus status, Boolean recommendation, Boolean certification, List<String> comments) {
         this.postulationDate = postulationDate;
+        this.status = status;
         this.recommendation = recommendation;
         this.certification = certification;
         this.comments = comments;
     }
-    
-    
-    
-
 
 }

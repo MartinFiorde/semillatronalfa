@@ -41,7 +41,7 @@ public class SeedPersonalData {
     private Integer dni;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate birthDate;
+    private LocalDate birthDate; // Reemplazo de la vieja clase Date: https://www.baeldung.com/migrating-to-java-8-date-time-api
 
     private String country;
 

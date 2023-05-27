@@ -23,6 +23,13 @@ public class SeedImplementation implements SeedService {
 
     @Override
     public void addSeed(Seed seed) {
+        seed.getPersonalData().setSeedId(seed);
+        seed.getContactData().setSeedId(seed);
+        seed.getFollowUp().setSeedId(seed);
+        seed.getFollowUp().getStatus().setSeedFollowUpId(seed.getFollowUp());
+        seed.getPostulationData().setSeedId(seed);
+        seedRepository.save(seed);
+        
     }
 
     @Override
