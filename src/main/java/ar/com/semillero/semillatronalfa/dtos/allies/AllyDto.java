@@ -18,6 +18,7 @@ public class AllyDto {
     private String phoneNumber;
     private String address;
 
+
     public AllyDto(Ally ally) {
         this.companyName = ally.getCompanyName();
         this.commission = ally.getCommission();
@@ -28,5 +29,4 @@ public class AllyDto {
         this.phoneNumber = ally.getContactData().getPhoneNumber();
         this.address = ally.getContactData().getAddress();
     }
-
 }

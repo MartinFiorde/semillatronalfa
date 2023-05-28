@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/allies")
@@ -17,7 +18,7 @@ public class AllyController {
 
     @GetMapping("/list")
     @ResponseBody
-    List<AllyDto> getAllies() {
+    List<Ally> getAllies() {
         return allyService.findAllies();
     }
 

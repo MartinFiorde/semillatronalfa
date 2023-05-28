@@ -1,19 +1,21 @@
 package ar.com.semillero.semillatronalfa.entities.ally;
 
+import ar.com.semillero.semillatronalfa.entities.proyect.Project;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ally")
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 public class Ally {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -28,8 +30,12 @@ public class Ally {
     private Date timestamp;
     private String objective;
     private String companyRepresentative;
+
     @OneToOne(mappedBy = "ally", cascade = CascadeType.ALL)
     private AllyContactData contactData;
+
+    //@OneToMany(mappedBy = "allyProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //List<Project> projects = new ArrayList<>();
 
     public Ally(String companyName, String commission, Date timestamp,
                 String objective, String companyRepresentative,
