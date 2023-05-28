@@ -1,4 +1,4 @@
-package ar.com.semillero.semillatronalfa.entities.proyect;
+package ar.com.semillero.semillatronalfa.entities.project;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

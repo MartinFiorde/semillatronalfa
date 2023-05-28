@@ -5,32 +5,33 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.com.semillero.semillatronalfa.entities.proyect.Project;
-import ar.com.semillero.semillatronalfa.repositories.Proyect.ProjectRepository;
+import ar.com.semillero.semillatronalfa.entities.project.Project;
+import ar.com.semillero.semillatronalfa.repositories.project.ProjectRepository;
 
 @Service
 public class ProjectImplementation implements ProjectService {
 
 	@Autowired
-	ProjectRepository proyectRepository;
+	ProjectRepository projectRepository;
+	
 
 	@Override
 	public List<Project> findProjects() {
-		return proyectRepository.findAll();
+		return projectRepository.findAll();
 	}
 
 	@Override
 	public List<Project> findProjectList() {
-		return proyectRepository.getProjectList();
+		return projectRepository.getProjectList();
 	}
 
 	@Override
 	public Project findProjectById(String id) {
-		return proyectRepository.findById(id).orElse(null);
+		return projectRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public void addProject(Project proyect) {
+	public void addProject(Project project) {
 		// TODO Auto-generated method stub
 
 	}
