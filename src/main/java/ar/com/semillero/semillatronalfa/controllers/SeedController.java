@@ -12,17 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 @Controller // Diferencia controller vs restcontroller: https://medium.com/javarevisited/difference-between-controller-and-restcontroller-in-spring-boot-and-spring-mvc-216578ad445f
 @RequestMapping("/seed")
 public class SeedController {
-    
+
     private SeedService seedService;
 
     @Autowired
     public SeedController(SeedService seedService) {
         this.seedService = seedService;
     }
-    
+
     @GetMapping("/{id}")
     @ResponseBody
     public Seed findEventById(@PathVariable String id) {
@@ -38,7 +39,6 @@ public class SeedController {
     @PostMapping("/create")
     @ResponseBody
     public void createSeed(@RequestBody Seed seed) {
-        System.out.println(seed);
         seedService.addSeed(seed);
     }
 }

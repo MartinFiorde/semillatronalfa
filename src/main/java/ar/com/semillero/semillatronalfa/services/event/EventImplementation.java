@@ -1,11 +1,14 @@
 package ar.com.semillero.semillatronalfa.services.event;
 
+import ar.com.semillero.semillatronalfa.dtos.event.EventDto;
 import ar.com.semillero.semillatronalfa.entities.event.Event;
 import ar.com.semillero.semillatronalfa.repositories.event.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class EventImplementation implements EventService {
@@ -14,13 +17,8 @@ public class EventImplementation implements EventService {
     EventRepository eventRepository;
 
     @Override
-    public List<Event> findEvents() {
-        return eventRepository.findAll();
-    }
-
-    @Override
-    public List<Event> findEventList() {
-        return eventRepository.getEventList();
+    public List<EventDto> findEventList() {
+        return eventRepository.getEventList().stream().map(EventDto::new).collect(Collectors.toList());
     }
 
     @Override
@@ -30,13 +28,14 @@ public class EventImplementation implements EventService {
     }
 
     @Override
-    public Event findEventById(String id) {
-        return eventRepository.findById(id).orElse(null);
+    public EventDto findEventById(String id) {
+        return new EventDto(Objects.requireNonNull(eventRepository.findById(id).orElse(null)));
     }
 
     @Override
     public void deleteEvent(String id) {
         Event event = eventRepository.findById(id).orElse(null);
+        if (event == null) throw new AssertionError();
         event.setActive(false);
         eventRepository.save(event);
     }

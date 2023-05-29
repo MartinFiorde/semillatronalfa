@@ -1,5 +1,6 @@
 package ar.com.semillero.semillatronalfa.entities.project;
 
+import ar.com.semillero.semillatronalfa.entities.ally.Ally;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,14 +26,14 @@ public class Project {
 	@OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
 	private ProjectData projectData;
 	// private SeedData SeedData;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ally_id")
+	private Ally allyProject;
 
 
-	public Project(String id, boolean isActive, ProjectData projectData) {
-		super();
-		this.id = id;
-		this.isActive = isActive;
+	public Project(ProjectData projectData, Ally allyProject) {
 		this.projectData = projectData;
+		this.allyProject = allyProject;
 	}
-	
-	
+
 }
