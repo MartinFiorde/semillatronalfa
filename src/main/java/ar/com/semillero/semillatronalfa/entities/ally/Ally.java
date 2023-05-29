@@ -1,6 +1,6 @@
 package ar.com.semillero.semillatronalfa.entities.ally;
 
-import ar.com.semillero.semillatronalfa.entities.proyect.Project;
+import ar.com.semillero.semillatronalfa.entities.project.Project;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 @Entity
 @Table(name = "ally")
@@ -34,8 +35,8 @@ public class Ally {
     @OneToOne(mappedBy = "ally", cascade = CascadeType.ALL)
     private AllyContactData contactData;
 
-    //@OneToMany(mappedBy = "allyProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //List<Project> projects = new ArrayList<>();
+    @OneToMany(mappedBy = "allyProject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Project> projects = new ArrayList<>();
 
     public Ally(String companyName, String commission, Date timestamp,
                 String objective, String companyRepresentative,

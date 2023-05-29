@@ -1,9 +1,10 @@
-package ar.com.semillero.semillatronalfa.repositories.Proyect;
+package ar.com.semillero.semillatronalfa.repositories.project;
 
-import ar.com.semillero.semillatronalfa.entities.proyect.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import ar.com.semillero.semillatronalfa.entities.project.Project;
 
 import java.util.List;
 

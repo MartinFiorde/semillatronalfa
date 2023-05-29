@@ -2,7 +2,7 @@ package ar.com.semillero.semillatronalfa.services.project;
 
 import java.util.List;
 
-import ar.com.semillero.semillatronalfa.entities.proyect.Project;
+import ar.com.semillero.semillatronalfa.entities.project.Project;
 
 
 
