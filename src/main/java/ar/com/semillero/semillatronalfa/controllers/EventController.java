@@ -4,19 +4,21 @@ import ar.com.semillero.semillatronalfa.dtos.event.EventDto;
 import ar.com.semillero.semillatronalfa.entities.event.Event;
 import ar.com.semillero.semillatronalfa.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/events")
+@RequestMapping("/event")
 public class EventController {
 
     @Autowired
     EventService eventService;
 
-    @GetMapping("/event/{id}")
+    @GetMapping("/{id}")
     @ResponseBody
     public EventDto findEventById(@PathVariable String id) {
         return eventService.findEventById(id);
@@ -31,12 +33,16 @@ public class EventController {
     @PostMapping("/create")
     @ResponseBody
     public void createEvent(@RequestBody Event event) {
-        eventService.addEvent(event);
+            eventService.addEvent(event);
     }
 
-    @PatchMapping("/event/{id}")
+    @PatchMapping("/{id}")
     @ResponseBody
-    public void deleteEvent(@PathVariable String id) {
-        eventService.deleteEvent(id);
+    public ResponseEntity<Object> deleteEvent(@PathVariable String id) {
+        if(eventService.findEventById(id) != null) {
+            eventService.deleteEvent(id);
+            return new ResponseEntity<>("Removed successfully!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
     }
 }

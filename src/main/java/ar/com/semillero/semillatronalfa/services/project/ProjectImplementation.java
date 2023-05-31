@@ -32,13 +32,12 @@ public class ProjectImplementation implements ProjectService {
 
 	@Override
 	public void addProject(Project project) {
-		// TODO Auto-generated method stub
-
+		project.getProjectData().setProject(project);
+		projectRepository.save(project);
 	}
 
 	@Override
 	public void deleteProject(String id) {
-		// TODO Auto-generated method stub
 
 	}
 

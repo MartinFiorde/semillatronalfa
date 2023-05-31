@@ -39,8 +39,7 @@ public class Ally {
     List<Project> projects = new ArrayList<>();
 
     public Ally(String companyName, String commission, Date timestamp,
-                String objective, String companyRepresentative,
-                AllyContactData contactData) {
+                String objective, String companyRepresentative, AllyContactData contactData) {
         this.companyName = companyName;
         this.commission = commission;
         this.timestamp = timestamp;
@@ -48,4 +47,6 @@ public class Ally {
         this.companyRepresentative = companyRepresentative;
         this.contactData = contactData;
     }
+
+
 }

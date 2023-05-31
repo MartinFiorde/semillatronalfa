@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class EventDto {
+    private String id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
     private String title;
@@ -26,6 +27,7 @@ public class EventDto {
     private String modality;
 
     public EventDto(Event event) {
+        this.id = event.getId();
         this.date = event.getDate();
         this.title = event.getTitle();
         this.offeredBySemillero = event.getOfferedBySemillero();

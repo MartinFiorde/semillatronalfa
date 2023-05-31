@@ -1,6 +1,11 @@
 package ar.com.semillero.semillatronalfa.entities.project;
 
+<<<<<<< HEAD
 
+=======
+import ar.com.semillero.semillatronalfa.entities.ally.Ally;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+>>>>>>> 0a6912da01cc84c80e7911db13822d9e21a919ce
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -35,6 +40,8 @@ public class Project extends ProjectDataAbstract{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ally_id")
+	@JsonIgnore
+	@Getter(value = AccessLevel.NONE)
 	private Ally allyProject;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
