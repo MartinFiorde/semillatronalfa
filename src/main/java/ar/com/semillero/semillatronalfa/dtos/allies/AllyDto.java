@@ -9,6 +9,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class AllyDto {
+    private String id;
     private String companyName;
     private String commission;
     private Date timestamp;
@@ -20,6 +21,7 @@ public class AllyDto {
 
 
     public AllyDto(Ally ally) {
+        this.id = ally.getId();
         this.companyName = ally.getCompanyName();
         this.commission = ally.getCommission();
         this.timestamp = ally.getTimestamp();

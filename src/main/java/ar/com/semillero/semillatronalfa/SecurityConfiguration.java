@@ -1,4 +1,4 @@
-package ar.com.semillero.semillatronalfa;
+/*package ar.com.semillero.semillatronalfa;
 
 import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
@@ -30,4 +30,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-}
+}*/

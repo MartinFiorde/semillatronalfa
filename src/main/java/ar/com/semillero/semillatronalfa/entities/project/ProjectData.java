@@ -43,4 +43,14 @@ public class ProjectData {
 	    @Getter(value= AccessLevel.NONE)
 	    @JsonIgnore
 	    private Project project;
+
+	public ProjectData(String name, Date initialDate, Date endDate, Date timestamp, String purpose, String ods, String projectStatusStage) {
+		this.name = name;
+		this.initialDate = initialDate;
+		this.endDate = endDate;
+		this.timestamp = timestamp;
+		this.purpose = purpose;
+		this.ods = ods;
+		this.projectStatusStage = projectStatusStage;
+	}
 }

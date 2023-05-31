@@ -29,7 +29,7 @@ public class EventImplementation implements EventService {
 
     @Override
     public EventDto findEventById(String id) {
-        return new EventDto(Objects.requireNonNull(eventRepository.findById(id).orElse(null)));
+        return new EventDto(Objects.requireNonNull(eventRepository.findEventById(id)).orElse(null));
     }
 
     @Override
