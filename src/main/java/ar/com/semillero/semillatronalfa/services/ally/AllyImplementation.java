@@ -30,4 +30,5 @@ public class AllyImplementation implements AllyService {
     public AllyDto findAllyById(String id) {
         return new AllyDto(allyRepository.findById(id).orElse(null));
     }
+
 }

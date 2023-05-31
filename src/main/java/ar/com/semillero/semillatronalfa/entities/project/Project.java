@@ -1,6 +1,7 @@
 package ar.com.semillero.semillatronalfa.entities.project;
 
 import ar.com.semillero.semillatronalfa.entities.ally.Ally;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -28,6 +29,8 @@ public class Project {
 	// private SeedData SeedData;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ally_id")
+	@JsonIgnore
+	@Getter(value = AccessLevel.NONE)
 	private Ally allyProject;
 
 
