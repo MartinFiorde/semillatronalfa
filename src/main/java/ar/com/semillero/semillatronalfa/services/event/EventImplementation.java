@@ -39,4 +39,26 @@ public class EventImplementation implements EventService {
         event.setActive(false);
         eventRepository.save(event);
     }
+
+    @Override
+    public Event findEvent(String id) {
+        return eventRepository.findEventById(id).orElse(null);
+    }
+
+    @Override
+    public void updateEvent(Event event, Event event2) {
+        event2.setDate(event.getDate());
+        event2.setTitle(event.getTitle());
+        event2.setApproach(event.getApproach());
+        event2.setOfferedBySemillero(event.getOfferedBySemillero());
+        event2.setOrganizedBy(event.getOrganizedBy());
+        event2.setType(event.getType());
+        event2.setStatus(event.getStatus());
+        event2.getDetails().setDestination(event.getDetails().getDestination());
+        event2.getDetails().setDuration(event.getDetails().getDuration());
+        event2.getDetails().setInstructor(event.getDetails().getInstructor());
+        event2.getDetails().setOrigin(event.getDetails().getOrigin());
+        event2.getDetails().setModality(event.getDetails().getModality());
+        eventRepository.save(event2);
+    }
 }

@@ -32,13 +32,24 @@ public class EventController {
 
     @PostMapping("/create")
     @ResponseBody
-    public void createEvent(@RequestBody Event event) {
+    public ResponseEntity<Object> createEvent(@RequestBody Event event) {
             eventService.addEvent(event);
+            return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Object> updateEvent(@PathVariable("id") String id, @RequestBody Event event) {
+        if(eventService.findEventById(id) != null && event != null) {
+            eventService.updateEvent(event, eventService.findEvent(id));
+            return new ResponseEntity<>("Updated successfully!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Error! Try a valid id or data.", HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<Object> deleteEvent(@PathVariable String id) {
+    public ResponseEntity<Object> deleteEvent(@PathVariable("id") String id) {
         if(eventService.findEventById(id) != null) {
             eventService.deleteEvent(id);
             return new ResponseEntity<>("Removed successfully!", HttpStatus.OK);
