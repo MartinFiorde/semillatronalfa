@@ -1,19 +1,19 @@
 package ar.com.semillero.semillatronalfa.entities.project;
-
-import ar.com.semillero.semillatronalfa.entities.ally.Ally;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import ar.com.semillero.semillatronalfa.entities.ally.Ally;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Table(name = "project")
-@NoArgsConstructor
 
-public class Project {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Project extends ProjectDataAbstract{
 	@Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -23,20 +23,27 @@ public class Project {
 	
 	private boolean isActive = true;
 	
+	/*NO LE ENCUENTRO SENTIDO TENER UNA RELACION CON COMISION 
+	 * SI QUISIERA HACER UNA CONSULTA PARA DETERMINAR LAS VINCULACIONES ENTRE 
+	 * COMISION Y PROYECTO  SE PUEDE USAR EL AÑO YA QUE AMBAS CUENTAN CON EL DATO AÑO*/	
+//	private Commission commission; 
 	
-	@OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
-	private ProjectData projectData;
-	// private SeedData SeedData;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ally_id")
-	@JsonIgnore
 	@Getter(value = AccessLevel.NONE)
 	private Ally allyProject;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "managementTeam_id")
+	private ManagementTeam managementTeam;
+//	private DevelopmentTeam developmentTeam;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "developmentTeam")
+	private DevelopmentTeam developmentTeam;
 
-
-	public Project(ProjectData projectData, Ally allyProject) {
-		this.projectData = projectData;
-		this.allyProject = allyProject;
-	}
+	
 
 }
