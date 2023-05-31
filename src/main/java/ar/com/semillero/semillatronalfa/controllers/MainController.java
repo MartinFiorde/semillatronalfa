@@ -1,4 +1,4 @@
-package ar.com.semillero.semillatronalfa.controllers;
+/*package ar.com.semillero.semillatronalfa.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,4 +16,4 @@ public class MainController {
         return "index.html";
     }
 
-}
+}*/
