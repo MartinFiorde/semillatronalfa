@@ -41,7 +41,7 @@ public class SeedFollowUp {
     private String id;
 
 //    @Temporal(TemporalType.TIMESTAMP)
-//    private Date postulationDate3;
+//    private Date postulationDate;
     private LocalDateTime postulationDate; // Reemplazo de la vieja clase Date: https://www.baeldung.com/migrating-to-java-8-date-time-api
 
     @OneToOne(mappedBy = "seedFollowUpId", cascade = CascadeType.ALL)

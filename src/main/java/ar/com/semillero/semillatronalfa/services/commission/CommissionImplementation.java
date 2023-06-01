@@ -1,41 +1,56 @@
 package ar.com.semillero.semillatronalfa.services.commission;
 
 import ar.com.semillero.semillatronalfa.entities.Commission;
-import ar.com.semillero.semillatronalfa.repositories.Commission.CommissionRepository;
+import ar.com.semillero.semillatronalfa.repositories.commission.CommissionRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommissionImplementation implements CommissionService {
 
     private CommissionRepository commissionRepository;
-
+    // seed
     @Autowired
     public CommissionImplementation(CommissionRepository commissionRepository) {
         this.commissionRepository = commissionRepository;
     }
 
     @Override
-    public List<Commission> findAllCommissions() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Commission> getAll() {
+        return commissionRepository.findAll();
     }
 
     @Override
-    public void addCommission(Commission incomingCommission) {
+    public List<Commission> getAllActives() {
+        return commissionRepository.findAll();
+    }
+    
+     @Override
+    public void save(Commission incomingCommission) {
         Commission outcomingCommission = new Commission();
         outcomingCommission.setName(validateName(incomingCommission.getName()));
         commissionRepository.save(outcomingCommission);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public void saveBatch(List<Commission> commissions) {
+        for (Commission commission : commissions) {
+            save(commission);
+        }
+    }
+
+    @Override
     public Commission findCommissionById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return commissionRepository.findById(id).orElse(null);
     }
 
     @Override
     public Commission findCommissionByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return commissionRepository.findByName(name).orElse(null);
     }
 
     public String validateName(String name) {
@@ -43,4 +58,15 @@ public class CommissionImplementation implements CommissionService {
         return name;
     }
 
+    @Override
+    public Commission deactivate(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Commission activate(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
 }
