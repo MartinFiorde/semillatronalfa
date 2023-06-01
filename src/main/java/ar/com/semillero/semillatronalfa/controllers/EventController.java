@@ -37,7 +37,14 @@ public class EventController {
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/import")
+    @ResponseBody
+    public ResponseEntity<Object> importEvent(@RequestBody Event[] event) {
+        eventService.addEventList(event);
+        return new ResponseEntity<>("Imported successfully!", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
     @ResponseBody
     public ResponseEntity<Object> updateEvent(@PathVariable("id") String id, @RequestBody Event event) {
         if(eventService.findEventById(id) != null && event != null) {
@@ -47,7 +54,7 @@ public class EventController {
         return new ResponseEntity<>("Error! Try a valid id or data.", HttpStatus.BAD_REQUEST);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/delete/{id}")
     @ResponseBody
     public ResponseEntity<Object> deleteEvent(@PathVariable("id") String id) {
         if(eventService.findEventById(id) != null) {

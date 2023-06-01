@@ -61,4 +61,12 @@ public class EventImplementation implements EventService {
         event2.getDetails().setModality(event.getDetails().getModality());
         eventRepository.save(event2);
     }
+
+    @Override
+    public void addEventList(Event[] event) {
+        for (Event e: event) {
+            e.getDetails().setEvent(e);
+            eventRepository.save(e);
+        }
+    }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/allies")
+@RequestMapping("/ally")
 public class AllyController {
     @Autowired
     AllyService allyService;
@@ -22,7 +22,7 @@ public class AllyController {
         return allyService.findAllies();
     }
 
-    @GetMapping("/ally/{id}")
+    @GetMapping("/{id}")
     @ResponseBody
     AllyDto getAlly(@PathVariable String id) {
         return allyService.findAllyById(id);

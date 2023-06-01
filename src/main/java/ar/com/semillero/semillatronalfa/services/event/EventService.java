@@ -20,4 +20,6 @@ public interface EventService {
 
     void updateEvent(Event event, Event event2);
 
+    void addEventList(Event[] event);
+
 }
