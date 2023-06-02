@@ -2,10 +2,13 @@ package ar.com.semillero.semillatronalfa.services.event;
 
 import ar.com.semillero.semillatronalfa.dtos.event.EventDto;
 import ar.com.semillero.semillatronalfa.entities.event.Event;
+import ar.com.semillero.semillatronalfa.queries.event.EventFilter;
 import ar.com.semillero.semillatronalfa.repositories.event.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,5 +41,41 @@ public class EventImplementation implements EventService {
         if (event == null) throw new AssertionError();
         event.setActive(false);
         eventRepository.save(event);
+    }
+
+    @Override
+    public Event findEvent(String id) {
+        return eventRepository.findEventById(id).orElse(null);
+    }
+
+    @Override
+    public void updateEvent(Event event, Event event2) {
+        event2.setDate(event.getDate());
+        event2.setTitle(event.getTitle());
+        event2.setApproach(event.getApproach());
+        event2.setOfferedBySemillero(event.getOfferedBySemillero());
+        event2.setOrganizedBy(event.getOrganizedBy());
+        event2.setType(event.getType());
+        event2.setStatus(event.getStatus());
+        event2.getDetails().setDestination(event.getDetails().getDestination());
+        event2.getDetails().setDuration(event.getDetails().getDuration());
+        event2.getDetails().setInstructor(event.getDetails().getInstructor());
+        event2.getDetails().setOrigin(event.getDetails().getOrigin());
+        event2.getDetails().setModality(event.getDetails().getModality());
+        eventRepository.save(event2);
+    }
+
+    @Override
+    public void addEventList(Event[] event) {
+        for (Event e: event) {
+            e.getDetails().setEvent(e);
+            eventRepository.save(e);
+        }
+    }
+
+    @Override
+    public List<Event> filterEvent(EventFilter eventFilter) {
+        return eventRepository.filterEvents(eventFilter.getTitle(), eventFilter.getOfferedBySemillero(),
+                      eventFilter.getStatus(), eventFilter.getOrganizedBy(), eventFilter.getType(), eventFilter.getApproach());
     }
 }
