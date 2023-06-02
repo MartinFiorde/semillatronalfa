@@ -24,7 +24,7 @@ public class Commission {
 
     private String name;
 
-    private boolean isActive;
+    private Boolean isActive;
 
     public Commission(String name, boolean isActive) {
         this.name = name;
