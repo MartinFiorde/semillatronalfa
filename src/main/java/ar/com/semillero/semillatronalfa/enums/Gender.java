@@ -5,7 +5,7 @@ package ar.com.semillero.semillatronalfa.enums;
 public enum Gender {
     MALE("Masculino"), 
     FEMALE("Femenino"), 
-    NON_BINARY("No binario"), 
+    NON_BINARY("No binarie"), 
     NO_DATA("Sin información");
 
     private final String displayValue;
