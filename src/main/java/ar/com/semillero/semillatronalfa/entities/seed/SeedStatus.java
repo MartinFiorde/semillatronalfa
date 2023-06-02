@@ -39,6 +39,8 @@ public class SeedStatus {
     private String secondary;
     
     private String projectId;
+    
+    private String projectName;
 
     private Boolean digitalEmployment;
     

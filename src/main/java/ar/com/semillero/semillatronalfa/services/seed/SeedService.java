@@ -9,6 +9,8 @@ public interface SeedService {
     List<Seed> findAllSeeds();
 
     void addSeed(Seed seed);
+    
+    void addSeeds(List<Seed> seeds);
 
     Seed findSeedById(String id);
     
