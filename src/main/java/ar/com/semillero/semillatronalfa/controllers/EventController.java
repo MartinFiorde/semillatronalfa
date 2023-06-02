@@ -2,6 +2,7 @@ package ar.com.semillero.semillatronalfa.controllers;
 
 import ar.com.semillero.semillatronalfa.dtos.event.EventDto;
 import ar.com.semillero.semillatronalfa.entities.event.Event;
+import ar.com.semillero.semillatronalfa.queries.event.EventFilter;
 import ar.com.semillero.semillatronalfa.services.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.websocket.server.PathParam;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/event")
@@ -17,6 +23,9 @@ public class EventController {
 
     @Autowired
     EventService eventService;
+
+    @PersistenceContext
+    EntityManager em;
 
     @GetMapping("/{id}")
     @ResponseBody
@@ -35,6 +44,13 @@ public class EventController {
     public ResponseEntity<Object> createEvent(@RequestBody Event event) {
             eventService.addEvent(event);
             return new ResponseEntity<>("Created successfully!", HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/filter")
+    @ResponseBody
+    public List<Event> filterEvent(@RequestBody EventFilter eventFilter){
+        return eventService.filterEvent(eventFilter);
     }
 
     @PostMapping("/import")

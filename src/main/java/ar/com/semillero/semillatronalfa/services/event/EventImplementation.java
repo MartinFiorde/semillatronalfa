@@ -2,10 +2,13 @@ package ar.com.semillero.semillatronalfa.services.event;
 
 import ar.com.semillero.semillatronalfa.dtos.event.EventDto;
 import ar.com.semillero.semillatronalfa.entities.event.Event;
+import ar.com.semillero.semillatronalfa.queries.event.EventFilter;
 import ar.com.semillero.semillatronalfa.repositories.event.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -68,5 +71,11 @@ public class EventImplementation implements EventService {
             e.getDetails().setEvent(e);
             eventRepository.save(e);
         }
+    }
+
+    @Override
+    public List<Event> filterEvent(EventFilter eventFilter) {
+        return eventRepository.filterEvents(eventFilter.getTitle(), eventFilter.getOfferedBySemillero(),
+                      eventFilter.getStatus(), eventFilter.getOrganizedBy(), eventFilter.getType(), eventFilter.getApproach());
     }
 }
