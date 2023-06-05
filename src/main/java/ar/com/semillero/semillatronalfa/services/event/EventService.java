@@ -5,7 +5,7 @@ import ar.com.semillero.semillatronalfa.dtos.event.EventDto;
 import ar.com.semillero.semillatronalfa.entities.event.Event;
 import ar.com.semillero.semillatronalfa.queries.event.EventFilter;
 
-import java.time.LocalDate;
+
 import java.util.List;
 
 public interface EventService {
