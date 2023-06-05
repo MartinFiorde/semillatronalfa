@@ -38,9 +38,16 @@ public class CommissionController {
 
     @PostMapping("/create")
     @ResponseBody
-    public void createCommission(@RequestBody Commission commission) {
+    public void create(@RequestBody Commission commission) {
         System.out.println(commission);
         commissionService.save(commission);
+    }
+    
+    @PostMapping("/create-batch")
+    @ResponseBody
+    public void createBatch(@RequestBody List<Commission> commissions) {
+        System.out.println(commissions);
+        commissionService.saveBatch(commissions);
     }
 }
 

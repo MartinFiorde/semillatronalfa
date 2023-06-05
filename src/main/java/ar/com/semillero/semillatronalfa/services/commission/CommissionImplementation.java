@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommissionImplementation implements CommissionService {
 
     private CommissionRepository commissionRepository;
+
     // seed
     @Autowired
     public CommissionImplementation(CommissionRepository commissionRepository) {
@@ -27,11 +28,13 @@ public class CommissionImplementation implements CommissionService {
     public List<Commission> getAllActives() {
         return commissionRepository.findAll();
     }
-    
-     @Override
+
+    @Override
     public void save(Commission incomingCommission) {
+        System.out.println("incomingCom" + incomingCommission);
         Commission outcomingCommission = new Commission();
         outcomingCommission.setName(validateName(incomingCommission.getName()));
+        outcomingCommission.setIsActive(incomingCommission.getIsActive());
         commissionRepository.save(outcomingCommission);
     }
 
@@ -39,7 +42,7 @@ public class CommissionImplementation implements CommissionService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void saveBatch(List<Commission> commissions) {
         for (Commission commission : commissions) {
-            save(commission);
+            commissionRepository.save(commission);
         }
     }
 
@@ -68,5 +71,4 @@ public class CommissionImplementation implements CommissionService {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
 }

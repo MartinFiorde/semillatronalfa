@@ -32,7 +32,7 @@ public class ProjectImplementation implements ProjectService {
 
 	@Override
 	public void addProject(Project project) {
-		project.getProjectData().setProject(project);
+	//	project.getProjectData().setProject(project);
 		projectRepository.save(project);
 	}
 
