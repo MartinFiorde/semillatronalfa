@@ -1,6 +1,7 @@
 package ar.com.semillero.semillatronalfa.entities.event;
 
 
+import ar.com.semillero.semillatronalfa.entities.attendance.Attendance;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -33,6 +34,9 @@ public class Event {
 
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private EventDetails details;
+
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
+    private Attendance attendance;
 
     public Event(LocalDate date, String title,
                  Boolean offeredBySemillero, String status,
