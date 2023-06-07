@@ -16,12 +16,15 @@ public class LoginController {
     UserService userService;
 
     @PostMapping("/")
-    @ResponseBody
-    public ResponseEntity<Object> authenticate(@RequestBody User user) {
-        if(userService.matchUser(user.getUsername(), user.getPassword()) == null) {
-            return new ResponseEntity<>("Access denied!", HttpStatus.FORBIDDEN);
-        }
-        return new ResponseEntity<>("Access granted!", HttpStatus.OK);
+    public String authenticate(@RequestBody User user) {
+        return (userService.matchUser(user.getUsername(), user.getPassword()) == null) ?
+             "pages/login.html" : "index.html";
+    }
+
+    @GetMapping
+    //@ResponseBody
+    public String authenticateUser(@RequestBody User user) {
+        return "pages/login.html";
     }
 
 
