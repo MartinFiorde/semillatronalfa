@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ally_contact_data")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class AllyContactData {
     @Id
@@ -32,4 +33,5 @@ public class AllyContactData {
         this.phoneNumber = phoneNumber;
         this.address = address;
     }
+
 }

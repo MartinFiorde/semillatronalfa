@@ -1,11 +1,13 @@
 package ar.com.semillero.semillatronalfa.services.ally;
 
+import ar.com.semillero.semillatronalfa.dtos.allies.AllyDto;
 import ar.com.semillero.semillatronalfa.entities.ally.Ally;
 import ar.com.semillero.semillatronalfa.repositories.ally.AllyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class AllyImplementation implements AllyService {
@@ -23,4 +25,10 @@ public class AllyImplementation implements AllyService {
         ally.getContactData().setAlly(ally);
         allyRepository.save(ally);
     }
+
+    @Override
+    public AllyDto findAllyById(String id) {
+        return new AllyDto(allyRepository.findById(id).orElse(null));
+    }
+
 }

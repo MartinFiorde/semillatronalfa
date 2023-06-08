@@ -1,5 +1,5 @@
 package ar.com.semillero.semillatronalfa.enums;
 
-public class TurnsDay {
-    
+public enum LoginRol {
+    ADMIN, MANAGER, GUEST;
 }
