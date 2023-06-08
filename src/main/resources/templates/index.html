@@ -1,16 +1,51 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- TITLE -->
+    <title>Inicio</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png" />
+      
+    <!-- ESTILOS-->
+    <!-- <link rel="stylesheet" href="/css/index.css"> -->
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+
+<body>
+    <header>
+      <nav>
+        <a href="#">
+          <!-- <img src="/img/logo_banner.png" alt="semillero" class="marca"> -->
+          <img src="../static/img/logo_banner.png" alt="semillero" class="marca">
+        </a>
+        <input type="button" value="SJ" class="user">
+
+        <!-- <nav>
+          <nav th:replace=" components/header :: _header"></nav>
+        </nav> -->
+    </header>
+
+    <main>
+      <section class="articulos">
+        <!-- <a href="/pages/semillas.html" class="semillas"> -->
+        <a href="#" class="semillas">
+          <h2 class="name">SEMILLAS</h2>
+        </a>
+  
+        <a href="#" class="aliados">
+          <h2 class="name">ALIADOS</h2>
+        </a>
+  
+        <a href="#" class="eventos">
+          <h2 class="name">EVENTOS</h2>
+        </a>
+      </section>
+    </main>
+</body>
+
 </html>

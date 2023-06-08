@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* En caso de que haya algun problema con las direcciones de ubicación de las imágenes, también van a estar subidas virtualmente para copiar y pegar link.
+Link: https://imgur.com/a/6tV4pCo */
+
+:root {
+	--blanco1: #FAFAFA;
+	--blanco2: #F5F8F5;
+	--gris: #9D9E9E;
+	--gris-claro: #EEEDED;
+	--gris-oscuro: #676767;
+	--negro: #171717;
+	--verde-claro: #4CAF44;
+	--verde-oscuro: #395727;
+	--verde-fondo: #F1FCEA;
+	--naranja: #FFAF03;
+	--naranja-oscuro: #DE9800;
+  --azul: #1d3daf;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Ubuntu', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+	background-color: var(--blanco2);
+}
+
+img {
+	user-select: none;
+}
+
+a {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+nav {
+	height: 5rem;
+	background-color: var(--verde-fondo);
+}
+
+main {
+	/* border: 1px solid red; */
+	margin: 3rem 4rem 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 2rem;
+}
+
+.volver {
+	margin-right: auto;
+	display: flex;
+	align-items: center;
+}
+
+.volver img {
+	width: .9rem;
+	height: .9rem;
+	fill: var(--verde-oscuro);
+}
+
+.volver span {
+	margin-left: 8px;
+	/* font-size: 20px; */
+	font-weight: 400;
+	line-height: 23px;
+	color: var(--verde-oscuro);
+}
+
+.datos-semilla {
+	background-color: var(--blanco1);
+	width: 85%;
+	padding: 2rem 5rem;
+	border-radius: 1rem;
+	box-shadow: 0px 4px 4px rgba(23, 23, 23, 0.15);
+	/* font-size: 20px; */
+	line-height: 23px;
+
+	display: grid;
+	grid-template-columns: 3fr 2fr;
+	grid-template-rows: repeat(4, 1fr);
+	justify-content: center;
+}
+
+.datos-semilla div {
+	/* border: 1px solid red; */
+	display: flex;
+}
+
+.datos-semilla .campo {
+	font-weight: 500;
+	color: var(--verde-oscuro);
+}
+
+.datos-semilla .valor {
+	padding-left: .5rem;
+	color: var(--gris-oscuro);
+}
+
+.nombre .valor {
+	font-weight: 500;
+}
