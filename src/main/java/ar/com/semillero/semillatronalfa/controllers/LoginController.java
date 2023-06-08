@@ -23,7 +23,7 @@ public class LoginController {
 
     @GetMapping
     //@ResponseBody
-    public String authenticateUser(@RequestBody User user) {
+    public String authenticateUser() {
         return "pages/login.html";
     }
 
