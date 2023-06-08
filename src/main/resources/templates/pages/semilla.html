@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- TITLE -->
+    <title>Semilla</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png" />
+    
+    <!-- STYLES -->
+    <!-- <link href="/css/semilla.css" rel="stylesheet" /> -->
+    <link href="../../static/css/semilla.css" rel="stylesheet" />
+
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css" />
+  </head>
+<body>
+
+  <nav></nav>
+
+  <main>
+    <a href="#" class="volver">
+      <img src="../../static/img/icons/Volver.svg" alt="volver">
+      <span>Volver</span>
+    </a>
+
+    <div class="datos-semilla">
+      <div class="nombre">
+        <span class="campo">Nombre y Apellido:</span>
+        <span class="valor">Agustina Palmarocchi</span>
+      </div>
+
+      <div class="telefono">
+        <span class="campo">Teléfono:</span>
+        <span class="valor">+5492616680789</span>
+      </div>
+
+      <div class="rol">
+        <span class="campo">Rol:</span>
+        <span class="valor">Desarrollador Frontend</span>
+      </div>
+
+      <div class="estado">
+        <span class="campo">Estado:</span>
+        <span class="valor">Activo</span>
+      </div>
+
+      <div class="comision">
+        <span class="campo">Comisión:</span>
+        <span class="valor">E202304</span>
+      </div>
+      
+      <div class="certificado">
+        <span class="campo">Certificado:</span>
+        <span class="valor">Si</span>
+      </div>
+
+      <div class="turno">
+        <span class="campo">Turno:</span>
+        <span class="valor">Tarde (17:00 - 21:00)</span>
+      </div>
+
+    </div>
+
+    <button
+    data-ripple-light="true"
+    data-popover-target="popover-bottom"
+    class="middle none center rounded-lg bg-gradient-to-tr from-pink-600 to-pink-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+  >
+    Bottom
+  </button>
+  <div
+    data-popover="popover-bottom"
+    data-popover-placement="bottom"
+    class="absolute z-10 w-max whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-4 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none"
+  >
+    This is a very beautiful popover, show some love.
+  </div>
+  </main>
+  
+  <!-- SCRIPTS -->
+  
+  <script src="/js/script.js"></script>
+  <!-- <script src="../../static/js/script.js"></script> -->
+
+  <!-- MATERIAL TAILWIND CDN -->
+  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+  <script
+  type="module"
+  src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"
+></script>
+</body>
+</html>
