@@ -15,7 +15,7 @@ Link: https://imgur.com/a/6tV4pCo */
 	--verde-fondo: #F1FCEA;
 	--naranja: #FFAF03;
 	--naranja-oscuro: #DE9800;
-  --azul: #1d3daf;
+  --azul: #1D3DAF;
 }
 
 * {
@@ -34,6 +34,7 @@ img {
 }
 
 a {
+	user-select: none;
 	text-decoration: none;
 	cursor: pointer;
 }
@@ -83,9 +84,10 @@ main {
 	line-height: 23px;
 
 	display: grid;
+	justify-content: center;
 	grid-template-columns: 3fr 2fr;
 	grid-template-rows: repeat(4, 1fr);
-	justify-content: center;
+	gap: 1rem;
 }
 
 .datos-semilla div {
@@ -96,13 +98,66 @@ main {
 .datos-semilla .campo {
 	font-weight: 500;
 	color: var(--verde-oscuro);
+	line-height: 23px;
+	user-select: none;
 }
 
 .datos-semilla .valor {
 	padding-left: .5rem;
 	color: var(--gris-oscuro);
+	line-height: 23px;
 }
 
 .nombre .valor {
 	font-weight: 500;
+}
+
+.observaciones-menu {
+	width: 70%;
+	padding: 0.75rem 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: var(--verde-oscuro);
+	font-weight: 500;
+	box-shadow: 0px 4px 4px rgba(23, 23, 23, 0.15);
+	border: 1px solid var(--gris);
+	border-radius: 1rem;
+}
+
+.observaciones-menu::after {
+	content: url('../img/icons/Triangle-down-darkgrey.svg');
+}
+
+.observaciones-form-container {
+	position: absolute;
+	width: 63%;
+	margin-top: 1rem;
+}
+
+.observaciones-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.observaciones-form textarea {
+	width: 100%;
+	padding: 0.75rem;
+	overflow: auto;
+	outline: none;
+	background: transparent;
+	border: 1px solid var(--gris);
+	border-radius: .6rem;
+	user-select: none;
+}
+
+.observaciones-form button {
+	margin-top: 1rem;
+	margin-left: auto;
+	padding: .4rem 4rem;
+	font-weight: 500;
+	border: 1px solid var(--verde-oscuro);
+	border-radius: 100px;
+	color: var(--verde-oscuro);
+	user-select: none;
 }

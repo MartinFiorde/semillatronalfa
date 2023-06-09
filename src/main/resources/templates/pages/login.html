@@ -12,36 +12,33 @@
     <link rel="icon" type="image/png" href="/img/logo.png" />
 
     <!-- STYLES -->
-    <!-- <link href="/css/login.css" rel="stylesheet" /> -->
-    <link href="../../static/css/login.css" rel="stylesheet" />
+    <link href="/css/login.css" rel="stylesheet" />
+    <!-- <link href="../../static/css/login.css" rel="stylesheet" /> -->
   </head>
 
   <body>
     <main class="main-login">
-      <!-- <img src="/img/recurso.png" alt="logo semillero" class="logo-bg-login"> -->
-      <img src="../../static/img/recurso.png" alt="logo semillero" class="logo-bg-login" />
+      <img src="/img/recurso.png" alt="logo semillero" class="logo-bg-login">
+      <!-- <img src="../../static/img/recurso.png" alt="logo semillero" class="logo-bg-login" /> -->
       
       <div class="container-login">
-        <!-- <a href="#" class="link-logo-title-login"><img src="/img/logo_banner.png" alt="Logo Semillero"/></a> -->
-        <a href="#" class="link-logo-title-login"><img src="../../static/img/logo_banner.png" alt="Logo Semillero"/></a>
+        <a th:href="@{/}" class="link-logo-title-login"><img src="/img/logo_banner.png" alt="Logo Semillero"/></a>
+        <!-- <a th:href="@{/}" class="link-logo-title-login"><img src="../../static/img/logo_banner.png" alt="Logo Semillero"/></a> -->
 
-        <form th:action="@{/login}" method="POST">
-          <!-- USER -->
+        <form id="loginForm" method="POST">
           <div class="user-box">
             <label>Usuario</label>
-            <input class="user-input" type="text" name="username" th:value="${user.username}" />
+            <input id="username" class="user-input" type="text" name="username" />
           </div>
 
-          <!-- PASSWORD -->
           <div class="password-box">
             <label>Contraseña</label>
             <div class="password-input-box">
-              <input id="password-input" class="password-input" type="password" name="password" th:value="${user.password}" />
+              <input id="password" class="password-input" type="password" name="password" />
               <div class="password-control"></div>
             </div>
           </div>
 
-          <!-- REMINDME -->
           <div class="remindme-box">
             <label class="check-switch">
               <input type="checkbox" />
@@ -50,14 +47,13 @@
             <label>Recordarme</label>
           </div>
 
-          <!-- LOGIN -->
           <button class="login-button" type="submit">Iniciar sesión</button>
         </form>
       </div>
     </main>
 
     <!-- SCRIPTS -->
-    <!-- <script src="/js/script.js"></script> -->
-    <script src="../../static/js/script.js"></script>
+    <script src="/js/script.js"></script>
+    <!-- <script src="../../static/js/script.js"></script> -->
   </body>
 </html>
