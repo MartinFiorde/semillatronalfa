@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -20,7 +21,7 @@ public class Attendance {
     @Setter(value= AccessLevel.NONE)
     private String id;
 
-    private Date timestamp;
+    private LocalDateTime timestamp;
     private String fullName;
     private Long dni;
 
@@ -29,7 +30,7 @@ public class Attendance {
     @Getter(value = AccessLevel.NONE)
     private Event event;
 
-    public Attendance(Date timestamp, String fullName, Long dni) {
+    public Attendance(LocalDateTime timestamp, String fullName, Long dni) {
         this.timestamp = timestamp;
         this.fullName = fullName;
         this.dni = dni;
