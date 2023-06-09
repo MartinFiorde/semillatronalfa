@@ -88,6 +88,12 @@
   <!-- MATERIAL TAILWIND CDN -->
   <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
   <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+  
+  <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
+  <script th:inline="javascript">
+    let seed = [[${seed}]];
+    console.log(seed)
+  </script>
 </body>
 
 </html>
