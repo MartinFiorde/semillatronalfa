@@ -18,30 +18,28 @@
 
 <body>
     <header>
+        <!-- <nav th:replace=" components/header :: _header"></nav> -->
       <nav>
-        <a href="#">
+        <a th:href="@{/}">
           <!-- <img src="/img/logo_banner.png" alt="semillero" class="marca"> -->
           <img src="../static/img/logo_banner.png" alt="semillero" class="marca">
         </a>
-        <input type="button" value="SJ" class="user">
-
-        <!-- <nav>
-          <nav th:replace=" components/header :: _header"></nav>
-        </nav> -->
+        <span class="user">SJ</span>
+      </nav>
     </header>
 
     <main>
       <section class="articulos">
         <!-- <a href="/pages/semillas.html" class="semillas"> -->
-        <a href="#" class="semillas">
+        <a th:href="@{/semillas}" class="semillas">
           <h2 class="name">SEMILLAS</h2>
         </a>
   
-        <a href="#" class="aliados">
+        <a th:href="@{/aliados}" class="aliados">
           <h2 class="name">ALIADOS</h2>
         </a>
   
-        <a href="#" class="eventos">
+        <a th:href="@{/eventos}" class="eventos">
           <h2 class="name">EVENTOS</h2>
         </a>
       </section>

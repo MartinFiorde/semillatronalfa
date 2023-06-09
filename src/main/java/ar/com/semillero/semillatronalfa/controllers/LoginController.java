@@ -16,6 +16,8 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    //agregar aca la anterior logica de Juli
+    
     @PostMapping("/")
     public String authenticate(@RequestBody User user) {
         return (userService.matchUser(user.getUsername(), user.getPassword()) == null) ?
@@ -27,6 +29,5 @@ public class LoginController {
     public String authenticateUser() {
         return "pages/login.html";
     }
-
-
 }
+
