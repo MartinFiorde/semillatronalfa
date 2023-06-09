@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "event")
@@ -35,8 +36,8 @@ public class Event {
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private EventDetails details;
 
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    private Attendance attendance;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Attendance> attendance;
 
     public Event(LocalDate date, String title,
                  Boolean offeredBySemillero, String status,
