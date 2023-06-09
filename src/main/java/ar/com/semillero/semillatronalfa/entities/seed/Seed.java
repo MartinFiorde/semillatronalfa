@@ -26,8 +26,8 @@ public class Seed {
     @Column(nullable = false)
     private String id;
 
-    @ManyToOne
-    private Commission commission;
+//    @ManyToOne
+//    private Commission commission;
     
     @OneToOne(mappedBy = "seedId", cascade = CascadeType.ALL)
     private SeedFollowUp followUp;
@@ -43,8 +43,7 @@ public class Seed {
     
     private boolean isActive = true;
 
-    public Seed(Commission commission, SeedFollowUp followUp, SeedPersonalData personalData, SeedContactData contactData, SeedPostulationData postulationData) {
-        this.commission = commission;
+    public Seed(SeedFollowUp followUp, SeedPersonalData personalData, SeedContactData contactData, SeedPostulationData postulationData) {
         this.followUp = followUp;
         this.personalData = personalData;
         this.contactData = contactData;
