@@ -44,6 +44,8 @@ public class SeedFollowUp {
 //    private Date postulationDate;
     private LocalDateTime postulationDate; // Reemplazo de la vieja clase Date: https://www.baeldung.com/migrating-to-java-8-date-time-api
 
+    private String commission;
+
     @OneToOne(mappedBy = "seedFollowUpId", cascade = CascadeType.ALL)
     private SeedStatus status;
 
@@ -56,8 +58,9 @@ public class SeedFollowUp {
     @Column
     private List<String> comments;
 
-    public SeedFollowUp(LocalDateTime postulationDate, SeedStatus status, Boolean recommendation, Boolean certification, List<String> comments) {
+    public SeedFollowUp(LocalDateTime postulationDate, SeedStatus status, String commission, Boolean recommendation, Boolean certification, List<String> comments) {
         this.postulationDate = postulationDate;
+        this.commission = commission;
         this.status = status;
         this.recommendation = recommendation;
         this.certification = certification;

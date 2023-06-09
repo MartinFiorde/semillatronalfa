@@ -2,10 +2,10 @@ package ar.com.semillero.semillatronalfa.services.seed;
 
 import ar.com.semillero.semillatronalfa.entities.seed.Seed;
 import ar.com.semillero.semillatronalfa.repositories.seed.SeedRepository;
-import ar.com.semillero.semillatronalfa.services.commission.CommissionImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class SeedImplementation implements SeedService {
 
     private SeedRepository seedRepository;
-    private CommissionImplementation commissionImplementation;
 
     @Autowired
-    public SeedImplementation(SeedRepository seedRepository, CommissionImplementation commissionImplementation) {
+    public SeedImplementation(SeedRepository seedRepository) {
         this.seedRepository = seedRepository;
-        this.commissionImplementation = commissionImplementation;
     }
 
     @Override
@@ -29,7 +27,6 @@ public class SeedImplementation implements SeedService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void addSeed(Seed seed) {
-        seed.setCommission(commissionImplementation.findCommissionByName(seed.getCommission().getName()));
         seed.getPersonalData().setSeedId(seed);
         seed.getContactData().setSeedId(seed);
         seed.getFollowUp().setSeedId(seed);
@@ -48,6 +45,15 @@ public class SeedImplementation implements SeedService {
 
     @Override
     public Seed findSeedById(String id) {
+        System.out.println("id");
+        System.out.println(id);
+        System.out.println("seed by id opt.get()");
+        Optional<Seed> res = seedRepository.findById(id);
+        if (res.isPresent()) {
+            System.out.println("true");
+        }  else {
+            System.out.println("false");
+        }
         return seedRepository.findById(id).orElse(null);
     }
 

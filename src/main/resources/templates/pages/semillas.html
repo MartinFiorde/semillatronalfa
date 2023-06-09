@@ -29,5 +29,11 @@
   <!-- <script src="../../static/js/script.js"></script> -->
   <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
 
+  <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
+  <script th:inline="javascript">
+    let seeds = [[${seeds}]];
+    console.log(seeds)
+  </script>
+  
 </body>
 </html>
