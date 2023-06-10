@@ -17,37 +17,36 @@ d.querySelector('.check').addEventListener("click", ()=> {
 })
 
 /* LOGIN */
-
 d.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+  event.preventDefault();
 
-        var username = d.getElementById("username").value;
-        var password = d.getElementById("password").value;
+  var username = d.getElementById("username").value;
+  var password = d.getElementById("password").value;
 
-        var user = {
-            username: username,
-            password: password
-        };
+  var user = {
+      username: username,
+      password: password
+  };
 
-        fetch("/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        })
-        .then(function(response) {
-            if (response.ok) {
-                alert("NICE");
-                //window.location.href = "/index.html";
-            } else {
-                alert("Credenciales inválidas");
-            }
-        })
-        .catch(function(error) {
-            console.log(error);
-        });
-    });
+  fetch("/login", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+  })
+  .then(function(response) {
+      if (response.ok) {
+          alert("NICE");
+          //window.location.href = "/index.html";
+      } else {
+          alert("Credenciales inválidas");
+      }
+  })
+  .catch(function(error) {
+      console.log(error);
+  });
+});
     
     
     
