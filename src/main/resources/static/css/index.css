@@ -39,181 +39,77 @@ img {
 }
 
 a {
-  text-decoration: none;
-  user-select: none;
-  cursor: pointer;
+	user-select: none;
+	text-decoration: none;
+	cursor: pointer;
+	color: inherit;
 }
 
-/*.nav{
-    position: absolute;
-width: 1440px;
-height: 88px;
-left: 0px;
-top: 0px;
-
-
-
-background: #F1FCEA;
+nav {
+  border: 1px solid red;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.img_navbar{
-    position: absolute;
-width: 192px;
-height: 48px;
-left: calc(50% - 192px/2 - 520px);
-top: 20px;
-}
-.nombre_navbar{
-    position: absolute;
-left: 0%;
-right: 0%;
-top: 0%;
-bottom: 0%;
 
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 20px;
-line-height: 107.03%;
-/* or 21px 
-
-display: flex;
-align-items: center;
-text-align: center;
-letter-spacing: 0.005em;
-
-color: #395727;
-}
-*/
-
-.marca {
-  position: absolute;
-  width: 350px;
-  left: calc(50% - 296px / 2);
-  top: 48px;
+nav img {
+  width: 15rem;
+  padding: 2rem 0;
 }
 
 .user {
   position: absolute;
-  right: 176px;
-  top: 115px;
-  bottom: 0%;
-  width: 48px;
-  height: 48px;
-  background: #1d3daf;
-  border-radius: 25px;
+  right: 4rem;
 }
 
-.articulos {
-  /* display: flex;
-  flex-direction: column;
+.user button {
+  
+}
+
+.user div {
+
+}
+
+main {
+  margin-top: 5rem;
+  display: flex;
   justify-content: center;
-  align-items: center;*/
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  flex-direction: row;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+main a {
   width: 400px;
   height: 488px;
-  margin-top: 328px;
-  margin-bottom: 208px;
-  margin-left: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
 }
 
 .semillas {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-
-  width: 400px;
-  height: 488px;
-  margin-left: 104px;
-
   background: linear-gradient(0deg, rgba(23, 23, 23, 0.2), rgba(23, 23, 23, 0.2)), var(--naranja);
-  border-radius: 16px;
-  margin: 10px;
-  transition: 0s;
 }
-
-.semillas:hover {
-  background: url(../img/recurso.png) center center/cover no-repeat;
-  background-color: var(--gris);
-}
-
 .aliados {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  gap: 10px;
-
-  width: 400px;
-  height: 488px;
-  left: calc(50% - 400px / 2);
-  top: 328px;
-
-  background: linear-gradient(
-      0deg,
-      rgba(23, 23, 23, 0.2),
-      rgba(23, 23, 23, 0.2)
-    ), var(--verde-oscuro);
-  border-radius: 16px;
-  margin: 10px;
-  transition: 0s;
+  background: linear-gradient(0deg, rgba(23, 23, 23, 0.2), rgba(23, 23, 23, 0.2)), var(--verde-oscuro);
 }
-
-.aliados:hover {
-  background: url(../img/recurso.png) center center/cover no-repeat;
-  background-color: var(--gris);
-}
-
 .eventos {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  gap: 10px;
-
-  width: 400px;
-  height: 488px;
-  left: 936px;
-  top: 328px;
-
   background: linear-gradient(0deg, rgba(23, 23, 23, 0.2), rgba(23, 23, 23, 0.2)), var(--verde-claro);
-  border-radius: 16px;
-  margin: 10px;
-  transition: 0s;
 }
 
-.eventos:hover {
+main a:hover {
   background: url(../img/recurso.png) center center/cover no-repeat;
   background-color: var(--gris);
 }
 
-.name {
-  width: 169px;
-  height: 39px;
-
-  font-family: "Ubuntu";
-  font-style: normal;
+main span {
   font-weight: 500;
   font-size: 36px;
   line-height: 107.03%;
-  /* identical to box height, or 39px */
-
   letter-spacing: 0.005em;
-
-  /* Blanco */
-
   color: var(--blanco1);
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
 }

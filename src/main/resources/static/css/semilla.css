@@ -198,15 +198,13 @@ main {
 	justify-content: center;
 	align-items: center;
 	gap: .8rem;
-	font-family: 'Roboto', sans-serif;
+	flex-wrap: wrap;
 }
 
-.button-datos-personales,
-.button-datos-de-contacto,
-.button-modificar-estado,
-.button-asignar-proyecto,
-.button-certificado,
-.button-recomendada {
+.tabs-semilla label {
+	order: 1;
+	display: block;
+	margin-right: 0.2rem;
 	width: 190px;
 	height: 40px;
 	display: flex;
@@ -219,102 +217,88 @@ main {
 	color: var(--naranja-oscuro);
 	font-family: 'Roboto', sans-serif;
 	line-height: 17.13px;
+  user-select: none;
+	cursor: pointer;
+}
+
+.tabs-semilla .tab {
+  order: 99;
+  /* flex-grow: 1; */
+	display: none;
+	
+	/* propiedades grid o flex */
+	width: 85%;
+  margin-top: 2rem;
+	padding: 2.5rem 5rem;
+	background-color: var(--blanco1);
+	border-radius: 1rem;
+	box-shadow: 0px 4px 4px rgba(23, 23, 23, 0.15);
+	font-family: 'Roboto', sans-serif;
+	line-height: 23px;
+}
+
+.tabs-semilla .tab-datos-personales {
+	grid-template-columns: repeat(3, 1fr);
+	justify-content: center;
+	gap: 1.8rem 1rem;
+}
+
+.tabs-semilla .tab-datos-de-contacto {
+	grid-template-columns: repeat(2, 1fr);
+	justify-content: center;
+	gap: 1.8rem 1rem;
+}
+
+.tab div {
+	padding: 1.3rem .8rem 1rem;
+	position: relative;
+	display: flex;
+	align-items: center;
+	border: 1px solid var(--gris);
+	border-radius: 8px;
+	font-family: 'Roboto', sans-serif;
+}
+
+.tab .tab-campo {
+	position: absolute;
+	top: -12px;
+	left: 18px;
+	padding: 0 5px;
+	font-size: 14px;
+	color: var(--gris-oscuro);
+	background-color: var(--blanco1);
+	font-family: 'Roboto', sans-serif;
 	user-select: none;
 }
 
-.button-datos-personales.active,
-.button-datos-de-contacto.active,
-.button-modificar-estado.active,
-.button-asignar-proyecto.active,
-.button-certificado.active,
-.button-recomendada.active {
+.tab .tab-valor {
+	font-family: 'Roboto', sans-serif;
+	color: var(--negro);
+}
+
+/* aca van los 4 restantes */
+
+
+.tabs-semilla input[type="radio"] {
+	display: none;
+}
+.tabs-semilla input[type="radio"]:checked + label {
 	background: var(--naranja-oscuro);
 	border: 1px solid var(--naranja-oscuro);
 	color: var(--blanco1);
-	font-family: 'Roboto', sans-serif;
-}
-
-/* tab datos personales */
-.tab-datos-personales {
-	display: none;
-	justify-content: center;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 1.8rem 1rem;
-	background-color: var(--blanco1);
-	width: 85%;
-	padding: 2.5rem 5rem;
-	border-radius: 1rem;
-	box-shadow: 0px 4px 4px rgba(23, 23, 23, 0.15);
-	font-family: 'Roboto', sans-serif;
-	line-height: 23px;
-}
-
-.tab-datos-personales.active {
+}	
+.tabs-semilla input[type="radio"]:checked + label + .tab {
 	display: grid;
 }
 
-.tab-datos-personales div {
-	padding: 1.3rem .8rem 1rem;
-	position: relative;
-	display: flex;
-	align-items: center;
-	border: 1px solid var(--gris);
-	border-radius: 8px;
-}
-
-.tab-datos-personales .tab-campo {
-	position: absolute;
-	top: -12px;
-	left: 18px;
-	padding: 0 5px;
-	font-size: 14px;
-	color: var(--gris-oscuro);
-	background-color: var(--blanco1);
-	user-select: none;
-}
-
-.tab-datos-personales .tab-valor {
-	color: var(--negro);
-}
-
-/* tab datos de contacto */
-.tab-datos-de-contacto {
-	display: none;
-	justify-content: center;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 1.5rem;
-	background-color: var(--blanco1);
-	width: 85%;
-	padding: 2.5rem 5rem;
-	border-radius: 1rem;
-	box-shadow: 0px 4px 4px rgba(23, 23, 23, 0.15);
-	line-height: 23px;
-}
-
-.tab-datos-de-contacto.active {
-	display: grid;
-}
-
-.tab-datos-de-contacto div {
-	padding: 1.3rem .8rem 1rem;
-	position: relative;
-	display: flex;
-	align-items: center;
-	border: 1px solid var(--gris);
-	border-radius: 8px;
-}
-
-.tab-datos-de-contacto .tab-campo {
-	position: absolute;
-	top: -12px;
-	left: 18px;
-	padding: 0 5px;
-	font-size: 14px;
-	color: var(--gris-oscuro);
-	background-color: var(--blanco1);
-	user-select: none;
-}
-
-.tab-datos-de-contacto .tab-valor {
-	color: var(--negro);
-}
+/* @media (max-width: 45em) {
+  .tabs-semilla .tab,
+  .tabs-semilla label {
+    order: initial;
+  }
+  .tabs-semilla label {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 0.2rem;
+  }
+} */

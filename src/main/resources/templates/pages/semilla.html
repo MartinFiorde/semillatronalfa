@@ -15,14 +15,12 @@
   <!-- <link href="/css/semilla.css" rel="stylesheet" /> -->
   <link href="../../static/css/semilla.css" rel="stylesheet" />
 
-  <!-- MATERIAL TAILWIND -->
-  <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css" />
-
   <!-- GOOGLE ICONS -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
-<body>
 
+<body>
+  <!-- <nav th:replace=" components/header :: _header"></nav> -->
   <nav></nav>
 
   <main>
@@ -49,7 +47,7 @@
 
       <div class="estado">
         <span class="campo">Estado:</span>
-        <span class="valor">Activa</span>
+        <span class="valor">Asignado a proyecto</span>
       </div>
 
       <div class="comision">
@@ -82,105 +80,126 @@
 
     <!-- tabs semilla -->
     <div class="tabs-semilla">
-      <button class="button-datos-personales">
+
+      <!-- tab datos personales -->
+      <input type="radio" name="tabs" id="tabdatospersonales" checked="checked">
+      <label for="tabdatospersonales">
         <span class="material-symbols-outlined">person</span>
         <span>Datos personales</span>
-      </button>
+      </label>
+      <div class="tab tab-datos-personales">
+        <div>
+          <span class="tab-campo">Fecha de nacimiento</span>
+          <span class="tab-valor">05/12/1997</span>
+        </div>
+        
+        <div>
+          <span class="tab-campo">DNI / Pasaporte</span>
+          <span class="tab-valor">40.408.469</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Género</span>
+          <span class="tab-valor">Mujer</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Ciudad</span>
+          <span class="tab-valor">Godoy Cruz</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Provincia</span>
+          <span class="tab-valor">Mendoza</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">País</span>
+          <span class="tab-valor">Argentina</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Marca temporal</span>
+          <span class="tab-valor">21/03/2023 | 14:53:36</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">¿Cómo conoció al semillero?</span>
+          <span class="tab-valor">LinkedIn</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Otros estudios</span>
+          <span class="tab-valor">Administración de empresas</span>
+        </div>
+      </div>
       
-      <button class="button-datos-de-contacto">
+      <!-- tab datos de contacto -->
+      <input type="radio" name="tabs" id="tabdatosdecontacto">
+      <label for="tabdatosdecontacto">
         <span class="material-symbols-outlined">mail</span>
         <span>Datos de contacto</span>
-      </button>
+      </label>
+      <div class="tab tab-datos-de-contacto">
+        <div>
+          <span class="tab-campo">Teléfono</span>
+          <span class="tab-valor">2616587001</span>
+        </div>
+        
+        <div>
+          <span class="tab-campo">Correo electrónico</span>
+          <span class="tab-valor">correoelectronico@gmail.com</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Discord</span>
+          <span class="tab-valor">Agustina Palmarocchi#9875</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">LinkedIn</span>
+          <span class="tab-valor">https://www.linkedin.com/in/asdasd</span>
+        </div>
+      </div>
       
-      <button class="button-modificar-estado">
+      <!-- tab modificar estado -->
+      <input type="radio" name="tabs" id="tabmodificarestado">
+      <label for="tabmodificarestado">
         <span class="material-symbols-outlined">manage_accounts</span>
         <span>Modificar estado</span>
-      </button>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
       
-      <button class="button-asignar-proyecto">
+      <!-- tab asignar proyecto -->
+      <input type="radio" name="tabs" id="tabasignarproyecto">
+      <label for="tabasignarproyecto">
         <span class="material-symbols-outlined">assignment_add</span>
         <span>Asignar proyecto</span>
-      </button>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
       
-      <button class="button-certificado">
+      <!-- tab certificado -->
+      <input type="radio" name="tabs" id="tabcertificado">
+      <label for="tabcertificado">
         <span class="material-symbols-outlined">workspace_premium</span>
         <span>Certificado</span>
-      </button>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
       
-      <button class="button-recomendada">
+      <!-- tab recomendada -->
+      <input type="radio" name="tabs" id="tabrecomendada">
+      <label for="tabrecomendada">
         <span class="material-symbols-outlined">star</span>
         <span>Recomendada</span>
-      </button>
-    </div>
-
-    <!-- tab datos personales -->
-    <div class="tab-datos-personales">
-      <div>
-        <span class="tab-campo">Fecha de nacimiento</span>
-        <span class="tab-valor">05/12/1997</span>
-      </div>
-      
-      <div>
-        <span class="tab-campo">DNI / Pasaporte</span>
-        <span class="tab-valor">40.408.469</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">Género</span>
-        <span class="tab-valor">Mujer</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">Ciudad</span>
-        <span class="tab-valor">Godoy Cruz</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">Provincia</span>
-        <span class="tab-valor">Mendoza</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">País</span>
-        <span class="tab-valor">Argentina</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">Marca temporal</span>
-        <span class="tab-valor">21/03/2023 | 14:53:36</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">¿Cómo conoció al semillero?</span>
-        <span class="tab-valor">LinkedIn</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">Otros estudios</span>
-        <span class="tab-valor">Administración de empresas</span>
-      </div>
-    </div>
-
-    <!-- tab datos de contacto -->
-    <div class="tab-datos-de-contacto">
-      <div>
-        <span class="tab-campo">Teléfono</span>
-        <span class="tab-valor">2616587001</span>
-      </div>
-      
-      <div>
-        <span class="tab-campo">Correo electrónico</span>
-        <span class="tab-valor">correoelectronico@gmail.com</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">Discord</span>
-        <span class="tab-valor">Agustina Palmarocchi#9875</span>
-      </div>
-
-      <div>
-        <span class="tab-campo">LinkedIn</span>
-        <span class="tab-valor">https://www.linkedin.com/in/asdasd</span>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
       </div>
     </div>
     
@@ -190,12 +209,8 @@
   <div style="height: 20vh;"></div>
   
   <!-- SCRIPTS -->
-  
   <!-- <script src="/js/semilla.js"></script> -->
   <script src="../../static/js/semilla.js"></script>
-
-  <!-- MATERIAL TAILWIND CDN -->
-  <!-- <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script> -->
 </body>
 
 </html>
