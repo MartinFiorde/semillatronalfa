@@ -18,11 +18,20 @@ Link: https://imgur.com/a/6tV4pCo */
   --azul: #1d3daf;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 * {
 	margin: 0;
 	padding: 0;
 	font-family: 'Ubuntu', sans-serif;
   box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 img {
