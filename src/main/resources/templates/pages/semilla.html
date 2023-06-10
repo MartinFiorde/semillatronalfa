@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- TITLE -->
-    <title>Semilla</title>
+  <!-- TITLE -->
+  <title>SEMILLA | SIGIS</title>
 
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="/img/logo.png" />
-    
-    <!-- STYLES -->
-    <!-- <link href="/css/semilla.css" rel="stylesheet" /> -->
-    <link href="../../static/css/semilla.css" rel="stylesheet" />
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="/img/logo.png" />
+  
+  <!-- STYLES -->
+  <link href="/css/semilla.css" rel="stylesheet" />
+  <!-- <link href="../../static/css/semilla.css" rel="stylesheet" /> -->
 
-    <!-- MATERIAL TAILWIND -->
-    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css" />
-  </head>
+  <!-- GOOGLE ICONS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
 <body>
-
+  <!-- <nav th:replace=" fragments/nav :: _nav"></nav> -->
   <nav></nav>
 
   <main>
     <a th:href="@{/semillas}" class="volver">
-      <img src="../../static/img/icons/Volver.svg" alt="volver">
+      <span class="material-symbols-outlined">arrow_back</span>
       <span>Volver</span>
     </a>
 
@@ -46,7 +47,7 @@
 
       <div class="estado">
         <span class="campo">Estado:</span>
-        <span class="valor">Activo</span>
+        <span class="valor">Asignado a proyecto</span>
       </div>
 
       <div class="comision">
@@ -56,7 +57,7 @@
       
       <div class="certificado">
         <span class="campo">Certificado:</span>
-        <span class="valor">Si</span>
+        <span class="valor">No enviado</span>
       </div>
 
       <div class="turno">
@@ -66,34 +67,157 @@
     </div>
 
     <!-- observaciones -->
-    <button data-ripple-light="true" data-popover-target="menu" class="observaciones-menu">Observaciones generales
+    <button class="observaciones-menu">Observaciones generales
+      <span class="material-symbols-outlined observaciones-arrow">arrow_drop_down</span>
     </button>
-
-    <div role="menu" data-popover="menu" data-popover-placement="bottom" class="observaciones-form-container">
-      <form role="menuitem" class="observaciones-form">
-        <!-- <input role="menuitem" type="text"> -->
-        <textarea role="menuitem" name="observacion" cols="1" rows="4"></textarea>
-        <button role="menuitem" type="submit">Enviar</button>
+    
+    <div class="observaciones-form-container">
+      <form class="observaciones-form">
+        <textarea name="observacion" cols="1" rows="4"></textarea>
+        <button class="observaciones-submit" type="submit">Enviar</button>
       </form>
     </div>
+
+    <!-- tabs semilla -->
+    <div class="tabs-semilla">
+
+      <!-- tab datos personales -->
+      <input type="radio" name="tabs" id="tabdatospersonales" checked="checked">
+      <label for="tabdatospersonales">
+        <span class="material-symbols-outlined">person</span>
+        <span>Datos personales</span>
+      </label>
+      <div class="tab tab-datos-personales">
+        <div>
+          <span class="tab-campo">Fecha de nacimiento</span>
+          <span class="tab-valor">05/12/1997</span>
+        </div>
+        
+        <div>
+          <span class="tab-campo">DNI / Pasaporte</span>
+          <span class="tab-valor">40.408.469</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Género</span>
+          <span class="tab-valor">Mujer</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Ciudad</span>
+          <span class="tab-valor">Godoy Cruz</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Provincia</span>
+          <span class="tab-valor">Mendoza</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">País</span>
+          <span class="tab-valor">Argentina</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Marca temporal</span>
+          <span class="tab-valor">21/03/2023 | 14:53:36</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">¿Cómo conoció al semillero?</span>
+          <span class="tab-valor">LinkedIn</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Otros estudios</span>
+          <span class="tab-valor">Administración de empresas</span>
+        </div>
+      </div>
+      
+      <!-- tab datos de contacto -->
+      <input type="radio" name="tabs" id="tabdatosdecontacto">
+      <label for="tabdatosdecontacto">
+        <span class="material-symbols-outlined">mail</span>
+        <span>Datos de contacto</span>
+      </label>
+      <div class="tab tab-datos-de-contacto">
+        <div>
+          <span class="tab-campo">Teléfono</span>
+          <span class="tab-valor">2616587001</span>
+        </div>
+        
+        <div>
+          <span class="tab-campo">Correo electrónico</span>
+          <span class="tab-valor">correoelectronico@gmail.com</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">Discord</span>
+          <span class="tab-valor">Agustina Palmarocchi#9875</span>
+        </div>
+  
+        <div>
+          <span class="tab-campo">LinkedIn</span>
+          <span class="tab-valor">https://www.linkedin.com/in/asdasd</span>
+        </div>
+      </div>
+      
+      <!-- tab modificar estado -->
+      <input type="radio" name="tabs" id="tabmodificarestado">
+      <label for="tabmodificarestado">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        <span>Modificar estado</span>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
+      
+      <!-- tab asignar proyecto -->
+      <input type="radio" name="tabs" id="tabasignarproyecto">
+      <label for="tabasignarproyecto">
+        <span class="material-symbols-outlined">assignment_add</span>
+        <span>Asignar proyecto</span>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
+      
+      <!-- tab certificado -->
+      <input type="radio" name="tabs" id="tabcertificado">
+      <label for="tabcertificado">
+        <span class="material-symbols-outlined">workspace_premium</span>
+        <span>Certificado</span>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
+      
+      <!-- tab recomendada -->
+      <input type="radio" name="tabs" id="tabrecomendada">
+      <label for="tabrecomendada">
+        <span class="material-symbols-outlined">star</span>
+        <span>Recomendada</span>
+      </label>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      </div>
+    </div>
     
-  </div>
+
   </main>
+
+  <div style="height: 20vh;"></div>
   
   <!-- SCRIPTS -->
-  
-  <script src="/js/script.js"></script>
-  <!-- <script src="../../static/js/script.js"></script> -->
+  <script src="/js/semilla.js"></script>
+  <!-- <script src="../../static/js/semilla.js"></script> -->
 
-  <!-- MATERIAL TAILWIND CDN -->
-  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
-  <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
-  
   <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
-  <script th:inline="javascript">
+  
+  <!-- <script th:inline="javascript">
     let seed = [[${seed}]];
     console.log(seed)
-  </script>
+  </script> -->
 </body>
 
 </html>
