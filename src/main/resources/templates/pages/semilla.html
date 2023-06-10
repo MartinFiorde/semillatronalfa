@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- TITLE -->
-    <title>SEMILLA | SIGIS</title>
+  <!-- TITLE -->
+  <title>SEMILLA | SIGIS</title>
 
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="/img/logo.png" />
-    
-    <!-- STYLES -->
-    <!-- <link href="/css/semilla.css" rel="stylesheet" /> -->
-    <link href="../../static/css/semilla.css" rel="stylesheet" />
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="/img/logo.png" />
+  
+  <!-- STYLES -->
+  <!-- <link href="/css/semilla.css" rel="stylesheet" /> -->
+  <link href="../../static/css/semilla.css" rel="stylesheet" />
 
-    <!-- MATERIAL TAILWIND -->
-    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css" />
-  </head>
+  <!-- MATERIAL TAILWIND -->
+  <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css" />
+
+  <!-- GOOGLE ICONS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
 <body>
 
   <nav></nav>
 
   <main>
     <a th:href="@{/semillas}" class="volver">
-      <img src="../../static/img/icons/Volver.svg" alt="volver">
+      <span class="material-symbols-outlined">arrow_back</span>
       <span>Volver</span>
     </a>
 
@@ -46,7 +49,7 @@
 
       <div class="estado">
         <span class="campo">Estado:</span>
-        <span class="valor">Activo</span>
+        <span class="valor">Activa</span>
       </div>
 
       <div class="comision">
@@ -56,7 +59,7 @@
       
       <div class="certificado">
         <span class="campo">Certificado:</span>
-        <span class="valor">Si</span>
+        <span class="valor">No enviado</span>
       </div>
 
       <div class="turno">
@@ -67,45 +70,45 @@
 
     <!-- observaciones -->
     <button class="observaciones-menu">Observaciones generales
-      <img class="observaciones-arrow" src="../../static/img/icons/Triangle-down-darkgrey.svg" alt="expand">
+      <span class="material-symbols-outlined observaciones-arrow">arrow_drop_down</span>
     </button>
     
     <div class="observaciones-form-container">
       <form class="observaciones-form">
         <textarea name="observacion" cols="1" rows="4"></textarea>
-        <button type="submit">Enviar</button>
+        <button class="observaciones-submit" type="submit">Enviar</button>
       </form>
     </div>
 
     <!-- tabs semilla -->
     <div class="tabs-semilla">
       <button class="button-datos-personales">
-        <div class="img-datos-personales"></div>
+        <span class="material-symbols-outlined">person</span>
         <span>Datos personales</span>
       </button>
       
       <button class="button-datos-de-contacto">
-        <div class="img-datos-de-contacto"></div>
+        <span class="material-symbols-outlined">mail</span>
         <span>Datos de contacto</span>
       </button>
       
       <button class="button-modificar-estado">
-        <div class="img-modificar-estado"></div>
+        <span class="material-symbols-outlined">manage_accounts</span>
         <span>Modificar estado</span>
       </button>
       
       <button class="button-asignar-proyecto">
-        <div class="img-asignar-proyecto"></div>
+        <span class="material-symbols-outlined">assignment_add</span>
         <span>Asignar proyecto</span>
       </button>
       
       <button class="button-certificado">
-        <div class="img-certificado"></div>
+        <span class="material-symbols-outlined">workspace_premium</span>
         <span>Certificado</span>
       </button>
       
       <button class="button-recomendada">
-        <div class="img-recomendada"></div>
+        <span class="material-symbols-outlined">star</span>
         <span>Recomendada</span>
       </button>
     </div>
@@ -181,70 +184,7 @@
       </div>
     </div>
     
-    <!-- <div class="w-2/3">
-      <div class="relative right-0">
-        <ul
-          class="relative flex list-none flex-wrap rounded-xl bg-blue-gray-50/60 p-1"
-          data-tabs="tabs"
-          role="list"
-        >
-          <li class="z-30 flex-auto text-center">
-            <a
-              class="text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
-              data-tab-target=""
-              active=""
-              role="tab"
-              aria-selected="true"
-              aria-controls="app"
-            >
-              <span class="ml-1">App</span>
-            </a>
-          </li>
-          <li class="z-30 flex-auto text-center">
-            <a
-              class="text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
-              data-tab-target=""
-              role="tab"
-              aria-selected="false"
-              aria-controls="message"
-            >
-              <span class="ml-1">Messages</span>
-            </a>
-          </li>
-          <li class="z-30 flex-auto text-center">
-            <a
-              class="text-slate-700 z-30 mb-0 flex w-full cursor-pointer items-center justify-center rounded-lg border-0 bg-inherit px-0 py-1 transition-all ease-in-out"
-              data-tab-target=""
-              role="tab"
-              aria-selected="false"
-              aria-controls="settings"
-            >
-              <span class="ml-1">Settings</span>
-            </a>
-          </li>
-        </ul>
-        <div data-tab-content="" class="p-5">
-          <div class="block opacity-100" id="app" role="tabpanel">
-            <p class="block font-sans text-base font-light leading-relaxed text-inherit text-blue-gray-500 antialiased">
-              Because it's about motivating the doers. Because I'm here to follow
-              my dreams and inspire other people to follow their dreams, too.
-            </p>
-          </div>
-          <div class="hidden opacity-0" id="message" role="tabpanel">
-            <p class="block font-sans text-base font-light leading-relaxed text-inherit text-blue-gray-500 antialiased">
-              The reading of all good books is like a conversation with the finest
-              minds of past centuries.
-            </p>
-          </div>
-          <div class="hidden opacity-0" id="settings" role="tabpanel">
-            <p class="block font-sans text-base font-light leading-relaxed text-inherit text-blue-gray-500 antialiased">
-              Comparing yourself to others is the thief of joy.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    
+
   </main>
 
   <div style="height: 20vh;"></div>
@@ -255,9 +195,7 @@
   <script src="../../static/js/semilla.js"></script>
 
   <!-- MATERIAL TAILWIND CDN -->
-  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
-  <!-- <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script> -->
-  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
+  <!-- <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script> -->
 </body>
 
 </html>

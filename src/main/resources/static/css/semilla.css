@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 /* En caso de que haya algun problema con las direcciones de ubicación de las imágenes, también van a estar subidas virtualmente para copiar y pegar link.
 Link: https://imgur.com/a/6tV4pCo */
@@ -73,19 +74,17 @@ main {
 	margin-right: auto;
 	display: flex;
 	align-items: center;
+	color: var(--verde-oscuro);
 }
 
-.volver img {
-	width: .9rem;
-	height: .9rem;
-	fill: var(--verde-oscuro);
-}
-
-.volver span {
+.volver span:nth-child(2) {
 	margin-left: 8px;
 	font-weight: 400;
 	line-height: 23px;
-	color: var(--verde-oscuro);
+}
+
+.volver:hover {
+	color: var(--gris);
 }
 
 .datos-semilla {
@@ -118,6 +117,7 @@ main {
 	padding-left: .5rem;
 	color: var(--gris-oscuro);
 	line-height: 23px;
+	font-family: 'Roboto', sans-serif;
 }
 
 .nombre .valor {
@@ -125,7 +125,6 @@ main {
 }
 
 /* observaciones */
-
 .observaciones-menu {
 	width: 70%;
 	padding: 0.75rem 1.5rem;
@@ -138,6 +137,11 @@ main {
 	border: 1px solid var(--gris);
 	border-radius: 1rem;
 }
+
+/* .observaciones-menu:hover {
+	border: 1px solid var(--verde-claro);
+	color: var(--verde-claro);
+} */
 
 .observaciones-arrow.active {
 	transform: rotate(180deg);
@@ -169,6 +173,7 @@ main {
 	border: 1px solid var(--gris);
 	border-radius: .6rem;
 	user-select: none;
+	color: var(--gris-oscuro);
 }
 
 .observaciones-form button {
@@ -181,12 +186,19 @@ main {
 	user-select: none;
 }
 
+.observaciones-form button:hover {
+	border: 1px solid var(--verde-claro);
+	color: var(--verde-claro);
+}
+
+/* tabs */
 .tabs-semilla {
 	margin-top: 2rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: .8rem;
+	font-family: 'Roboto', sans-serif;
 }
 
 .button-datos-personales,
@@ -205,7 +217,9 @@ main {
 	border-radius: 100px;
 	background: transparent;
 	color: var(--naranja-oscuro);
+	font-family: 'Roboto', sans-serif;
 	line-height: 17.13px;
+	user-select: none;
 }
 
 .button-datos-personales.active,
@@ -217,40 +231,7 @@ main {
 	background: var(--naranja-oscuro);
 	border: 1px solid var(--naranja-oscuro);
 	color: var(--blanco1);
-}
-
-.img-datos-personales {
-	/* content: url('/img/icons/Person.svg'); */
-	content: url('../img/icons/Person.svg');
-}
-.img-datos-de-contacto {
-	/* content: url('/img/icons/Email.svg'); */
-	content: url('../img/icons/Email.svg');
-}
-.img-modificar-estado {
-	/* content: url('/img/icons/State.svg'); */
-	content: url('../img/icons/State.svg');
-}
-.img-asignar-proyecto {
-	/* content: url('/img/icons/Assign.svg'); */
-	content: url('../img/icons/Assign.svg');
-}
-.img-certificado {
-	/* content: url('/img/icons/Certificate.svg'); */
-	content: url('../img/icons/Certificate.svg');
-}
-.img-recomendada {
-	/* content: url('/img/icons/Star.svg'); */
-	content: url('../img/icons/Star.svg');
-}
-
-.img-datos-personales.active,
-.img-datos-de-contacto.active,
-.img-modificar-estado.active,
-.img-asignar-proyecto.active,
-.img-certificado.active,
-.img-recomendada.active {
-	filter: brightness(0) invert(1);
+	font-family: 'Roboto', sans-serif;
 }
 
 /* tab datos personales */
@@ -258,12 +239,13 @@ main {
 	display: none;
 	justify-content: center;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 1.5rem;
+	gap: 1.8rem 1rem;
 	background-color: var(--blanco1);
 	width: 85%;
 	padding: 2.5rem 5rem;
 	border-radius: 1rem;
 	box-shadow: 0px 4px 4px rgba(23, 23, 23, 0.15);
+	font-family: 'Roboto', sans-serif;
 	line-height: 23px;
 }
 
@@ -272,7 +254,7 @@ main {
 }
 
 .tab-datos-personales div {
-	padding: 1rem;
+	padding: 1.3rem .8rem 1rem;
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -314,7 +296,7 @@ main {
 }
 
 .tab-datos-de-contacto div {
-	padding: 1rem;
+	padding: 1.3rem .8rem 1rem;
 	position: relative;
 	display: flex;
 	align-items: center;
