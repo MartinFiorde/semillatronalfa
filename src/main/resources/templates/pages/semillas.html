@@ -1,39 +1,78 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- TITLE -->
-    <title>Semillas</title>
+  <!-- TITLE -->
+  <title>Semillas</title>
 
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="/img/logo.png" />
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="/img/logo.png" />
 
-    <!-- STYLES -->
-    <!-- <link href="/css/semillas.css" rel="stylesheet" /> -->
-    <link href="../../static/css/semillas.css" rel="stylesheet" />
-  </head>
+  <!-- STYLES -->
+  <link href="/css/semillas.css" rel="stylesheet" />
+  <!-- <link href="../../static/css/semillas.css" rel="stylesheet" /> -->
+  
+  <!-- GOOGLE ICONS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- DATA TABLES -->
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+</head>
 
 <body>
-  <header>
-    <nav th:replace=" components/header :: _header"></nav>
+  <!-- <nav th:replace=" fragments/nav :: _nav"></nav> -->
+  <nav></nav>
 
-</header>
-  
+  <main>
+
+    <h1>Semillas</h1>
+
+    <button class="importar-semillas">Importar semillas</button>
+
+    <table id="tabla-semillas" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Rol</th>
+          <th>Comisión</th>
+          <th>Turno</th>
+          <th>Estado</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Luca Sassaroli</td>
+          <td>Frontend</td>
+          <td>E202304</td>
+          <td>Tarde</td>
+          <td>Asignado a proyecto</td>
+          <td class="arrow"><a href="#" class="material-symbols-outlined">arrow_right</a></td>
+        </tr>
+
+      </tbody>
+    </table>
+    
+  </main>
+
+  <div style="height: 20vh;"></div>
   
   <!-- SCRIPTS -->
-  <script src="/js/script.js"></script>
-  <!-- <script src="../../static/js/script.js"></script> -->
-  <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+  <script src="/js/semillas.js"></script>
+  <!-- <script src="../../static/js/semillas.js"></script> -->
 
   <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
-  <script th:inline="javascript">
+
+  <!-- <script th:inline="javascript">
     let seeds = [[${seeds}]];
     console.log(seeds)
-  </script>
-  
+  </script> -->
 </body>
+
 </html>
