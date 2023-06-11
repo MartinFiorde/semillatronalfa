@@ -47,8 +47,8 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td>Luca Sassaroli</td>
+        <tr th:each="seed : ${seeds}">
+          <td th:text="${seed.personalData.firstName} + ${seed.personalData.lastName}"></td>
           <td>Frontend</td>
           <td>E202304</td>
           <td>Tarde</td>
@@ -69,10 +69,10 @@
 
   <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
 
-  <!-- <script th:inline="javascript">
+  <script th:inline="javascript">
     let seeds = [[${seeds}]];
     console.log(seeds)
-  </script> -->
+  </script>
 </body>
 
 </html>
