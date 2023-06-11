@@ -15,23 +15,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
   
   <!-- ESTILOS-->
-  <!-- <link rel="stylesheet" href="/css/index.css"> -->
-  <link rel="stylesheet" href="../static/css/index.css" />
+  <link rel="stylesheet" href="/css/index.css">
+  <!-- <link rel="stylesheet" href="../static/css/index.css" /> -->
 </head>
 
 <body>
   <nav>
     <a th:href="@{/}">
-      <!-- <img src="/img/logo_banner.png" alt="semillero" class="marca"> -->
-      <img src="../static/img/logo_banner.png" alt="semillero logo" />
+      <img src="/img/logo_banner.png" alt="semillero" class="marca">
+      <!-- <img src="../static/img/logo_banner.png" alt="semillero logo" /> -->
     </a>
 
     <div class="user">
-      <button data-ripple-light="true" data-popover-target="popover-animation">SJ</button>
+      <button data-ripple-light="true" data-popover-target="popover-animation" class="avatar">SJ</button>
 
       <div data-popover="popover-animation" data-popover-mount="opacity-100 scale-100" data-popover-unmount="opacity-0 scale-0 pointer-events-none" data-popover-transition="transition-all duration-200 origin-bottom" class="absolute w-max whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-4 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
         <a href="#" class="name">Sofia Jason</a>
-        <a href="#" class="logout">Cerrar sesión</a>
+        <button class="logout">Cerrar sesión</button>
       </div>
     </div>
   </nav>

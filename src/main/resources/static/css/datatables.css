@@ -40,7 +40,6 @@ table.dataTable thead > tr > td.sorting_asc_disabled,
 table.dataTable thead > tr > td.sorting_desc_disabled {
   cursor: pointer;
   position: relative;
-  padding-right: 26px;
 }
 table.dataTable thead > tr > th.sorting:before,
 table.dataTable thead > tr > th.sorting:after,
@@ -66,8 +65,7 @@ table.dataTable thead > tr > td.sorting_desc_disabled:after {
   display: block;
   opacity: 0.125;
   right: 10px;
-  line-height: 9px;
-  font-size: 0.8em;
+  font-size: 0.5rem;
 }
 table.dataTable thead > tr > th.sorting:before,
 table.dataTable thead > tr > th.sorting_asc:before,
@@ -97,6 +95,7 @@ table.dataTable thead > tr > td.sorting_desc_disabled:after {
   content: "▼";
   content: "▼"/"";
 }
+
 table.dataTable thead > tr > th.sorting_asc:before,
 table.dataTable thead > tr > th.sorting_desc:after,
 table.dataTable thead > tr > td.sorting_asc:before,
@@ -467,12 +466,19 @@ table.dataTable td {
 .dataTables_wrapper {
   position: relative;
   clear: both;
+  margin-top: 2rem;
 }
 .dataTables_wrapper .dataTables_length {
   float: left;
+  outline: none;
+  font-size: .8rem;
+  color: #171717;
+  accent-color: #4CAF44;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
 }
 .dataTables_wrapper .dataTables_length select {
-  border: 1px solid #aaa;
+  border: 1px solid #dfdfdf;
   border-radius: 3px;
   padding: 5px;
   background-color: transparent;
@@ -481,6 +487,10 @@ table.dataTable td {
 .dataTables_wrapper .dataTables_filter {
   float: right;
   text-align: right;
+  outline: none;
+  font-size: .8rem;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
 }
 .dataTables_wrapper .dataTables_filter input {
   border: 1px solid #aaa;
@@ -488,6 +498,9 @@ table.dataTable td {
   padding: 5px;
   background-color: transparent;
   margin-left: 3px;
+  font-size: .8rem;
+  color: #676767;
+  outline: none;
 }
 .dataTables_wrapper .dataTables_info {
   clear: both;
@@ -606,6 +619,7 @@ table.dataTable td {
 }
 .dataTables_wrapper .dataTables_scroll {
   clear: both;
+  width: 100%;
 }
 .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
   -webkit-overflow-scrolling: touch;
@@ -682,6 +696,7 @@ table.dataTable td {
 }
 .dataTables_wrapper.no-footer div.dataTables_scrollHead table.dataTable,
 .dataTables_wrapper.no-footer div.dataTables_scrollBody > table {
+  width: 100%;
   border-bottom: none;
 }
 .dataTables_wrapper:after {

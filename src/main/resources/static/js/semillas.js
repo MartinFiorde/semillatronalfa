@@ -3,8 +3,8 @@ $(document).ready(function () {
       language: {
           processing: "Tratamiento en curso...",
           search: "Buscar&nbsp;:",
-          lengthMenu: "Agrupar de a&nbsp; _MENU_ &nbsp;semillas",
-          info: "Mostrando del item _START_ al _END_ de un total de _TOTAL_ items",
+          lengthMenu: "Mostrar&nbsp; _MENU_ &nbsp;semillas",
+          info: "Semillas desde _START_ hasta _END_ de _TOTAL_",
           infoEmpty: "No existen datos.",
           infoFiltered: "(filtrado de _MAX_ elementos en total)",
           infoPostFix: "",
@@ -23,7 +23,6 @@ $(document).ready(function () {
           }
       },
       scrollY: 400,
-      lengthMenu: [ [5, 10, -1], [5, 10, "All"] ],
-      //lengthMenu: [ [20, 40, 60, 100, -1], [20, 40, 60, 100, "All"] ],
+      lengthMenu: [ [20, 40, 60, 100, -1], [20, 40, 60, 100, "todas"] ],
   });
 });

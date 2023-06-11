@@ -17,6 +17,7 @@ d.querySelector('.check').addEventListener("click", ()=> {
 })
 
 /* LOGIN */
+/*
 d.getElementById("loginForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
@@ -47,7 +48,4 @@ d.getElementById("loginForm").addEventListener("submit", function(event) {
       console.log(error);
   });
 });
-    
-    
-    
-    
+*/
