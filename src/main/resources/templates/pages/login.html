@@ -1,59 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- TITLE -->
-    <title>Login</title>
+  <!-- TITLE -->
+  <title>Login</title>
 
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="/img/logo.png" />
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="/img/logo.png" />
 
-    <!-- STYLES -->
-    <link href="/css/login.css" rel="stylesheet" />
-    <!-- <link href="../../static/css/login.css" rel="stylesheet" /> -->
-  </head>
+  <!-- STYLES -->
+  <link href="/css/login.css" rel="stylesheet" />
+  <!-- <link href="../../static/css/login.css" rel="stylesheet" /> -->
+</head>
 
-  <body>
-    <main class="main-login">
-      <img src="/img/recurso.png" alt="logo semillero" class="logo-bg-login">
-      <!-- <img src="../../static/img/recurso.png" alt="logo semillero" class="logo-bg-login" /> -->
-      
-      <div class="container-login">
-        <a th:href="@{/}" class="link-logo-title-login"><img src="/img/logo_banner.png" alt="Logo Semillero"/></a>
-        <!-- <a th:href="@{/}" class="link-logo-title-login"><img src="../../static/img/logo_banner.png" alt="Logo Semillero"/></a> -->
+<body>
+  <main class="main-login">
+    <img src="/img/recurso.png" alt="logo semillero" class="logo-bg-login">
+    <!-- <img src="../../static/img/recurso.png" alt="logo semillero" class="logo-bg-login" /> -->
+    
+    <div class="container-login">
+      <a th:href="@{/}" class="link-logo-title-login"><img src="/img/logo_banner.png" alt="Logo Semillero"/></a>
+      <!-- <a th:href="@{/}" class="link-logo-title-login"><img src="../../static/img/logo_banner.png" alt="Logo Semillero"/></a> -->
 
-        <form id="loginForm" method="POST">
-          <div class="user-box">
-            <label>Usuario</label>
-            <input id="username" class="user-input" type="text" name="username" />
+      <form id="loginForm" method="POST">
+        <div class="user-box">
+          <label>Usuario</label>
+          <input id="username" class="user-input" type="text" name="username" />
+        </div>
+
+        <div class="password-box">
+          <label>Contraseña</label>
+          <div class="password-input-box">
+            <input id="password" class="password-input" type="password" name="password" />
+            <div class="password-control"></div>
           </div>
+        </div>
 
-          <div class="password-box">
-            <label>Contraseña</label>
-            <div class="password-input-box">
-              <input id="password" class="password-input" type="password" name="password" />
-              <div class="password-control"></div>
-            </div>
-          </div>
+        <div class="remindme-box">
+          <label class="check-switch">
+            <input type="checkbox" />
+            <span class="check"></span>
+          </label>
+          <label>Recordarme</label>
+        </div>
 
-          <div class="remindme-box">
-            <label class="check-switch">
-              <input type="checkbox" />
-              <span class="check"></span>
-            </label>
-            <label>Recordarme</label>
-          </div>
+        <button class="login-button" type="submit">Iniciar sesión</button>
+      </form>
+    </div>
+  </main>
 
-          <button class="login-button" type="submit">Iniciar sesión</button>
-        </form>
-      </div>
-    </main>
+  <!-- SCRIPTS -->
+  <script src="/js/login.js"></script>
+  <!-- <script src="../../static/js/login.js"></script> -->
+</body>
 
-    <!-- SCRIPTS -->
-    <script src="/js/script.js"></script>
-    <!-- <script src="../../static/js/script.js"></script> -->
-  </body>
 </html>
