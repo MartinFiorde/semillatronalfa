@@ -52,11 +52,6 @@ a {
 	color: inherit;
 }
 
-nav {
-	height: 5rem;
-	background-color: var(--verde-fondo);
-}
-
 main {
 	/* border: 1px solid red; */
 	width: 85%;
@@ -68,8 +63,14 @@ main {
 	align-items: center;
 }
 
-h1 {
+.separador{
+	border: 2px solid var(--verde-claro);
+	width: 100%;
+}
+
+.titulo-semillas {
 	font-weight: 500;
+	font-size: 40px;
 	color: var(--naranja-oscuro);
 	margin-right: auto;
 }
