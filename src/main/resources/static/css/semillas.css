@@ -93,6 +93,7 @@ h1 {
 
 table {
 	width: 100%;
+	position: relative;
 }
 
 thead {
@@ -144,17 +145,59 @@ td.arrow {
 }
 
 td.arrow a {
-	border: 1px solid rgb(230, 230, 230);
+	/* border: 1px solid rgb(230, 230, 230); */
 	margin: auto;
 	padding: 0;
 	display: grid;
 	text-align: center;
-	font-size: 2rem;
+	font-size: 2.1rem;
 }
 
-/* libreria DATE TABLE */
+#pagination {
+	/* border: 1px solid red; */
+	position: absolute;
+	margin-top: 1rem;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#pagination input {
+	border: none;
+	background: transparent;
+	outline: none;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: .8rem;
+	font-family: 'Roboto', sans-serif;
+	font-size: .9rem;
+	font-weight: 500;
+	color: var(--verde-oscuro);
+}
+
+#pagination input:disabled {
+	color: var(--gris-claro);
+	cursor: not-allowed;
+}
 
 
+#pagination #prev {
+	margin-right: auto;
+}
 
+#pagination #next {
+	margin-left: auto;
+}
 
+#pagination #prev:enabled:hover,
+#pagination #next:enabled:hover {
+	color: var(--verde-claro);
+}
 
+#pagination .active {
+	color :var(--verde-claro);
+	text-decoration: underline;
+}
