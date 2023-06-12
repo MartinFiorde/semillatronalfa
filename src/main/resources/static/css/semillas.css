@@ -52,10 +52,10 @@ a {
 	color: inherit;
 }
 
-nav {
+/* nav {
 	height: 5rem;
 	background-color: var(--verde-fondo);
-}
+} */
 
 main {
 	/* border: 1px solid red; */
@@ -68,10 +68,16 @@ main {
 	align-items: center;
 }
 
-h1 {
+.titulo-semillas {
 	font-weight: 500;
+	font-size: 40px;
 	color: var(--naranja-oscuro);
 	margin-right: auto;
+}
+
+.separador{
+	border: 2px solid var(--verde-claro);
+	width: 100%;
 }
 
 .importar-semillas {

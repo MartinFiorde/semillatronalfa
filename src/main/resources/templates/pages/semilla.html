@@ -10,9 +10,13 @@
 
   <!-- FAVICON -->
   <link rel="icon" type="image/png" href="/img/logo.png" />
-  
+
+  <!-- MATERIAL TAILWIND -->
+  <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+
   <!-- STYLES -->
   <link href="/css/semilla.css" rel="stylesheet" />
+  <link href="/css/nav.css" rel="stylesheet" />
   <!-- <link href="../../static/css/semilla.css" rel="stylesheet" /> -->
 
   <!-- GOOGLE ICONS -->
@@ -20,11 +24,10 @@
 </head>
 
 <body>
-  <!-- <nav th:replace=" fragments/nav :: _nav"></nav> -->
-  <nav></nav>
+  <nav th:replace=" fragments/nav :: _nav"></nav>
 
-  <main>
-    <a th:href="@{/semillas}" class="volver">
+  <main th:object="${seed}">
+    <a th:href="@{/seed/list}" class="volver">
       <span class="material-symbols-outlined">arrow_back</span>
       <span>Volver</span>
     </a>
@@ -32,37 +35,42 @@
     <div class="datos-semilla">
       <div class="nombre">
         <span class="campo">Nombre y Apellido:</span>
-        <span class="valor">Agustina Palmarocchi</span>
+        <span class="valor" th:text="${seed.personalData.firstName} + ' ' + ${seed.personalData.lastName}"></span>
       </div>
 
       <div class="telefono">
         <span class="campo">Teléfono:</span>
-        <span class="valor">+5492616680789</span>
+        <span class="valor" th:text="'+' + ${seed.contactData.telephone}"></span>
       </div>
 
       <div class="rol">
         <span class="campo">Rol:</span>
-        <span class="valor">Desarrollador Frontend</span>
+        <span class="valor" th:text="${seed.postulationData.rol}"></span>
       </div>
 
       <div class="estado">
         <span class="campo">Estado:</span>
-        <span class="valor">Asignado a proyecto</span>
+        <span class="valor" th:text="${seed.followUp.status.primary} + ' - ' + ${seed.followUp.status.secondary}"></span>
       </div>
 
       <div class="comision">
         <span class="campo">Comisión:</span>
-        <span class="valor">E202304</span>
+        <span class="valor" th:text="${seed.followUp.commission}"></span>
       </div>
       
       <div class="certificado">
         <span class="campo">Certificado:</span>
-        <span class="valor">No enviado</span>
+        <th:block th:if="${seed.followUp.certification}">
+          <span class="valor">Enviado</span>
+        </th:block>
+        <th:block th:unless="${seed.followUp.certification}">
+          <span class="valor">No enviado</span>
+        </th:block>
       </div>
 
       <div class="turno">
         <span class="campo">Turno:</span>
-        <span class="valor">Tarde (17:00 - 21:00)</span>
+        <span class="valor" th:text="${seed.postulationData.turn}"></span>
       </div>
     </div>
 
@@ -73,7 +81,7 @@
     
     <div class="observaciones-form-container">
       <form class="observaciones-form">
-        <textarea name="observacion" cols="1" rows="4"></textarea>
+        <textarea name="observacion" cols="1" rows="4" th:text="${seed.followUp.comments}"></textarea>
         <button class="observaciones-submit" type="submit">Enviar</button>
       </form>
     </div>
@@ -90,47 +98,47 @@
       <div class="tab tab-datos-personales">
         <div>
           <span class="tab-campo">Fecha de nacimiento</span>
-          <span class="tab-valor">05/12/1997</span>
+          <span class="tab-valor" th:text="${seed.personalData.birthDate}"></span>
         </div>
         
         <div>
           <span class="tab-campo">DNI / Pasaporte</span>
-          <span class="tab-valor">40.408.469</span>
+          <span class="tab-valor" th:text="${seed.personalData.dni}"></span>
         </div>
   
         <div>
           <span class="tab-campo">Género</span>
-          <span class="tab-valor">Mujer</span>
+          <span class="tab-valor" th:text="${seed.personalData.gender}"></span>
         </div>
   
         <div>
           <span class="tab-campo">Ciudad</span>
-          <span class="tab-valor">Godoy Cruz</span>
+          <span class="tab-valor" th:text="${seed.personalData.city}"></span>
         </div>
   
         <div>
           <span class="tab-campo">Provincia</span>
-          <span class="tab-valor">Mendoza</span>
+          <span class="tab-valor" th:text="${seed.personalData.city}"></span>
         </div>
   
         <div>
           <span class="tab-campo">País</span>
-          <span class="tab-valor">Argentina</span>
+          <span class="tab-valor" th:text="${seed.personalData.country}"></span>
         </div>
   
         <div>
           <span class="tab-campo">Marca temporal</span>
-          <span class="tab-valor">21/03/2023 | 14:53:36</span>
+          <span class="tab-valor" th:text="${seed.followUp.postulationDate}"></span>
         </div>
   
         <div>
           <span class="tab-campo">¿Cómo conoció al semillero?</span>
-          <span class="tab-valor">LinkedIn</span>
+          <span class="tab-valor" th:text="${seed.postulationData.meetSemilleroBy}"></span>
         </div>
   
         <div>
           <span class="tab-campo">Otros estudios</span>
-          <span class="tab-valor">Administración de empresas</span>
+          <span class="tab-valor" th:text="${seed.postulationData.studies}"></span>
         </div>
       </div>
       
@@ -143,22 +151,22 @@
       <div class="tab tab-datos-de-contacto">
         <div>
           <span class="tab-campo">Teléfono</span>
-          <span class="tab-valor">2616587001</span>
+          <span class="tab-valor" th:text="'+' + ${seed.contactData.telephone}"></span>
         </div>
         
         <div>
           <span class="tab-campo">Correo electrónico</span>
-          <span class="tab-valor">correoelectronico@gmail.com</span>
+          <span class="tab-valor" th:text="${seed.contactData.email}"></span>
         </div>
   
         <div>
           <span class="tab-campo">Discord</span>
-          <span class="tab-valor">Agustina Palmarocchi#9875</span>
+          <span class="tab-valor" th:text="${seed.contactData.discordUser}"></span>
         </div>
   
         <div>
           <span class="tab-campo">LinkedIn</span>
-          <span class="tab-valor">https://www.linkedin.com/in/asdasd</span>
+          <span class="tab-valor" th:text="${seed.contactData.linkedin}"></span>
         </div>
       </div>
       
@@ -168,8 +176,22 @@
         <span class="material-symbols-outlined">manage_accounts</span>
         <span>Modificar estado</span>
       </label>
-      <div class="tab">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      <div class="tab tab-modificar-estado">
+        <div>
+          <button class="modificar-estado-menu">
+            Modificar estado
+            <span class="material-symbols-outlined arrow">
+              arrow_right
+            </span>
+          </button>
+        </div>
+        
+        <div class="modificar-estado-options">
+          <button class="modificar-estado-option">Activo</button>
+          <button class="modificar-estado-option">Inactivo</button>
+          <button class="modificar-estado-option">Finalizó proyecto</button>
+          <button class="modificar-estado-option">Redefinir</button>
+        </div>
       </div>
       
       <!-- tab asignar proyecto -->
@@ -178,8 +200,23 @@
         <span class="material-symbols-outlined">assignment_add</span>
         <span>Asignar proyecto</span>
       </label>
-      <div class="tab">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      <div class="tab tab-asignar-proyecto">
+        <p>POR MAQUETAR...</p>
+        <!-- <div>
+          <button class="asignar-proyecto-menu">
+            Asignar proyecto
+            <span class="material-symbols-outlined arrow">
+              arrow_right
+            </span>
+          </button>
+        </div>
+        
+        <div class="asignar-proyecto-options">
+          <button>Activo</button>
+          <button>Inactivo</button>
+          <button>Finalizó proyecto</button>
+          <button>Redefinir</button>
+        </div> -->
       </div>
       
       <!-- tab certificado -->
@@ -188,8 +225,8 @@
         <span class="material-symbols-outlined">workspace_premium</span>
         <span>Certificado</span>
       </label>
-      <div class="tab">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      <div class="tab tab-certificado">
+        <p>POR MAQUETAR...</p>
       </div>
       
       <!-- tab recomendada -->
@@ -198,8 +235,8 @@
         <span class="material-symbols-outlined">star</span>
         <span>Recomendada</span>
       </label>
-      <div class="tab">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      <div class="tab tab-recomendada">
+        <p>POR MAQUETAR...</p>
       </div>
     </div>
     
@@ -211,6 +248,8 @@
   <!-- SCRIPTS -->
   <script src="/js/semilla.js"></script>
   <!-- <script src="../../static/js/semilla.js"></script> -->
+  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+  <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
 
   <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
   

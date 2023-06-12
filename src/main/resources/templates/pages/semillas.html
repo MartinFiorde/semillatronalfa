@@ -7,12 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- TITLE -->
-  <title>Semillas</title>
+  <title>SEMILLAS | SIGIS</title>
 
   <!-- FAVICON -->
   <link rel="icon" type="image/png" href="/img/logo.png" />
 
+  <!-- MATERIAL TAILWIND -->
+  <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+
   <!-- STYLES -->
+  <link href="/css/nav.css" rel="stylesheet" />
   <link href="/css/semillas.css" rel="stylesheet" />
   <!-- <link href="../../static/css/semillas.css" rel="stylesheet" /> -->
   
@@ -21,12 +25,11 @@
 </head>
 
 <body>
-  <!-- <nav th:replace=" fragments/nav :: _nav"></nav> -->
-  <nav></nav>
+  <nav th:replace="fragments/nav :: _nav"></nav>
 
   <main>
-
-    <h1>Semillas</h1>
+    <h1 class="titulo-semillas">Semillas</h1>
+    <hr class="separador">
 
     <button class="importar-semillas">Importar semillas</button>
 
@@ -44,12 +47,12 @@
 
       <tbody id="tabla-semillas">
         <tr th:each="seed : ${seeds}">
-          <td th:text="${seed.personalData.firstName} + ${seed.personalData.lastName}"></td>
-          <td>Frontend</td>
-          <td>E202304</td>
-          <td>Tarde</td>
-          <td>Asignado a proyecto</td>
-          <td class="arrow"><a href="#" class="material-symbols-outlined">arrow_right</a></td>
+          <td th:text="${seed.personalData.firstName} + ' ' + ${seed.personalData.lastName}"></td>
+          <td th:text="${seed.postulationData.rol}"></td>
+          <td th:text="${seed.followUp.commission}"></td>
+          <td th:text="${seed.postulationData.turn}"></td>
+          <td th:text="${seed.followUp.status.primary} + ' - ' + ${seed.followUp.status.secondary}"></td>
+          <td class="arrow"><a th:href="@{item/{id}(id=${seed.id})}" class="material-symbols-outlined">arrow_right</a></td>
         </tr>
       </tbody>
     </table>
@@ -61,6 +64,9 @@
   <!-- SCRIPTS -->
   <script src="/js/semillas.js"></script>
   <!-- <script src="../../static/js/semillas.js"></script> -->
+  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+  <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+
 
   <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
 
