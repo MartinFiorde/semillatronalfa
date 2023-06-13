@@ -1,51 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <!-- TITLE -->
     <title>Inicio</title>
 
     <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="/img/logo.png" />
-      
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
+
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+
     <!-- ESTILOS-->
-    <!-- <link rel="stylesheet" href="/css/index.css"> -->
-    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <!-- <link rel="stylesheet" href="../static/css/index.css" /> -->
 </head>
 
 <body>
-    <header>
-      <nav>
-        <a href="#">
-          <!-- <img src="/img/logo_banner.png" alt="semillero" class="marca"> -->
-          <img src="../static/img/logo_banner.png" alt="semillero" class="marca">
-        </a>
-        <input type="button" value="SJ" class="user">
+<nav>
+    <a th:href="@{/}">
+        <img src="/img/logo_banner.png" alt="semillero" class="marca">
+        <!-- <img src="../static/img/logo_banner.png" alt="semillero logo" /> -->
+    </a>
 
-        <!-- <nav>
-          <nav th:replace=" components/header :: _header"></nav>
-        </nav> -->
-    </header>
+    <div class="user">
+        <button data-ripple-light="true" data-popover-target="popover-animation" class="avatar">SJ</button>
 
-    <main>
-      <section class="articulos">
-        <!-- <a href="/pages/semillas.html" class="semillas"> -->
-        <a href="#" class="semillas">
-          <h2 class="name">SEMILLAS</h2>
-        </a>
-  
-        <a href="#" class="aliados">
-          <h2 class="name">ALIADOS</h2>
-        </a>
-  
-        <a href="#" class="eventos">
-          <h2 class="name">EVENTOS</h2>
-        </a>
-      </section>
-    </main>
+        <div data-popover="popover-animation" data-popover-mount="opacity-100 scale-100"
+             data-popover-unmount="opacity-0 scale-0 pointer-events-none"
+             data-popover-transition="transition-all duration-200 origin-bottom"
+             class="absolute w-max whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-4 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
+            <a href="#" class="name">Sofia Jason</a>
+            <button class="logout">Cerrar sesión</button>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <a th:href="@{/seed/list}" class="semillas">
+        <span>SEMILLAS</span>
+    </a>
+
+    <a th:href="@{/aliados}" class="aliados">
+        <span>ALIADOS</span>
+    </a>
+
+    <a th:href="@{/eventos}" class="eventos">
+        <span>EVENTOS</span>
+    </a>
+</main>
+
+<div style="height: 20vh"></div>
+
+<!-- MATERIAL TAILWIND CDN -->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
 </body>
 
 </html>
