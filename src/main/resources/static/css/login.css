@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* En caso de que haya algun problema con las direcciones de ubicación de las imágenes, también van a estar subidas virtualmente para copiar y pegar link.
+Link: https://imgur.com/a/6tV4pCo */
+
+:root {
+	--blanco1: #FAFAFA;
+	--blanco2: #F5F8F5;
+	--gris: #9D9E9E;
+	--gris-claro: #EEEDED;
+	--gris-oscuro: #676767;
+	--negro: #171717;
+	--verde-claro: #4CAF44;
+	--verde-oscuro: #395727;
+	--verde-fondo: #F1FCEA;
+	--naranja: #FFAF03;
+	--naranja-oscuro: #DE9800;
+  --azul: #1d3daf;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Ubuntu', sans-serif;
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--verde-oscuro);
+  border-radius: 5px;
+}
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+img {
+	user-select: none;
+}
+
+a {
+	cursor: pointer;
+}
+
+/* LOGIN */
+
+.main-login {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	background: linear-gradient(0deg, var(--blanco1) 0%, var(--verde-oscuro) 100%);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+	
+.logo-bg-login {
+	position: fixed;
+	width: 20rem;
+	bottom: 0;
+	right: 0;
+}
+
+.container-login {
+	width: 32%;
+	height: 70%;
+	padding: 3.5rem 5.5rem;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	
+	background: var(--blanco2);
+	opacity: 0.9;
+	box-shadow: 0px 4px 4px rgba(23, 23, 23, 0.25);
+	border-radius: 1rem;
+}
+
+.link-logo-title-login {
+	/* border: 1px solid red; */
+	padding-top: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.link-logo-title-login img {
+	width: 100%;
+}
+
+form {
+	/* border: 1px solid red; */
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 1.1rem;
+}
+
+label {
+	font-weight: 300;
+	cursor: text;
+}
+
+.user-input,
+.password-input {
+	width: 100%;
+	padding: 0 1rem;
+	height: 2.5rem;
+	background: transparent;
+	outline: none;
+	border: none;
+	border: 1px solid var(--gris);
+	border-radius: .5rem;
+}
+
+.password-input {
+	padding-right: 3rem;
+}
+
+.user-box,
+.password-box {
+	display: flex;
+	flex-direction: column;
+	gap: .8rem;
+}
+
+.password-input-box {
+	position: relative;
+	display: flex;
+}
+
+.password-control {
+	background: url("/img/icons/View.svg");
+	/* background: url(../img/icons/View.svg); */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 1.4rem;
+	height: 1.4rem;
+	position: absolute;
+	right: 14px;
+	top: 8px;
+	cursor: pointer;
+}
+
+.password-control.view {
+	background-image: url("/img/icons/Noview.svg");
+	/* background: url(../img/icons/Noview.svg); */
+}
+
+.login-button {
+	height: 2.5rem;
+	margin-top: 3rem;
+	border: none;
+	outline: none;
+	background: var(--verde-oscuro);
+	color: var(--blanco1);
+	border-radius: 6.25rem;
+	font-size: 1.1rem;
+	cursor: pointer;
+}
+
+.login-button:hover {
+	opacity: 0.8;
+}
+
+.remindme-box{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: 10px;
+	font-size: .85rem;
+}
+
+.remindme-box label{
+	height: auto;
+}
+
+.check-switch{
+	position: relative;
+	display: flex;
+	margin: 0px 10px 0px 0px;
+}
+
+.check-switch input{
+	display: none;
+}
+
+.check{
+	width: 52px;
+	height: 32px;
+	display: block;
+	overflow: hidden;
+	transition: all .2s ease-in-out;
+	border-radius: 35px;
+	background: var(--blanco2);
+	border: 1px solid var(--gris);
+	cursor: pointer;
+}
+
+.check::before{
+	content: url('/img/icons/Cruz.svg');
+	/* content: url('../img/icons/cruz.svg'); */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 24px;
+	width: 24px;
+	position: absolute;
+	left: 6px;
+	bottom: 4px;
+	background: var(--naranja);
+	opacity: 0.4;
+	border-radius: 100px;
+	transition: all .2s ease-in-out;
+}
+
+.check-switch input:checked + .check::before{
+	content: url('/img/icons/Checked.svg');
+	/* content: url('../img/icons/checked.svg'); */
+	left: 22px;
+	opacity: 1;
+	transition: all .2s ease-in-out;
+}
+
