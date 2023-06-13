@@ -30,6 +30,11 @@ html {
   box-sizing: border-box;
 }
 
+*::selection {
+	background: var(--verde-claro);
+	color: var(--blanco1);
+}
+
 *::-webkit-scrollbar {
   width: 3px;
   height: 3px;

@@ -1,4 +1,5 @@
 nav {
+  position: static;
   height: 88px;
   background-color: var(--verde-fondo);
   display: flex;
@@ -13,6 +14,7 @@ nav {
   width: 192px;
   height: 40px;
 }
+
 .left_container{
   display: flex;
   flex-direction: row;
@@ -25,22 +27,33 @@ nav {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 24px
+  gap: 24px;
 }
 
 .links_container a {
-  height: 24px;
   color: var(--verde-oscuro);
+  background-image: linear-gradient(
+    transparent 0%,
+    transparent 90%,
+    var(--verde-oscuro) 90%,
+    var(--verde-oscuro) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position-x: right;
+  transition: background-size 300ms;
 }
 
 .links_container a:hover{
-  font-weight: bold;
+  background-size: 100% 100%;
+  background-position-x: left;
 }
 
 .user {
   position: absolute;
   right: 72px;
   margin-right: 5rem;
+  user-select: none;
 }
 
 .user .avatar {
