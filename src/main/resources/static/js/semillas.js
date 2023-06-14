@@ -1,19 +1,6 @@
+/* TABLE PAGINATION */
 const d = document;
 
-/* NAVBAR */
-let prevScrollpos = window.pageYOffset;
-
-window.onscroll = function() {
-  var currentScrollPos = window.pageYOffset;
-    if (prevScrollpos > currentScrollPos) {
-      d.querySelector("nav").style.top = "0";
-    } else {
-      d.querySelector("nav").style.top = "-5.5rem";
-    }
-  prevScrollpos = currentScrollPos;
-}
-
-/* TABLE PAGINATION */
 if(d.getElementById("tabla-semillas")) {
 	let $table = d.getElementById("tabla-semillas"),
 		$n = 40,
@@ -51,7 +38,6 @@ if(d.getElementById("tabla-semillas")) {
 		return $pagination;
 	}
 }
-
 //-----------------------IMPORTACIÓN-----------------------------------------------------------------
 class SeedStatus{
 	constructor(primary, secondary, projectId, projectName, digitalEmployment, companyName) {
@@ -63,7 +49,6 @@ class SeedStatus{
 		this.companyName = companyName;
 	}
 }
-
 class SeedPostulationData{
 	constructor(rol, turn, meetSemilleroBy, studies, hobbies, comment) {
 		this.rol = rol;
@@ -74,7 +59,6 @@ class SeedPostulationData{
 		this.comment = comment;
 	}
 }
-
 class SeedContactData{
 	constructor(email, telephone, linkedin, discordUser) {
 		this.email = email;
@@ -134,8 +118,8 @@ const handleChange = async () => {
 	let realContent = content.splice(14,content.length);
 	let semillasToImport = [];
 	console.log(realContent);
-
 	for (let i = 0; i < realContent.length; i++) {
+
 		let statusDivided = dividirTexto(realContent[i][18])
 		let fechaNacimiento = new Date(realContent[i][6]);
 		fechaNacimiento.setUTCHours(fechaNacimiento.getUTCHours() + 3)
@@ -190,19 +174,9 @@ const handleChange = async () => {
 				console.error("Error en la solicitud:", error);
 			});
 	}else{
-		d.querySelector('.error-container').classList.add('active')
-		setTimeout(()=>{
-			d.querySelector('.error-container').classList.remove('active')
-		},2000);
-		
-		//alert("No hay datos que importar");
-
+		alert("No hay datos que importar");
 	}
-	d.querySelector('.exito-container').classList.add('active')
-	setTimeout(()=>{
-		d.querySelector('.exito-container').classList.remove('active')
-		window.location.reload()
-	},2000);
+	setTimeout(()=>{window.location.reload()},1000);
 };
 
 excelInput.addEventListener("change", handleChange);

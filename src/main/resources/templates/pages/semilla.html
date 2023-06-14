@@ -15,9 +15,8 @@
   <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
 
   <!-- STYLES -->
-  <link href="/css/nav.css" rel="stylesheet" />
-  <!-- <link href="../../static/css/nav.css" rel="stylesheet" /> -->
   <link href="/css/semilla.css" rel="stylesheet" />
+  <link href="/css/nav.css" rel="stylesheet" />
   <!-- <link href="../../static/css/semilla.css" rel="stylesheet" /> -->
 
   <!-- GOOGLE ICONS -->
@@ -25,6 +24,7 @@
 </head>
 
 <body>
+
   <nav th:replace=" fragments/nav :: _nav"></nav>
 
   <main th:object="${seed}">
@@ -82,7 +82,7 @@
     
     <div class="observaciones-form-container">
       <form class="observaciones-form">
-        <textarea name="observacion" cols="1" rows="4"></textarea>
+        <textarea name="observacion" cols="1" rows="4" th:text="${seed.followUp.comments}"></textarea>
         <button class="observaciones-submit" type="submit">Enviar</button>
       </form>
     </div>
@@ -177,22 +177,8 @@
         <span class="material-symbols-outlined">manage_accounts</span>
         <span>Modificar estado</span>
       </label>
-      <div class="tab tab-modificar-estado">
-        <div>
-          <button class="modificar-estado-menu">
-            Modificar estado
-            <span class="material-symbols-outlined arrow">
-              arrow_right
-            </span>
-          </button>
-        </div>
-        
-        <div class="modificar-estado-options">
-          <button class="modificar-estado-option">Activo</button>
-          <button class="modificar-estado-option">Inactivo</button>
-          <button class="modificar-estado-option">Finalizó proyecto</button>
-          <button class="modificar-estado-option">Redefinir</button>
-        </div>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
       </div>
       
       <!-- tab asignar proyecto -->
@@ -201,23 +187,8 @@
         <span class="material-symbols-outlined">assignment_add</span>
         <span>Asignar proyecto</span>
       </label>
-      <div class="tab tab-asignar-proyecto">
-        <p>POR MAQUETAR...</p>
-        <!-- <div>
-          <button class="asignar-proyecto-menu">
-            Asignar proyecto
-            <span class="material-symbols-outlined arrow">
-              arrow_right
-            </span>
-          </button>
-        </div>
-        
-        <div class="asignar-proyecto-options">
-          <button>Activo</button>
-          <button>Inactivo</button>
-          <button>Finalizó proyecto</button>
-          <button>Redefinir</button>
-        </div> -->
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
       </div>
       
       <!-- tab certificado -->
@@ -226,8 +197,8 @@
         <span class="material-symbols-outlined">workspace_premium</span>
         <span>Certificado</span>
       </label>
-      <div class="tab tab-certificado">
-        <p>POR MAQUETAR...</p>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
       </div>
       
       <!-- tab recomendada -->
@@ -236,8 +207,8 @@
         <span class="material-symbols-outlined">star</span>
         <span>Recomendada</span>
       </label>
-      <div class="tab tab-recomendada">
-        <p>POR MAQUETAR...</p>
+      <div class="tab">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
       </div>
     </div>
     
@@ -249,6 +220,8 @@
   <!-- SCRIPTS -->
   <script src="/js/semilla.js"></script>
   <!-- <script src="../../static/js/semilla.js"></script> -->
+
+  <!-- MATERIAL TAILWIND CDN -->
   <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
   <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
 

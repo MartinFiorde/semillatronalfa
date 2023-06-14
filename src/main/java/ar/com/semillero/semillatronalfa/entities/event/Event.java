@@ -26,6 +26,7 @@ public class Event {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
     private String title;
+    private String image;
     private Boolean offeredBySemillero;
     private String status;
     private String organizedBy;
@@ -39,12 +40,13 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attendance> attendance;
 
-    public Event(LocalDate date, String title,
+    public Event(LocalDate date, String title, String image,
                  Boolean offeredBySemillero, String status,
                  String organizedBy, String approach,
                  String type, EventDetails details) {
         this.date = date;
         this.title = title;
+        this.image = image;
         this.offeredBySemillero = offeredBySemillero;
         this.status = status;
         this.organizedBy = organizedBy;

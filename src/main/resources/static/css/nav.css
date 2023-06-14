@@ -1,88 +1,87 @@
 nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 5.5rem;
-  background: var(--verde-fondo);
-  /* background-color: rgba(1, 1, 1, .2); */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 104px;
-  padding-right: 328px;
-  transition: top 0.3s;
-  z-index: 9;
+    height: 88px;
+    background-color: var(--verde-fondo);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 104px;
+    padding-right: 328px;
 }
 
 .img_logo_nav{
-  width: 192px;
-  height: 40px;
+    width: 192px;
+    height: 40px;
 }
-
 .left_container{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 .links_container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px
 }
 
-/* ESTILOS DE ITEMS PERSONALIZADOS EN CADA PLANTILLA CSS */
+.links_container a {
+    height: 24px;
+    color: var(--verde-oscuro);
+}
+
+.links_container a:hover{
+    font-weight: bold;
+}
 
 .user {
-  position: absolute;
-  right: 72px;
-  margin-right: 5rem;
-  user-select: none;
+    position: absolute;
+    right: 72px;
+    margin-right: 5rem;
 }
 
 .user .avatar {
-  width: 3rem;
-  height: 3rem;
-  background: var(--azul);
-  color: var(--blanco1);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-size: 20px;
-  font-weight: 500;
+    width: 3rem;
+    height: 3rem;
+    background: var(--azul);
+    color: var(--blanco1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .user div {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
 
 .user div a {
-  color: var(--gris-oscuro);
+    color: var(--gris-oscuro);
 }
 
 .user div .logout {
-  padding: .3rem 1rem;
-  border: 1px solid var(--verde-oscuro);
-  border-radius: 100px;
-  background: transparent;
-  color: var(--verde-oscuro);
-  font-weight: 500;
-  user-select: none;
-  cursor: pointer;
+    padding: .3rem 1rem;
+    border: 1px solid var(--verde-oscuro);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--verde-oscuro);
+    font-weight: 500;
+    user-select: none;
+    cursor: pointer;
 }
 
 .user div .logout:hover {
-  border: 1px solid var(--verde-claro);
-  color: var(--verde-claro);
+    border: 1px solid var(--verde-claro);
+    color: var(--verde-claro);
 }
