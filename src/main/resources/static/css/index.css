@@ -29,6 +29,11 @@ html {
   box-sizing: border-box;
 }
 
+*::selection {
+	background: var(--verde-claro);
+	color: var(--blanco1);
+}
+
 *::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -46,7 +51,6 @@ a {
 }
 
 nav {
-  /* border: 1px solid red; */
   position: relative;
   display: flex;
   justify-content: center;
@@ -62,6 +66,7 @@ nav img {
   position: absolute;
   right: 0;
   margin-right: 5rem;
+  user-select: none;
 }
 
 .user .avatar {
@@ -79,7 +84,7 @@ nav img {
 }
 
 .user div {
-  margin-top: 1rem;
+  margin-top: .2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -125,6 +130,7 @@ main a {
   justify-content: center;
   align-items: center;
   border-radius: 16px;
+  transition: 100ms ease;
 }
 
 .semillas {
