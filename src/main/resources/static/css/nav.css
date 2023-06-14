@@ -1,13 +1,18 @@
 nav {
-  position: static;
-  height: 88px;
-  background-color: var(--verde-fondo);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5.5rem;
+  background: var(--verde-fondo);
+  /* background-color: rgba(1, 1, 1, .2); */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding-left: 104px;
   padding-right: 328px;
+  transition: top 0.3s;
+  z-index: 9;
 }
 
 .img_logo_nav{
@@ -30,24 +35,7 @@ nav {
   gap: 24px;
 }
 
-.links_container a {
-  color: var(--verde-oscuro);
-  background-image: linear-gradient(
-    transparent 0%,
-    transparent 90%,
-    var(--verde-oscuro) 90%,
-    var(--verde-oscuro) 100%
-  );
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  background-position-x: right;
-  transition: background-size 300ms;
-}
-
-.links_container a:hover{
-  background-size: 100% 100%;
-  background-position-x: left;
-}
+/* ESTILOS DE ITEMS PERSONALIZADOS EN CADA PLANTILLA CSS */
 
 .user {
   position: absolute;

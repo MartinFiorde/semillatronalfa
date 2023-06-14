@@ -15,8 +15,9 @@
   <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
 
   <!-- STYLES -->
-  <link href="/css/semilla.css" rel="stylesheet" />
   <link href="/css/nav.css" rel="stylesheet" />
+  <!-- <link href="../../static/css/nav.css" rel="stylesheet" /> -->
+  <link href="/css/semilla.css" rel="stylesheet" />
   <!-- <link href="../../static/css/semilla.css" rel="stylesheet" /> -->
 
   <!-- GOOGLE ICONS -->
@@ -40,7 +41,7 @@
 
       <div class="telefono">
         <span class="campo">Teléfono:</span>
-        <span class="valor" th:text="'+' + ${seed.contactData.telephone}"></span>
+        <span class="valor" th:text="${seed.contactData.telephone}"></span>
       </div>
 
       <div class="rol">
@@ -81,7 +82,7 @@
     
     <div class="observaciones-form-container">
       <form class="observaciones-form">
-        <textarea name="observacion" cols="1" rows="4" th:text="${seed.followUp.comments}"></textarea>
+        <textarea name="observacion" cols="1" rows="4"></textarea>
         <button class="observaciones-submit" type="submit">Enviar</button>
       </form>
     </div>

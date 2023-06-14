@@ -1,5 +1,18 @@
 const d = document;
 
+/* NAVBAR */
+let prevScrollpos = window.pageYOffset;
+
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      d.querySelector("nav").style.top = "0";
+    } else {
+      d.querySelector("nav").style.top = "-5.5rem";
+    }
+  prevScrollpos = currentScrollPos;
+}
+
 /* OBSERVACIONES GENERALES */
 d.querySelector('.observaciones-menu').addEventListener("click", () => {
   d.querySelector('.observaciones-arrow').classList.toggle("active");

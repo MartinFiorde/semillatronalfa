@@ -61,13 +61,34 @@ a {
 	cursor: pointer;
 }
 
-/* nav {
-	height: 5rem;
-	background-color: var(--verde-fondo);
-} */
+/* NAV ITEMS */
+.item-inicio,
+.item-semillas,
+.item-aliados,
+.item-eventos {
+  color: var(--verde-oscuro);
+  background-image: linear-gradient(
+    transparent 0%,
+    transparent 90%,
+    var(--verde-oscuro) 90%,
+    var(--verde-oscuro) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position-x: right;
+  transition: background-size 300ms;
+}
+
+.item-inicio:hover,
+.item-semillas:hover,
+.item-aliados:hover,
+.item-eventos:hover {
+  background-size: 100% 100%;
+  background-position-x: left;
+}
 
 main {
-	margin: 3rem 4rem 0;
+	margin: 8.5rem 4rem 0;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

@@ -51,7 +51,6 @@ a {
 }
 
 nav {
-  /* border: 1px solid red; */
   position: relative;
   display: flex;
   justify-content: center;
@@ -85,7 +84,7 @@ nav img {
 }
 
 .user div {
-  margin-top: 1rem;
+  margin-top: .2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
