@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AllyService {
 
-    List<Ally> findAllies();
+    List<AllyDto> findAllies();
 
     void addAlly(Ally ally);
 

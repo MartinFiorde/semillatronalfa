@@ -1,10 +1,12 @@
 package ar.com.semillero.semillatronalfa.dtos.allies;
 
 import ar.com.semillero.semillatronalfa.entities.ally.Ally;
+import ar.com.semillero.semillatronalfa.entities.project.Project;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +20,7 @@ public class AllyDto {
     private String email;
     private String phoneNumber;
     private String address;
+    private List<Project> projects;
 
 
     public AllyDto(Ally ally) {
@@ -30,5 +33,6 @@ public class AllyDto {
         this.email = ally.getContactData().getEmail();
         this.phoneNumber = ally.getContactData().getPhoneNumber();
         this.address = ally.getContactData().getAddress();
+        this.projects = ally.getProjects();
     }
 }

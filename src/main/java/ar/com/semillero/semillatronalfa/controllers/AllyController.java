@@ -18,7 +18,7 @@ public class AllyController {
 
     @GetMapping("/list")
     @ResponseBody
-    List<Ally> getAllies() {
+    List<AllyDto> getAllies() {
         return allyService.findAllies();
     }
 

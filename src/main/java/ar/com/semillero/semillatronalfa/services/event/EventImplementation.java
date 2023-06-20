@@ -81,8 +81,8 @@ public class EventImplementation implements EventService {
     @Override
     public List<Event> filterEvent(EventFilter eventFilter) {
         return eventRepository.filterEvents(eventFilter.getTitle(), eventFilter.getOfferedBySemillero(),
-                      eventFilter.getStatus(), eventFilter.getOrganizedBy(), eventFilter.getType(), eventFilter.getApproach(),
+                eventFilter.getStatus(), eventFilter.getOrganizedBy(), eventFilter.getType(), eventFilter.getApproach(),
                 eventFilter.getDate(), eventFilter.getInstructor(), eventFilter.getDuration(), eventFilter.getModality(),
-                 eventFilter.getDestination());
+                eventFilter.getDestination());
     }
 }

@@ -32,11 +32,11 @@ public class EventController {
         model.addAttribute("events", eventService.findEventList());
         return "pages/events.html";
     }
-    /*@GetMapping("/list/all")
+    @GetMapping("/list/all")
     @ResponseBody
     public List<EventDto> findAllEvents() {
         return eventService.findEventList();
-    }*/
+    }
 
     @PostMapping("/create")
     @ResponseBody

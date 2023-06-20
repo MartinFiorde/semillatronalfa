@@ -21,7 +21,7 @@ public interface EventRepository extends JpaRepository<Event, String> {
     @Query(value = "select event.* from event " +
             " inner join event_details on event.id = event_details.event_id " +
             " and event.date = ?7 and event_details.instructor like %?8% " +
-            " and event_details.duration = ?9 and event_details.modality like %?10% " +
+            " and event_details.duration = isnull(?9, event_details.duration) and event_details.modality like %?10% " +
             " and event_details.destination like %?11%"+
             " where event.is_active = 1  and event.title like %?1% " +
             " and event.offered_by_semillero = (case when isnull(?2) then 1 else ?2 end) " +

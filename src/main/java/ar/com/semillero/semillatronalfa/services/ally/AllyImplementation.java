@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -16,8 +17,8 @@ public class AllyImplementation implements AllyService {
     AllyRepository allyRepository;
 
     @Override
-    public List<Ally> findAllies() {
-        return allyRepository.findAll();
+    public List<AllyDto> findAllies() {
+        return allyRepository.findAll().stream().map(AllyDto::new).collect(Collectors.toList());
     }
 
     @Override
