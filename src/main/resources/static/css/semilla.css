@@ -17,6 +17,7 @@ Link: https://imgur.com/a/6tV4pCo */
 	--naranja: #FFAF03;
 	--naranja-oscuro: #DE9800;
   --azul: #1D3DAF;
+	--rojo: #C30000;
 }
 
 html {
@@ -36,15 +37,18 @@ html {
 }
 
 *::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
 }
 *::-webkit-scrollbar-thumb {
-  background: var(--verde-oscuro);
+  background: var(--gris);
   border-radius: 5px;
 }
+*::-webkit-scrollbar-thumb:active {
+  background: var(--gris-oscuro);
+}
 *::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.001);
 }
 
 body {
@@ -124,7 +128,7 @@ main {
 
 	display: grid;
 	justify-content: center;
-	grid-template-columns: 3fr 2fr;
+	grid-template-columns: 2.5fr 2fr;
 	grid-template-rows: repeat(4, 1fr);
 	gap: 1rem;
 }
@@ -147,7 +151,25 @@ main {
 	font-family: 'Roboto', sans-serif;
 }
 
-.nombre .valor {
+.datos-semilla .nombre .valor {
+	font-weight: 500;
+}
+
+/* clases estado */
+.estado.asignado {
+	color: var(--verde-claro);
+}
+.estado.finalizado {
+	color: var(--naranja-oscuro);
+}
+
+/* clases certificados */
+.valor.no {
+	color: var(--rojo);
+	font-weight: 500;
+}
+.valor.si {
+	color: var(--verde-claro);
 	font-weight: 500;
 }
 
@@ -332,9 +354,22 @@ main {
 }
 
 .tab .tab-valor {
+	/* height: calc(1 * 21px); */
+	position: relative;
 	font-family: 'Roboto', sans-serif;
 	color: var(--negro);
 }
+/* 
+.tab .tab-valor.tab-valor-long::after {
+	content: '...';
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 15px;
+	height: 21px;
+	background: linear-gradient(90deg, transparent, var(--blanco1));
+	user-select: none;
+} */
 
 .tab-modificar-estado {
 	display: flex;

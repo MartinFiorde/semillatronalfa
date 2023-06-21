@@ -19,6 +19,9 @@ d.querySelector('.observaciones-menu').addEventListener("click", () => {
   d.querySelector('.observaciones-form-container').classList.toggle("active");
 });
 
+/* AUTO HEIGHT VALOR */
+d.querySelector('.tab-valor')
+
 /* MODIFICAR ESTADO */
 d.querySelector('.modificar-estado-menu').addEventListener("click", () => {
   d.querySelector('.modificar-estado-menu .arrow').classList.toggle("active");

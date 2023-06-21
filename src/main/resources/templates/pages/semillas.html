@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -43,7 +43,7 @@
   
       <label for="importarSemillaArchivo">
         <span class="material-symbols-outlined">upload_file</span>
-        Importar semillas
+        Importar Semillas
       </label>
       <input id="importarSemillaArchivo" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display: none;">
     </div>
@@ -67,7 +67,7 @@
       <table  cellspacing="0" cellpadding="0">
         <thead>
           <tr>
-            <th>Nombre</th>
+            <th>Apellido y Nombre</th>
             <th>Rol</th>
             <th>Comisión</th>
             <th>Turno</th>
@@ -78,11 +78,12 @@
 
         <tbody id="tabla-semillas">
           <tr th:each="seed : ${seeds}">
-            <td th:text="${seed.personalData.firstName} + ' ' + ${seed.personalData.lastName}"></td>
+            <td th:text="${seed.personalData.lastName} + ' ' + ${seed.personalData.firstName}"></td>
             <td th:text="${seed.postulationData.rol}"></td>
             <td th:text="${seed.followUp.commission}"></td>
             <td th:text="${seed.postulationData.turn}"></td>
-            <td th:text="${seed.followUp.status.primary} + ' - ' + ${seed.followUp.status.secondary}"></td>
+            <td class="estado green" th:text="${seed.followUp.status.primary} + ' - ' + ${seed.followUp.status.secondary}"></td>
+            <!-- COLOR VERDE SI ESTA ASIGNADO A PROYECTO JAVASCRIPT -->
             <td class="arrow"><a th:href="@{item/{id}(id=${seed.id})}" class="material-symbols-outlined">arrow_right</a></td>
           </tr>
         </tbody>
