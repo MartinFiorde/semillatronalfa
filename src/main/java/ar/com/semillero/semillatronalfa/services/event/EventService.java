@@ -25,4 +25,6 @@ public interface EventService {
     void addEventList(Event[] event);
 
     List<Event> filterEvent(EventFilter eventFilter);
+
+    List<Event> searchEvent();
 }

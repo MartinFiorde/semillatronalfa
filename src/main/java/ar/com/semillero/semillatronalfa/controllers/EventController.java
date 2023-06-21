@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -34,8 +35,8 @@ public class EventController {
     }
     @GetMapping("/list/all")
     @ResponseBody
-    public List<EventDto> findAllEvents() {
-        return eventService.findEventList();
+    public List<Event> findAllEvents() {
+        return eventService.searchEvent();//.stream().map(EventDto::new).collect(Collectors.toList()); //.findEventList();
     }
 
     @PostMapping("/create")

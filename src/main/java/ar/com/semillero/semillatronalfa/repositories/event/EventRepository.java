@@ -18,7 +18,7 @@ public interface EventRepository extends JpaRepository<Event, String> {
     @Query(value = "select * from event where event.is_active = 1 and event.id = :id", nativeQuery = true)
     Optional<Event> findEventById(@Param("id") String id);
 
-    @Query(value = "select event.* from event " +
+    /*@Query(value = "select event.* from event " +
             " inner join event_details on event.id = event_details.event_id " +
             " and event.date = ?7 and event_details.instructor like %?8% " +
             " and event_details.duration = isnull(?9, event_details.duration) and event_details.modality like %?10% " +
@@ -29,7 +29,7 @@ public interface EventRepository extends JpaRepository<Event, String> {
             " and event.status like %?3% and event.organized_by like %?4%" +
             " and event.type like %?5% and event.approach like %?6% "  , nativeQuery = true)
     List<Event> filterEvents(String title, Boolean offeredBySemillero, String status, String organizedBy, String type, String approach,
-                             LocalDate date, String instructor, int duration, String modality, String destination);
+                             LocalDate date, String instructor, int duration, String modality, String destination);*/
 
     // TODO: Mejorar filtrado por duración y por fecha
 }

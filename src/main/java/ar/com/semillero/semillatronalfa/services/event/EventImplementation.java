@@ -7,6 +7,8 @@ import ar.com.semillero.semillatronalfa.repositories.event.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,12 @@ public class EventImplementation implements EventService {
 
     @Autowired
     EventRepository eventRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    //@PersistenceContext
+    //EntityManagerFactory emfactory;
 
     @Override
     public List<EventDto> findEventList() {
@@ -80,9 +88,50 @@ public class EventImplementation implements EventService {
 
     @Override
     public List<Event> filterEvent(EventFilter eventFilter) {
-        return eventRepository.filterEvents(eventFilter.getTitle(), eventFilter.getOfferedBySemillero(),
-                eventFilter.getStatus(), eventFilter.getOrganizedBy(), eventFilter.getType(), eventFilter.getApproach(),
-                eventFilter.getDate(), eventFilter.getInstructor(), eventFilter.getDuration(), eventFilter.getModality(),
-                eventFilter.getDestination());
+        String query = "select event.* from event inner join event_details on event.id = event_details.event_id ";
+
+        if(!eventFilter.getInstructor().isEmpty() && eventFilter.getInstructor() != null) {
+            query = query.concat(" and event_details.instructor like '%" + eventFilter.getInstructor() + "%'");
+        }
+        if(!eventFilter.getModality().isEmpty() && eventFilter.getModality() != null) {
+            query = query.concat(" and event_details.modality like '%" + eventFilter.getModality() + "%'");
+        }
+        if(!eventFilter.getDescription().isEmpty() && eventFilter.getDescription() != null) {
+            query = query.concat(" and event_details.description like '%" + eventFilter.getDescription() + "%'");
+        }
+        if(!eventFilter.getOrigin().isEmpty() && eventFilter.getOrigin() != null) {
+            query = query.concat(" and event_details.origin like '%" + eventFilter.getOrigin() + "%'");
+        }
+        if(!eventFilter.getLocation().isEmpty() && eventFilter.getLocation() != null) {
+            query = query.concat(" and event_details.location like '%" + eventFilter.getLocation() + "%'");
+        }
+        if(!eventFilter.getDestination().isEmpty() && eventFilter.getDestination() != null) {
+            query = query.concat(" and event_details.destination like '%" + eventFilter.getDestination() + "%'");
+        }
+        if(eventFilter.getDuration() != null) {
+            query = query.concat(" and event_details.duration = " + eventFilter.getDuration());
+        }
+        query = query.concat(" where event.is_active = 1");
+        if(!eventFilter.getTitle().isEmpty() && eventFilter.getTitle() != null) {
+            query = query.concat(" and event.title like '%" + eventFilter.getTitle() + "%'");
+        }
+        if(eventFilter.getOfferedBySemillero() != null) {
+            query = query.concat(" and event.offered_by_semillero = " + eventFilter.getOfferedBySemillero());
+        }
+        if(!eventFilter.getOrganizedBy().isEmpty() && eventFilter.getOrganizedBy() != null) {
+            query = query.concat(" and event.organized_by like '%" + eventFilter.getOrganizedBy() + "%'");
+        }
+        if(!eventFilter.getStatus().isEmpty() && eventFilter.getStatus() != null) {
+            query = query.concat(" and event.status like '%"  + eventFilter.getStatus() + "%'");
+        }
+
+        List<Event> events = entityManager.createNativeQuery(query, Event.class).getResultList();
+        return events;
+    }
+
+    @Override
+    public List<Event> searchEvent() {
+        List<Event> events = entityManager.createNativeQuery("select event.* from event", Event.class).getResultList();
+        return events;
     }
 }
