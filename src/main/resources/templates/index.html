@@ -6,20 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- TITLE -->
-  <title>INICIO | SIGIS</title>
+  <title>Inicio | Semillero</title>
 
   <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="/img/logo.png" />
+  <link rel="icon" type="image/png" href="/img/logo.png" />	
 
   <!-- MATERIAL TAILWIND -->
   <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
   
   <!-- STYLES -->
+  <link rel="stylesheet" href="/css/loading.css" />
+  <!-- <link rel="stylesheet" href="../static/css/loading.css" /> -->
   <link rel="stylesheet" href="/css/index.css">
   <!-- <link rel="stylesheet" href="../static/css/index.css" /> -->
 </head>
 
 <body>
+<div th:replace="fragments/loading :: loader"></div>
+
   <nav>
     <a th:href="@{/}">
       <img src="/img/logo_banner.png" alt="semillero" class="marca">
@@ -27,13 +31,48 @@
     </a>
 
     <div class="user">
-      <button data-ripple-light="true" data-popover-target="popover-animation" class="avatar">SJ</button>
-
+      <button data-ripple-light="true" data-popover-target="popover-animation" class="avatar" id="user-nav-button"></button>
       <div data-popover="popover-animation" data-popover-mount="opacity-100 scale-100" data-popover-unmount="opacity-0 scale-0 pointer-events-none" data-popover-transition="transition-all duration-200 origin-bottom" class="absolute w-max whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-4 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
-        <a href="#" class="name">Sofia Jason</a>
-        <button class="logout">Cerrar sesión</button>
+        <span class="name" id="nav-userName"></span>
+        <script th:inline="javascript">
+          const username = /*[[${#authentication.getPrincipal().getUsername()}]]*/ '';
+
+          let names = [];
+          let firstName = "";
+          let lastName = "";
+
+          let navUser = document.getElementById('nav-userName');
+          let navInitials = document.getElementById('user-nav-button');
+
+          if(navUser && navInitials){
+            if(username.indexOf(".") === -1 && username.indexOf(" ") === -1){
+              navUser.textContent = username.charAt(0).toUpperCase() + username.trim().slice(1);
+              navInitials.textContent = username.charAt(0).toUpperCase();
+            } else if(username.indexOf(".") !== -1){
+              names = username.split('.');
+              firstName = names[1].trim().charAt(0).toUpperCase() + names[1].trim().slice(1);
+              lastName = names[0].trim().charAt(0).toUpperCase() + names[0].trim().slice(1);
+
+              navUser.textContent = firstName + " " + lastName;
+
+              let initials = names.map(word => word.trim().charAt(0).toUpperCase());
+
+              navInitials.textContent = initials.reverse().join("");
+            } else if(username.indexOf(" ") !== -1){
+              names = username.split(' ');
+              firstName = names[1].charAt(0).toUpperCase() + names[1].slice(1);
+              lastName = names[0].charAt(0).toUpperCase() + names[0].slice(1);
+
+              navUser.textContent = firstName + " " + lastName;
+
+              let initials = names.map(word => word.charAt(0).toUpperCase());
+
+              navInitials.textContent = initials.reverse().join("");
+            }
+          }
+        </script>
+        <a th:href="@{/logout}" class="logout">Cerrar sesión</a>
       </div>
-    </div>
   </nav>
 
   <main>
@@ -41,11 +80,11 @@
       <span>SEMILLAS</span>
     </a>
 
-    <a th:href="@{/aliados}" class="aliados">
-      <span>ALIADOS</span>
+    <a th:href="@{/project/list}" class="proyectos">
+      <span>PROYECTOS</span>
     </a>
 
-    <a th:href="@{/eventos}" class="eventos">
+    <a th:href="@{/event/list}" class="eventos">
       <span>EVENTOS</span>
     </a>
   </main>
@@ -53,6 +92,8 @@
   <div style="height: 20vh"></div>
 
   <!-- SCRIPTS -->
+  <script src="/js/loading.js"></script>
+  <!-- <script src="../static/js/loading.js"></script> -->
   <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
   <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
 </body>

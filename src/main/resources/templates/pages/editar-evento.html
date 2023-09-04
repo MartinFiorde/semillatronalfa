@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- TITLE -->
+    <title>Editar Evento | Semillero</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
+
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="/css/loading.css"/>
+    <!-- <link rel="stylesheet" href="../../static/css/loading.css" /> -->
+    <link href="/css/nav-static.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/nav-static.css" rel="stylesheet" /> -->
+    <link href="/css/editar-evento.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/editar-evento.css" rel="stylesheet" /> -->
+
+    <!-- GOOGLE ICONS -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+
+<body>
+<div th:replace="fragments/loading :: loader"></div>
+<nav th:replace="fragments/nav :: _nav"></nav>
+
+<main>
+    <!-- ALERTAS -->
+    <!-- cambios -->
+    <div class="cambios-exito-container">
+        <div class="cambios-exito-box">
+            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
+            <!-- <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa"> -->
+            <span>¡Cambios guardados con éxito!</span>
+        </div>
+    </div>
+    <div class="cambios-error-container">
+        <div class="cambios-error-box">
+            <img src="/img/icons/alert-error.svg" alt="Error">
+            <!-- <img src="../../static/img/icons/alert-error.svg" alt="Error"> -->
+            <span>¡Lo sentimos!</span>
+            <span class="alert-text-small">En este momento, los cambios no se pudieron guardar</span>
+        </div>
+    </div>
+
+    <!--<a th:href="@{/event/list}" class="volver">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
+    </a>-->
+
+    <h1>Editar Evento</h1>
+
+    <div class="editar-evento-container">
+        <form id="formulario" th:action="@{/event/update/{id}(id=${event.id})}" method="post" th:object="${event}"
+              enctype="multipart/form-data">
+            <!-- left -->
+            <div class="form-left">
+                <div class="option titulo">
+                    <span class="campo">Título</span>
+                    <input type="text" th:field="*{title}" autocomplete="off" required>
+                </div>
+
+                <div class="option instructor">
+                    <span class="campo">Instructor</span>
+                    <input type="text" th:field="*{instructor}" autocomplete="off" required>
+                </div>
+
+                <div class="option organizador">
+                    <span class="campo">Organizador</span>
+                    <input type="text" th:field="*{organizedBy}" autocomplete="off" required>
+                </div>
+
+                <div class="option estado">
+                    <span class="campo">Estado</span>
+                    <div class="select">
+                        <input type="text" name="estado" class="desplegable selected" th:field="*{status}" readonly
+                               required>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li>Planificado</li>
+                        <li>Confirmado</li>
+                        <li>Terminado</li>
+                        <li>Pospuesto</li>
+                    </ul>
+                </div>
+
+                <div class="option fecha">
+                    <span class="campo">Fecha</span>
+                    <div class="select">
+                        <input type="date" name="fecha" class="desplegable selected"
+                               title="INGRESAR MANUALMENTE O SELECCIONAR DESDE EL CALENDARIO" th:field="*{date}"
+                               required>
+                        <!-- <div class="caret"></div>-->
+                    </div>
+                </div>
+
+                <div class="option horario-inicio">
+                    <span class="campo">Horario de inicio estimado</span>
+                    <div class="select">
+                        <input type="time" name="horario-inicio" class="desplegable selected"
+                               title="INGRESAR MANUALMENTE O SELECCIONAR DESDE EL RELOJ" th:field="*{startTime}"
+                               required>
+                        <!-- <div class="caret"></div> -->
+                    </div>
+                </div>
+
+                <div class="option horario-fin">
+                    <span class="campo">Horario de finalización estimado</span>
+                    <div class="select">
+                        <input type="time" name="horario-fin" class="desplegable selected"
+                               title="INGRESAR MANUALMENTE O SELECCIONAR DESDE EL RELOJ" th:field="*{endingTime}"
+                               required>
+                        <!-- <div class="caret"></div> -->
+                    </div>
+                </div>
+
+                <div class="option descripcion">
+                    <span class="campo opcional">Descripción del Evento (opcional)</span>
+                    <textarea rows="4" th:field="*{description}"></textarea>
+                </div>
+            </div>
+
+            <!-- right -->
+            <div class="form-right">
+                <div class="option facilitado">
+                    <span class="campo">¿Facilitado por semillero?</span>
+                    <div class="select">
+                        <input type="text" name="facilitado" class="desplegable selected"
+                               th:value="${event.offeredBySemillero ? 'Si' : 'No'}" readonly required>
+                        <input id="real-offeredBySemillero-input" type="text" th:field="*{offeredBySemillero}"
+                               style="display: none">
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li>Si</li>
+                        <li>No</li>
+                    </ul>
+                </div>
+
+                <div class="option enfoque">
+                    <span class="campo">Enfoque</span>
+                    <div class="select">
+                        <input type="text" name="enfoque" class="desplegable selected" th:field="*{approach}" readonly
+                               required>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li>Formación</li>
+                        <li>Integración Social</li>
+                        <li>Sensibilización</li>
+                    </ul>
+                </div>
+
+                <div class="option tipo">
+                    <span class="campo">Tipo</span>
+                    <div class="select">
+                        <input type="text" name="tipo" class="desplegable selected" th:field="*{type}" readonly
+                               required>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li>Presentación de caso</li>
+                        <li>Taller</li>
+                        <li>Exposición</li>
+                        <li>Conversatorio</li>
+                    </ul>
+                </div>
+
+                <div class="option origen">
+                    <span class="campo">Origen</span>
+                    <div class="select">
+                        <input type="text" name="Origen" class="desplegable selected" th:field="*{origin}" readonly
+                               required>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li>Interno</li>
+                        <li>Externo</li>
+                    </ul>
+                </div>
+
+                <div class="option destinatarios">
+                    <span class="campo">Destinatarios</span>
+                    <div class="select">
+                        <input type="text" name="destinatarios" class="desplegable selected" th:field="*{destination}"
+                               readonly required>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li>Semillero</li>
+                        <li>Quinto Impacto</li>
+                        <li>Abierto</li>
+                    </ul>
+                </div>
+
+                <div class="option modalidad">
+                    <span class="campo">Modalidad</span>
+                    <div class="select">
+                        <input type="text" name="modalidad" class="desplegable selected" th:field="*{modality}" readonly
+                               required>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <li onclick="text(0)">Online</li>
+                        <li onclick="text(1)">Presencial</li>
+                        <li onclick="text(2)">Mixta</li>
+                    </ul>
+                </div>
+
+                <div class="option ubicacion" id="ubicacion"
+                     th:style="${event.modality == 'Presencial' ? 'display: flex' : 'display: none'}">
+                    <span class="campo">Ubicacion del Evento</span>
+                    <input type="text" value="Dirección del lugar" th:field="*{location}" autocomplete="off">
+                </div>
+
+                <div class="option imagen">
+                    <label id="labelLoadImage" class="cargar-imagen" for="image"
+                           th:style="${event.base64 == null ? 'display: flex' : 'display: none' }">
+                        <span class="material-symbols-outlined">upload</span>
+                        Cargar imagen
+                    </label>
+                    <input id="image" type="file" accept="image/*" name="img" style="display: none;" th:value="${img}">
+
+                    <img id="previewImage" src="data:image/jpeg;base64,"
+                         th:attrappend="src=${event.base64}" alt="imagen del evento">
+                    <!-- <img src="../../static/img/evento-imagen-ejemplo.png" alt="imagen del evento"> -->
+
+                    <div id="loadImageFooter" class="img-footer"
+                         th:style="${event.base64 == null ? 'display: none' : 'display: flex' }">
+                        <button id="deleteImageButton" class="eliminar-imagen">
+                            <img src="/img/icons/eliminar-imagen.svg">
+                            <!-- <img src="../../static/img/icons/eliminar-imagen.svg"> -->
+                        </button>
+                        <label for="image" class="editar-imagen" style="cursor: pointer;">
+                            <img src="/img/icons/editar-imagen.svg">
+                            <!-- <img src="../../static/img/icons/editar-imagen.svg"> -->
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="form-send">
+            <a th:href="@{/event/{id}(id=${event.id})}" class="cancel">Cancelar</a>
+            <button type="submit" form="formulario" class="guardar">Guardar cambios</button>
+        </div>
+    </div>
+</main>
+
+<div style="height: 20vh;"></div>
+
+<!-- SCRIPTS -->
+<script src="/js/loading.js"></script>
+<!-- <script src="../../static/js/loading.js"></script> -->
+<script src="/js/editar-evento.js"></script>
+<!-- <script src="../../static/js/editar-evento.js"></script> -->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+</body>
+</html>

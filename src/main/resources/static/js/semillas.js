@@ -1,21 +1,130 @@
 const d = document;
+const params = new URLSearchParams(new URL(window.location.href).search);
 
-/* NAVBAR */
-let prevScrollpos = window.pageYOffset;
+//------------------------------------------------FILTROS-----------------------------------------------
+d.querySelectorAll('.filtro-rol').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
 
-window.onscroll = function() {
-  var currentScrollPos = window.pageYOffset;
-    if (prevScrollpos > currentScrollPos) {
-      d.querySelector("nav").style.top = "0";
-    } else {
-      d.querySelector("nav").style.top = "-5.5rem";
-    }
-  prevScrollpos = currentScrollPos;
-}
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-estado').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-proyectos').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-genero').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-turno').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-comision').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-pais').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-certificado').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-marcatemporal').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
+
+d.querySelectorAll('.filtro-recomendada').forEach(dropdown => {
+	const select = dropdown.querySelector('.select');
+	const caret = dropdown.querySelector('.caret');
+	const menu = dropdown.querySelector('.menu');
+
+	select.addEventListener('click', () => {
+		select.classList.toggle('select-clicked');
+		caret.classList.toggle('caret-rotate');
+		menu.classList.toggle('menu-open');
+	});
+});
 
 /* TABLE PAGINATION */
-if(d.getElementById("tabla-semillas")) {
-	let $table = d.getElementById("tabla-semillas"),
+if(document.getElementById("tabla-semillas") && seeds.length > 0) {
+	let $table = document.getElementById("tabla-semillas"),
 		$n = 40,
 		$rowCount = $table.rows.length,
 		$firstRow = $table.rows[0].firstElementChild.tagName,
@@ -37,8 +146,8 @@ if(d.getElementById("tabla-semillas")) {
 		for ($i = $s; $i < ($s + $n) && $i < $tr.length; $i++)
 			$rows += $tr[$i];
 		$table.innerHTML = $rows;
-		d.getElementById("pagination").innerHTML = pageButtons($pageCount, $p);
-		d.getElementById("id" + $p).setAttribute("class", "active");
+		document.getElementById("pagination").innerHTML = pageButtons($pageCount, $p);
+		document.getElementById("id" + $p).setAttribute("class", "active");
 	}
 
 	function pageButtons($pCount, $cur) {
@@ -85,9 +194,8 @@ class SeedContactData{
 }
 
 class SeedPersonalData{
-	constructor(firstName, lastName, dni, birthDate, country, city, gender) {
+	constructor(firstName, dni, birthDate, country, city, gender) {
 		this.firstName = firstName;
-		this.lastName = lastName;
 		this.dni = dni;
 		this.birthDate = birthDate;
 		this.country = country;
@@ -97,13 +205,11 @@ class SeedPersonalData{
 }
 
 class SeedFollowUp{
-	constructor(postulationDate, commission, status, recommendation, certification, comments) {
+	constructor(postulationDate, commission, status, certificationString) {
 		this.postulationDate = postulationDate;
 		this.commission = commission;
 		this.status = status;
-		this.recommendation = recommendation;
-		this.certification = certification;
-		this.comments = comments;
+		this.certificationString = certificationString;
 	}
 }
 
@@ -117,15 +223,14 @@ class Seed{
 	}
 }
 
-const excelInput = d.getElementById("importarSemillaArchivo");
+const excelInput = document.getElementById("importarSemillaArchivo");
 
-function dividirTexto(texto) {
+function dividirStatus(texto) {
 	const index = texto.indexOf("/");
 
 	if (index !== -1 && index !== texto.length - 1) {
 		return texto.split("/");
 	}
-
 	return [texto];
 }
 
@@ -133,43 +238,27 @@ const handleChange = async () => {
 	let content = await readXlsxFile(excelInput.files[0]);
 	let realContent = content.splice(14,content.length);
 	let semillasToImport = [];
-	console.log(realContent);
 
 	for (let i = 0; i < realContent.length; i++) {
-		let statusDivided = dividirTexto(realContent[i][18])
-		let fechaNacimiento = new Date(realContent[i][6]);
+		let statusDivided = dividirStatus(realContent[i][17])
+		let fechaNacimiento = new Date(realContent[i][5]);
 		fechaNacimiento.setUTCHours(fechaNacimiento.getUTCHours() + 3)
-		let fechaPostulado = new Date(realContent[i][4]);
+		let fechaPostulado = new Date(realContent[i][3]);
 
-		//let fechaNacimientoFormateada = fechaNacimiento.getDate() + "-" + fechaNacimiento.getMonth() + "-" + fechaNacimiento.getFullYear()
-		//console.log(fechaNacimientoFormateada);
-
-		let certificadoEnviado = false;
-		let semillaRecomendada = false;
-
-		if(realContent[i][20] !== null){
-			certificadoEnviado = realContent[i][20].toLowerCase() === "enviado";
-		}
-		if(realContent[i][21] !== null){
-			semillaRecomendada = realContent[i][21].toLowerCase() === "si";
-		}
-
-		let status = new SeedStatus(statusDivided[0],statusDivided[1] || "",
-			0, realContent[i][19], false, "");
-		let followUp = new SeedFollowUp(fechaPostulado,realContent[i][3],
-			status, semillaRecomendada, certificadoEnviado, []);
-		let postulationData = new SeedPostulationData(realContent[i][2], realContent[i][5],
-			realContent[i][16], realContent[i][17], "", "");
-		let contactData = new SeedContactData(realContent[i][13], realContent[i][12],
-			realContent[i][15], realContent[i][14]);
-		let personalData = new SeedPersonalData(realContent[i][0], realContent[i][1], realContent[i][7],
-			fechaNacimiento, realContent[i][11], realContent[i][10] + ", "+ realContent[i][9],
-			realContent[i][8]);
+		let status = new SeedStatus(statusDivided[0],statusDivided[1]? statusDivided[1] + (statusDivided[2]? " - " + statusDivided[2] : "") : "",
+			0, realContent[i][18], false, "");
+		let followUp = new SeedFollowUp(fechaPostulado,realContent[i][2],
+			status, "No enviado");
+		let postulationData = new SeedPostulationData(realContent[i][1], realContent[i][4],
+			realContent[i][15], realContent[i][16], "", "");
+		let contactData = new SeedContactData(realContent[i][12], realContent[i][11],
+			realContent[i][14], realContent[i][13]);
+		let personalData = new SeedPersonalData(realContent[i][0], realContent[i][6],
+			fechaNacimiento, realContent[i][10], realContent[i][9] + ", "+ realContent[i][8],
+			realContent[i][7]);
 		let seed = new Seed(followUp, personalData, contactData, postulationData, false);
 		semillasToImport.push(seed);
 	}
-
-	console.log(semillasToImport);
 
 	if(semillasToImport.length > 0) {
 		const url = "http://localhost:8080/seed/api/create-batch";
@@ -189,20 +278,74 @@ const handleChange = async () => {
 			.catch(error => {
 				console.error("Error en la solicitud:", error);
 			});
-	}else{
-		d.querySelector('.error-container').classList.add('active')
+		document.querySelector('.exito-container').classList.add('active')
 		setTimeout(()=>{
-			d.querySelector('.error-container').classList.remove('active')
+			document.querySelector('.exito-container').classList.remove('active')
+			window.location.reload()
 		},2000);
-		
-		//alert("No hay datos que importar");
-
+	}else{
+		document.querySelector('.error-container').classList.add('active')
+		setTimeout(()=>{
+			document.querySelector('.error-container').classList.remove('active')
+		},2000);
 	}
-	d.querySelector('.exito-container').classList.add('active')
-	setTimeout(()=>{
-		d.querySelector('.exito-container').classList.remove('active')
-		window.location.reload()
-	},2000);
 };
 
 excelInput.addEventListener("change", handleChange);
+
+//-------------testeo alerta--------------------------------------------------
+function alertTest(){
+	const url = new URL(window.location.href);
+	const params = new URLSearchParams(url.search);
+
+	params.forEach((value, key) => {
+		console.log(`${key}: ${value}`);
+	});
+}
+
+function showBackOption () {
+	let aBrowseBack = d.getElementById("a-browse-back");
+	let h2BrowseResult = d.getElementById("h2-browse-result");
+
+	if(aBrowseBack)aBrowseBack.style.display = "flex";
+	if(h2BrowseResult)h2BrowseResult.style.display = "flex";
+}
+
+const functionToLoad = () => {
+	let right_container = d.getElementById("right-container");
+	let form_search_bar = d.getElementById("form-search-bar");
+	let aside_filter = d.getElementById("aside-filter");
+	let download_seed_a = d.getElementById("download_seed_a");
+
+	if(params.toString() === ""){
+		if(seeds.length > 0){
+			if(right_container)right_container.style.display = "flex";
+			if(form_search_bar)form_search_bar.style.display = "flex";
+			if(aside_filter)aside_filter.style.display = "flex";
+			if(download_seed_a)download_seed_a.style.display = "flex";
+		}
+	}else{
+		d.title = "RESULTADOS | SIGIS";
+		showBackOption();
+		if(form_search_bar)form_search_bar.style.display = "flex";
+		if(aside_filter)aside_filter.style.display = "flex";
+		if(right_container)right_container.style.display = "flex";
+		if(download_seed_a)download_seed_a.style.display = "flex";
+
+		if(seeds.length === 0){
+			d.title = "SIN RESULTADOS | SIGIS";
+			if (right_container) {
+				if (seed_filter.searchBar === null) {
+					right_container.innerHTML =
+						`<h3 class=\"no-results\">NO SE ENCONTRARON RESULTADOS</h3>`;
+				}
+				if (seed_filter.searchBar !== null) {
+					right_container.innerHTML =
+						`<h3 class=\"no-results\">NO SE ENCONTRARON RESULTADOS PARA "<mark>${seed_filter.searchBar}</mark>"</h3>`;
+				}
+			}
+		}
+	}
+}
+
+d.addEventListener("DOMContentLoaded", functionToLoad);

@@ -1,17 +1,63 @@
 <nav th:fragment="_nav" class="nav">
-  <a th:href="@{/}"><img src="/img/logo_banner.png" alt="logo_semillero" class="img_logo_nav"></a>
+  <div class="container-nav-images">
+    <a th:href="@{/}">
+      <img src="/img/logo-semillero-blanco.svg" alt="logo_semillero" class="img_logo_nav">
+      <!-- <img src="../../static/img/logo-semillero-blanco.svg" alt="logo_semillero" class="img_logo_nav"> -->
+      <img src="/img/logo-horizontal-quinto-blanco.svg" alt="logo_quinto" class="img_quinto_nav">
+      <!-- <img src="../../static/img/logo-horizontal-quinto-blanco.svg" alt="logo_quinto" class="img_quinto_nav"> -->
+    </a>
+  </div>
+
   <div class="left_container">
     <div class="links_container">
       <a class="item-inicio" th:href="@{/}">Inicio</a>
-      <a class="item-semillas" th:href="@{/seed/list}" aria-selected="true">Semillas</a>
-      <a class="item-aliados" th:href="@{/}">Aliados</a>
-      <a class="item-eventos" th:href="@{/}">Eventos</a>
+      <a class="item-semillas" th:href="@{/seed/list}">Semillas</a>
+      <a class="item-proyectos" th:href="@{/project/list}">Proyectos</a>
+      <a class="item-eventos" th:href="@{/event/list}">Eventos</a>
     </div>
+
     <div class="user">
-      <button data-ripple-light="true" data-popover-target="popover-animation" class="avatar">SJ</button>
+      <button data-ripple-light="true" data-popover-target="popover-animation" class="avatar" id="user-nav-button"></button>
+
       <div data-popover="popover-animation" data-popover-mount="opacity-100 scale-100" data-popover-unmount="opacity-0 scale-0 pointer-events-none" data-popover-transition="transition-all duration-200 origin-bottom" class="absolute w-max whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-4 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
-        <a href="#" class="name">Sofia Jason</a>
-        <button class="logout">Cerrar sesión</button>
+        <span class="name" id="nav-userName"></span>
+        <script th:inline="javascript">
+          const username = /*[[${#authentication.getPrincipal().getUsername()}]]*/ '';
+          let names = [];
+          let firstName = "";
+          let lastName = "";
+          let navUser = document.getElementById('nav-userName');
+          let navInitials = document.getElementById('user-nav-button');
+
+          if(navUser && navInitials){
+            if(username.indexOf(".") === -1 && username.indexOf(" ") === -1){
+              navUser.textContent = username.charAt(0).toUpperCase() + username.trim().slice(1);
+              navInitials.textContent = username.charAt(0).toUpperCase();
+            } else if(username.indexOf(".") !== -1){
+              names = username.split('.');
+              firstName = names[1].trim().charAt(0).toUpperCase() + names[1].trim().slice(1);
+              lastName = names[0].trim().charAt(0).toUpperCase() + names[0].trim().slice(1);
+
+              navUser.textContent = firstName + " " + lastName;
+
+              let initials = names.map(word => word.trim().charAt(0).toUpperCase());
+
+              navInitials.textContent = initials.reverse().join("");
+
+            } else if(username.indexOf(" ") !== -1){
+              names = username.split(' ');
+              firstName = names[1].charAt(0).toUpperCase() + names[1].slice(1);
+              lastName = names[0].charAt(0).toUpperCase() + names[0].slice(1);
+
+              navUser.textContent = firstName + " " + lastName;
+
+              let initials = names.map(word => word.charAt(0).toUpperCase());
+
+              navInitials.textContent = initials.reverse().join("");
+            }
+          }
+        </script>
+        <a th:href="@{/logout}" class="logout">Cerrar sesión</a>
       </div>
     </div>
   </div>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- TITLE -->
+    <title>Asistentes | Semillero</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
+
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="/css/loading.css"/>
+    <!-- <link rel="stylesheet" href="../../static/css/loading.css" /> -->
+    <link href="/css/nav-static.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/nav-static.css" rel="stylesheet" /> -->
+    <link href="/css/asistentes.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/asistentes.css" rel="stylesheet" /> -->
+
+    <!-- GOOGLE ICONS -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+
+<body>
+<div th:replace="fragments/loading :: loader"></div>
+<nav th:replace="fragments/nav :: _nav"></nav>
+
+<main th:object="${event}">
+    <a th:href="@{/event/{eventId}(eventId=*{id})}" class="volver">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
+    </a>
+
+    <div class="asistentes-title">Semillas Asistentes</div>
+
+    <div class="evento-asistentes">
+        <div class="dato">
+            <span class="campo">Evento:</span>
+            <span class="valor" th:text="*{title}"></span>
+        </div>
+        <div class="dato">
+            <span class="campo">Fecha:</span>
+            <span class="valor" th:text="${#temporals.format(event.date, 'dd/MM/yyyy')}"></span>
+        </div>
+    </div>
+    
+    <!-- cambiar el <div> por <a> o <button> según funcione -->
+    <div class="descargar-asistentes">
+		<span class="material-symbols-outlined">download</span>
+		Descargar Asistentes
+	</div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre y Apellido</th>
+            <th>DNI / Pasaporte</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="attendance : ${attendances}">
+            <td th:text="${attendance.fullName}"></td>
+            <td th:text="${attendance.dni}"></td>
+        </tr>
+        </tbody>
+
+        <tfoot th:object="${attendances}">
+        <tr>
+            <td colspan="2" class="total-asistentes" th:text="${'Total asistentes: ' + attendances.size}"></td>
+        </tr>
+        </tfoot>
+    </table>
+</main>
+
+<div style="height: 20vh;"></div>
+
+<!-- SCRIPTS -->
+<script src="/js/loading.js"></script>
+<!-- <script src="../../static/js/loading.js"></script> -->
+<script src="/js/asistentes.js"></script>
+<!--<script src="../../static/js/asistentes.js"></script>-->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+</body>
+</html>

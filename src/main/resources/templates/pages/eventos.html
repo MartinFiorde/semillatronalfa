@@ -2,40 +2,386 @@
 
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <!-- TITLE -->
-  <title>EVENTOS | SIGIS</title>
+    <!-- TITLE -->
+    <title>Eventos | Semillero</title>
 
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="/img/logo.png" />
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
 
-  <!-- MATERIAL TAILWIND -->
-  <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
 
-  <!-- STYLES -->
-  <!-- <link href="/css/nav.css" rel="stylesheet" /> -->
-  <link href="../../static/css/nav.css" rel="stylesheet" />
-  <!-- <link href="/css/eventos.css" rel="stylesheet" /> -->
-  <link href="../../static/css/eventos.css" rel="stylesheet" />
-  
-  <!-- GOOGLE ICONS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- STYLES -->
+    <link href="/css/loading.css" rel="stylesheet"/>
+    <!-- <link rel="stylesheet" href="../../static/css/loading.css" /> -->
+    <link href="/css/nav.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/nav.css" rel="stylesheet" /> -->
+    <link href="/css/eventos.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/eventos.css" rel="stylesheet" /> -->
+
+    <!-- GOOGLE ICONS -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 </head>
 
 <body>
-  <nav th:replace="fragments/nav :: _nav"></nav>
+<div th:replace="fragments/loading :: loader"></div>
+<nav th:replace="fragments/nav :: _nav"></nav>
 
-  <main>
-  </main>
-  
-  <!-- SCRIPTS -->
-  <!-- <script src="/js/eventos.js"></script> -->
-  <script src="../../static/js/eventos.js"></script>
-  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
-  <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
-  <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+<main th:object="${events}">
+    <!-- ALERTAS -->
+    <!-- importacion -->
+    <div class="importacion-exito-container">
+        <div class="importacion-exito-box">
+            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
+            <!-- <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa"> -->
+            <span>Importación exitosa</span>
+        </div>
+    </div>
+    <div class="importacion-error-container">
+        <div class="importacion-error-box">
+            <img src="/img/icons/alert-error.svg" alt="Error">
+            <!-- <img src="../../static/img/icons/alert-error.svg" alt="Error"> -->
+            <span>Error en la importación</span>
+        </div>
+    </div>
+
+    <h1 class="titulo-eventos">Eventos</h1>
+    <hr class="separador">
+
+    <!-- éste ¬ solo mostrar cuando ya se haya recargado la pagina con los filtros aplicados o búsquedas hechas, se deshace de todo y muestra la tabla completa -->
+    <a id="a-browse-back" th:href="@{/event/list}" class="volver"
+       title="Deshacer filtros aplicados o búsquedas hechas" style="display: none">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
+    </a>
+    <!-- éste también ¬ solo mostrar cuando ya se haya recargado la pagina con los filtros aplicados o búsquedas hechas, se deshace de todo y muestra la tabla completa -->
+    <h2 id="h2-browse-result" style="display: none">Resultados de búsqueda</h2>
+
+    <div class="eventos-actions">
+        <a href="https://drive.google.com/uc?export=download&id=1UEvClspoRwfhpK5sV31RhniYKjuUAL9Z">
+            <button class="descargar-plantilla">
+                <span class="material-symbols-outlined">download</span>
+                Descargar plantilla
+            </button>
+        </a>
+
+        <div class="right-events-action">
+            <a href="http://localhost:8080/event/list?format=xlsx" style="display: none" id="download_event_a">
+                <span class="material-symbols-outlined">download</span>
+                Descargar Eventos
+            </a>
+            <label id="import-events-label" for="importarEventoArchivo" class="importar-eventos">
+                <span class="material-symbols-outlined">upload_file</span>
+                Importar Eventos
+            </label>
+            <input id="importarEventoArchivo" type="file"
+                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                   style="display: none;">
+
+            <a id="create-event-a" th:href="@{/event/create-event}" class="crear-nuevo-evento" style="display: none">
+                <span class="material-symbols-outlined">add_circle</span>
+                Crear nuevo Evento
+            </a>
+        </div>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <form class="form-search-bar" th:action="@{/event/list/filter}" th:object="${eventFilters}" method="get"
+          style="display: none" id="form-search-bar">
+        <input type="search" class="busqueda" placeholder="Buscar por Título, Instructor, Ubicación, Organizador"
+               th:field="*{searchBar}" autocomplete="off">
+        <button type="submit" class="material-symbols-outlined buscar">search</button>
+    </form>
+
+    <section class="real-container">
+        <!-- FILTROS -->
+        <aside class="left" style="display: none" id="aside-filter">
+            <h3 class="filtros-titulo">
+                <span class="material-symbols-outlined">filter_alt</span>
+                Filtros
+            </h3>
+            <form class="form-filtros" th:action="@{/event/list/filter}" th:object="${eventFilters}" method="get">
+                <div class="option filtro-estado">
+                    <div th:class="${eventFilters.status?.length == 0 ||
+                    eventFilters.status == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Estado</span>
+                        <div th:class="${eventFilters.status?.length == 0 ||
+                    eventFilters.status == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.status?.length == 0 ||
+                    eventFilters.status == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="planificado" name="estado"
+                                   th:field="*{status}" value="Planificado">
+                            <label for="planificado" class="label-filtro">Planificado</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="confirmado" name="estado"
+                                   th:field="*{status}" value="Confirmado">
+                            <label for="confirmado" class="label-filtro">Confirmado</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="terminado" name="estado"
+                                   th:field="*{status}" value="Terminado">
+                            <label for="terminado" class="label-filtro">Terminado</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="pospuesto" name="estado"
+                                   th:field="*{status}" value="Pospuesto">
+                            <label for="pospuesto" class="label-filtro">Pospuesto</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-facilitado">
+                    <div th:class="${eventFilters.offeredBySemillero?.length == 0 ||
+                    eventFilters.offeredBySemillero == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">¿Facilitado por Semillero?</span>
+                        <div th:class="${eventFilters.offeredBySemillero?.length == 0 ||
+                    eventFilters.offeredBySemillero == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.offeredBySemillero?.length == 0 ||
+                    eventFilters.offeredBySemillero == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="facilitadosi" name="facilitado"
+                                   value="true" th:field="*{offeredBySemillero}">
+                            <!--th:checked="${eventFilters.offeredBySemillero}">-->
+                            <label for="facilitadosi" class="label-filtro">Si</label>
+                        </div>
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="facilitadono" name="facilitado"
+                                   value="false" th:field="*{offeredBySemillero}">
+                            <!--th:checked="${eventFilters.offeredBySemillero == false}">-->
+                            <label for="facilitadono" class="label-filtro">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-enfoque">
+                    <div th:class="${eventFilters.approach?.length == 0 ||
+                    eventFilters.approach == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Enfoque</span>
+                        <div th:class="${eventFilters.approach?.length == 0 ||
+                    eventFilters.approach == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.approach?.length == 0 ||
+                    eventFilters.approach == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="formacion" name="enfoque"
+                                   th:field="*{approach}" value="Formación">
+                            <label for="formacion" class="label-filtro">Formación</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="integrsocial" name="enfoque"
+                                   th:field="*{approach}" value="Integración social">
+                            <label for="integrsocial" class="label-filtro">Integración social</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="sensib" name="enfoque"
+                                   th:field="*{approach}" value="Sensibilización">
+                            <label for="sensib" class="label-filtro">Sensibilización</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-tipo">
+                    <div th:class="${eventFilters.type?.length == 0 ||
+                    eventFilters.type == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Tipo</span>
+                        <div th:class="${eventFilters.type?.length == 0 ||
+                    eventFilters.type == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.type?.length == 0 ||
+                    eventFilters.type == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="present" name="tipo"
+                                   th:field="*{type}" value="Presentación de caso">
+                            <label for="present" class="label-filtro">Presentación de caso</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="taller" name="tipo"
+                                   th:field="*{type}" value="Taller">
+                            <label for="taller" class="label-filtro">Taller</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="expo" name="tipo"
+                                   th:field="*{type}" value="Exposición">
+                            <label for="expo" class="label-filtro">Exposición</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="conver" name="tipo"
+                                   th:field="*{type}" value="Conversatorio">
+                            <label for="conver" class="label-filtro">Conversatorio</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-origen">
+                    <div th:class="${eventFilters.origin?.length == 0 ||
+                    eventFilters.origin == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Origen</span>
+                        <div th:class="${eventFilters.origin?.length == 0 ||
+                    eventFilters.origin == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.origin?.length == 0 ||
+                    eventFilters.origin == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="interno" name="origen"
+                                   th:field="*{origin}" value="Interno">
+                            <label for="interno" class="label-filtro">Interno</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="externo" name="origen"
+                                   th:field="*{origin}" value="Externo">
+                            <label for="externo" class="label-filtro">Externo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-destinat">
+                    <div th:class="${eventFilters.destination?.length == 0 ||
+                    eventFilters.destination == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Destinatarios</span>
+                        <div th:class="${eventFilters.destination?.length == 0 ||
+                    eventFilters.destination == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.destination?.length == 0 ||
+                    eventFilters.destination == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="semill" name="destinat"
+                                   th:field="*{destination}" value="Semillero">
+                            <label for="semill" class="label-filtro">Semillero</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="quinto" name="destinat"
+                                   th:field="*{destination}" value="Quinto Impacto">
+                            <label for="quinto" class="label-filtro">Quinto Impacto</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="abierto" name="destinat"
+                                   th:field="*{destination}" value="Abierto">
+                            <label for="abierto" class="label-filtro">Abierto</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-modalidad">
+                    <div th:class="${eventFilters.modality?.length == 0 ||
+                    eventFilters.modality == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Modalidad</span>
+                        <div th:class="${eventFilters.modality?.length == 0 ||
+                    eventFilters.modality == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.modality?.length == 0 ||
+                    eventFilters.modality == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="online" name="modalidad"
+                                   th:field="*{modality}" value="Online">
+                            <label for="online" class="label-filtro">Online</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="presencial" name="modalidad"
+                                   th:field="*{modality}" value="Presencial">
+                            <label for="presencial" class="label-filtro">Presencial</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="mixta" name="modalidad"
+                                   th:field="*{modality}" value="Mixta">
+                            <label for="mixta" class="label-filtro">Mixta</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-evento-fecha">
+                    <div th:class="${eventFilters.fromDate == null &&
+                    eventFilters.untilDate == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Fecha</span>
+                        <div th:class="${eventFilters.fromDate == null &&
+                    eventFilters.untilDate == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.fromDate == null &&
+                    eventFilters.untilDate == null ? 'menu' : 'menu menu-open'}">
+                        <div class="both-fecha">
+                            <div class="filtro-fecha">
+                                <span class="campo">Desde</span>
+                                <input type="date" class="fecha" th:field="*{fromDate}">
+                            </div>
+                            <div class="filtro-fecha">
+                                <span class="campo">Hasta</span>
+                                <input type="date" class="fecha" th:field="*{untilDate}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-cantidad-asistentes">
+                    <div th:class="${eventFilters.totalAttendance == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Cantidad de asistentes</span>
+                        <div th:class="${eventFilters.totalAttendance == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${eventFilters.totalAttendance == null ? 'menu' : 'menu menu-open'}">
+                        <div class="both-fecha">
+                            <div class="filtro-asis">
+                                <span class="campo">Mayor a</span>
+                                <input type="number" class="asis" th:field="*{totalAttendance}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="aplicar">
+                    <button type="submit" class="aplicar-filtros" id="">Aplicar Filtros</button>
+                </div>
+            </form>
+        </aside>
+
+        <!-- TABS -->
+        <aside id="right-container" class="right">
+            <!-- <h3 class="no-results">NO SE ENCONTRARON RESULTADOS PARA "<mark>asdasd</mark>"</h3> -->
+
+            <div id="events-container-top" class="tabs-eventos">
+
+                <!-- tab -->
+                <div id="tab-events" class="tab"></div>
+            </div>
+        </aside>
+    </section>
+</main>
+
+<div style="height: 20vh;"></div>
+
+<!-- SCRIPTS -->
+<script src="/js/loading.js"></script>
+<!-- <script src="../../static/js/loading.js"></script> -->
+<script th:inline="javascript">
+    let events = [[${events}]];
+    let events_filters = [[${eventFilters}]];
+    // console.log(events);
+</script>
+<script src="/js/nav.js"></script>
+<!-- <script src="../../static/js/nav.js"></script> -->
+<script src="/js/eventos.js"></script>
+<!-- <script src="../../static/js/eventos.js"></script> -->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+<script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 </body>
 </html>

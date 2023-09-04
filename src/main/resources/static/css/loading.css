@@ -1,0 +1,67 @@
+/* LOADING */
+.loading-container {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background-color: var(--blanco2);
+    transition: opacity .25s, visibility 1s;
+    cursor: default;
+    z-index: 9999;
+}
+
+.loading {
+    display: grid;
+    place-items: center;
+    gap: 2.5rem;
+}
+
+.loading .loading-title {
+    font-size: 1.5rem;
+    user-select: none;
+}
+
+.loading .balls {
+    display: flex;
+    gap: .7rem;
+}
+
+.loading .balls .ball1,
+.loading .balls .ball2,
+.loading .balls .ball3 {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    animation: bounce 450ms alternate infinite;
+}
+
+.loading .balls .ball1 {
+    background-color: var(--verde-oscuro);
+    animation-delay: 150ms;
+}
+
+.loading .balls .ball2 {
+    background-color: var(--verde-claro);
+    animation-delay: 300ms;
+}
+
+.loading .balls .ball3 {
+    background-color: var(--naranja);
+    animation-delay: 500ms;
+}
+
+@keyframes bounce {
+    from {
+        transform: scaleX(1.25);
+    }
+    to {
+        transform: translateY(-30px) scaleX(1);
+    }
+}
+
+.loading-off {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* END LOADING */
