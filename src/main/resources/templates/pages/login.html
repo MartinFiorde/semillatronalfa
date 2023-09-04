@@ -1,60 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <!-- TITLE -->
-  <title>LOGIN</title>
+    <!-- TITLE -->
+    <title>Iniciar Sesión | Semillero</title>
 
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="/img/logo.png" />
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
 
-  <!-- STYLES -->
-  <link href="/css/login.css" rel="stylesheet" />
-  <!-- <link href="../../static/css/login.css" rel="stylesheet" /> -->
+    <!-- STYLES -->
+    <link rel="stylesheet" href="/css/loading.css"/>
+    <!-- <link rel="stylesheet" href="../../static/css/loading.css" /> -->
+    <link href="/css/login.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/login.css" rel="stylesheet" /> -->
 </head>
 
 <body>
-  <main class="main-login">
-    <img src="/img/recurso.png" alt="logo semillero" class="logo-bg-login">
+<div th:replace="fragments/loading :: loader"></div>
+<main class="main-login">
+    <img src="/img/recurso.png" alt="logo semillero" class="logo-bg-login"> 
     <!-- <img src="../../static/img/recurso.png" alt="logo semillero" class="logo-bg-login" /> -->
-    
+
+    <img src="/img/logo-quinto-blanco.svg" alt="logo_quinto" class="quinto-img-login">
+    <!-- <img src="../../static/img/logo-quinto-blanco.svg" alt="logo_quinto" class="quinto-img-login"> -->
+
     <div class="container-login">
-      <a th:href="@{/}" class="link-logo-title-login"><img src="/img/logo_banner.png" alt="Logo Semillero"/></a>
-      <!-- <a th:href="@{/}" class="link-logo-title-login"><img src="../../static/img/logo_banner.png" alt="Logo Semillero"/></a> -->
+        <div class="link-logo-title-login"><img src="/img/logo_banner.png" alt="Logo Semillero"/></div> 
+        <!-- <div class="link-logo-title-login"><img src="../../static/img/logo_banner.png" alt="Logo Semillero"/></div> -->
 
-      <form id="loginForm" method="POST">
-        <div class="user-box">
-          <label>Usuario</label>
-          <input id="username" class="user-input" type="text" name="username" />
-        </div>
+        <form id="loginForm" th:action="@{/login}" enctype="multipart/form-data" method="POST">
+            <div class="user-box">
+                <label>Usuario</label>
+                <input id="username" class="user-input" type="text" name="username" autocomplete="off"/>
+            </div>
 
-        <div class="password-box">
-          <label>Contraseña</label>
-          <div class="password-input-box">
-            <input id="password" class="password-input" type="password" name="password" />
-            <div class="password-control"></div>
-          </div>
-        </div>
+            <div class="password-box">
+                <label>Contraseña</label>
+                <div class="password-input-box">
+                	<input id="password" class="password-input" type="password" name="password" autocomplete="off"/>
+                	<div class="password-control"></div>
+                </div>
+            </div>
 
-        <div class="remindme-box">
-          <label class="check-switch">
-            <input type="checkbox" />
-            <span class="check"></span>
-          </label>
-          <label>Recordarme</label>
-        </div>
+            <div class="remindme-box">
+                <input type="checkbox" id="switch" class="remindme-input" />
+                <label for="switch" class="remindme-label"></label>
+                <label for="switch" class="remindme-text">Recordarme</label>
+            </div>
 
-        <button class="login-button" type="submit">Iniciar sesión</button>
-      </form>
+            <button class="login-button" type="submit">Iniciar sesión</button>
+        </form>
     </div>
-  </main>
+</main>
 
-  <!-- SCRIPTS -->
-  <script src="/js/login.js"></script>
-  <!-- <script src="../../static/js/login.js"></script> -->
+<!-- SCRIPTS -->
+<script src="/js/loading.js"></script>
+<!-- <script src="../../static/js/loading.js"></script> -->
+<script src="/js/login.js"></script>
+<!-- <script src="../../static/js/login.js"></script> -->
 </body>
 
 </html>

@@ -1,0 +1,104 @@
+nav {
+    /*position: fixed;
+    top: 0;*/
+    position: relative;
+    width: 100%;
+    height: 4.5rem;
+    background: var(--gris-oscuro2);
+    /* background-color: rgba(1, 1, 1, .2); */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 104px;
+    padding-right: 328px;
+    transition: top 200ms ease;
+    /*z-index: 98;*/
+}
+
+.container-nav-images a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.img_logo_nav {
+    width: 192px;
+}
+.img_quinto_nav {
+    width: 96px;
+}
+
+.left_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: none;
+}
+
+.links_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+    transition: none;
+}
+
+/* ESTILOS DE ITEMS PERSONALIZADOS EN CADA PLANTILLA CSS */
+
+.user {
+    position: absolute;
+    right: 50px;
+    margin-right: 5rem;
+    user-select: none;
+}
+
+.user .avatar {
+    width: 3rem;
+    height: 3rem;
+    background: var(--azul);
+    color: var(--blanco1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.user div {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user .name {
+    cursor: default;
+}
+
+.user div a {
+    color: var(--gris-oscuro);
+}
+
+.user div .logout {
+    padding: .3rem 1rem;
+    border: 1px solid var(--verde-oscuro);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--verde-oscuro);
+    font-weight: 500;
+    user-select: none;
+    cursor: pointer;
+}
+
+.user div .logout:hover {
+    border: 1px solid var(--verde-claro);
+    color: var(--verde-claro);
+}

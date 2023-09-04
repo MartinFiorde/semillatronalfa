@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- TITLE -->
+    <title>Editar Proyecto | Semillero</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
+
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="/css/loading.css"/>
+    <!-- <link rel="stylesheet" href="../../static/css/loading.css" /> -->
+    <link href="/css/nav-static.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/nav-static.css" rel="stylesheet" /> -->
+    <link href="/css/proyecto.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/proyecto.css" rel="stylesheet" /> -->
+
+    <!-- GOOGLE ICONS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+<div th:replace="fragments/loading :: loader"></div>
+<nav th:replace="fragments/nav :: _nav"></nav>
+
+<main th:object="${project}">
+    <!-- ALERTAS -->
+    <!-- eliminado -->
+    <div id="delete-success-container" class="eliminado-exito-container">
+        <div class="eliminado-exito-box">
+            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
+            <!--            <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa" />-->
+            <span>Observación eliminada con éxito</span>
+        </div>
+    </div>
+    <div id="delete-warn-container" class="eliminado-warn-container">
+        <div class="eliminado-warn-box">
+            <img src="/img/icons/alert-warn.svg" alt="Warn">
+            <!--            <img src="../../static/img/icons/alert-warn.svg" alt="Warn" />-->
+            <span>Estás por eliminar ésta Observación</span>
+            <span class="alert-text-small">¿Deseas continuar?</span>
+            <div class="alert-buttons">
+                <button>Cancelar</button>
+                <button>Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/project/list}" class="volver">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
+    </a>
+    <!--<button class="volver" onclick="goBack()">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
+    </button>-->
+
+    <div class="datos-proyecto">
+        <!-- top -->
+        <div class="flex-top">
+            <div class="nombre">
+                <span class="static-campo">Proyecto:</span>
+                <span class="static-valor" th:text="*{projectName}"></span>
+            </div>
+        </div>
+
+        <!-- mid -->
+        <div class="flex-mid">
+            <!-- izquierda -->
+            <div class="flex-mid-left">
+                <div class="aliado">
+                    <span class="static-campo">Aliado:</span>
+                    <span class="static-valor" th:text="*{ally}"></span>
+                </div>
+
+                <div class="tiempo-estimado">
+                    <span class="static-campo">Tiempo estimado:</span>
+                    <span class="static-valor" th:text="*{estimatedTime}"></span>
+                </div>
+
+                <div class="fecha-inicio">
+                    <span class="static-campo">Fecha de inicio:</span>
+                    <span class="static-valor" th:text="${#temporals.format(project.initialDate, 'dd/MM/yyyy')}"></span>
+                </div>
+
+                <div class="fecha-finalizacion">
+                    <span class="static-campo">Fecha de finalización:</span>
+                    <span class="static-valor" th:text="${#temporals.format(project.endingDate, 'dd/MM/yyyy')}"></span>
+                </div>
+            </div>
+
+            <!-- derecha -->
+            <div class="flex-mid-right">
+                <div class="comision">
+                    <span class="static-campo">Comisión:</span>
+                    <span class="static-valor" th:text="*{commission}"></span>
+                </div>
+
+                <div class="pm">
+                    <span class="static-campo">PM:</span>
+                    <span class="static-valor" th:text="${project.projectManagerFullName != null
+                    ? project.projectManagerFullName : 'Por definir...' }"></span>
+                </div>
+
+                <div class="po">
+                    <span class="if static-campo">PO:</span>
+                    <span class="static-valor" th:text="*{productOwnerFullName}"></span>
+                </div>
+
+                <div class="estado">
+                    <span class="static-campo">Estado:</span>
+                    <span class="static-valor valor-estado green" th:text="*{projectStatus + ' - ' + projectStage}"
+                          th:classappend="${project.projectStatus.toUpperCase() == 'ACTIVO' ? 'green' :
+                          (project.projectStatus.toUpperCase() == 'PAUSADO' ? 'orange' :
+                          (project.projectStatus.toUpperCase() == 'CERRADO' ? 'blue' : 'red'))}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="form-all-items">
+        <!-- observaciones -->
+        <div class="observaciones-container">
+            <div class="observaciones-menu active">Observación
+                <span class="material-symbols-outlined observaciones-arrow active">arrow_drop_down</span>
+            </div>
+
+            <div class="observaciones-form-container active">
+                <div class="observaciones-form">
+                    <textarea autocomplete="off" placeholder="Agregar observación (opcional)"></textarea>
+                    <button type="submit" title="Los formularios también se van a guardar" class="observaciones-submit">
+                        Guardar cambios
+                    </button>
+                </div>
+            </div>
+        </div>  
+        
+        <!-- tabs proyecto -->
+        <div class="tabs-proyecto">
+            <!-- tab datos personales -->
+            <input type="radio" class="radio-chip" name="tabs" id="aliado" checked="checked">
+            <label for="aliado" class="label-chip">
+                <span class="material-symbols-outlined">handshake</span>
+                <span class="titulo-chip">Aliado</span>
+            </label>
+            <div class="tab tab-aliado">
+                <span class="editando-titulo">Editar campos</span>
+    
+                <div class="columns-container">
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Nombre de la Organización</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">ODS</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Lugar de Origen</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Marca temporal</span>
+                                <input type="datetime-local" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <h2>Datos de contacto</h2>
+                    
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Apellido y Nombre del responsable de la Organización</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Dirección laboral</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Teléfono</span>
+                                <input type="text" class="dato-input" pattern="[0-9+]+"
+                                   autocomplete="off" title="SIN ESPACIOS NI LETRAS" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Correo electrónico</span>
+                                <input type="email" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- tab proposito -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabproposito">
+            <label for="tabproposito" class="label-chip">
+                <span class="material-symbols-outlined">flag</span>
+                <span class="titulo-chip">Propósito</span>
+            </label>
+            <div class="tab tab-proposito">
+                <div class="desc-proposito">
+                        <span>Descripción del Propósito del Proyecto</span>
+                        <textarea id="desc-proposito" autocomplete="off" placeholder="Agregar nota (opcional)"></textarea>
+                    </div>
+                
+                <a id="editar-proposito" class="modificar-button">Editar Propósito</a>
+            </div>
+    
+            <!-- tab tipo de proyecto -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabtipoproyecto">
+            <label for="tabtipoproyecto" class="label-chip">
+                <span class="material-symbols-outlined">folder_managed</span>
+                <span class="titulo-chip">Tipo de Proyecto</span>
+            </label>
+            <div class="tab tab-tipo-proyecto">
+                <span class="editando-titulo">Selección de Tipo de Proyecto a desarrollar</span>
+
+                <div class="form-radio">
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="calculadora" name="tipoproyecto" value="Calculadora de complejidad baja">
+                        <label for="calculadora" class="label-editando">Calculadora de complejidad baja</label>
+                    </div>
+
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="sgisgi" name="tipoproyecto" value="Sistema de Gestión de Individuos (clientes, estudiantes, empresas, etc.)">
+                        <label for="sgisgi" class="label-editando">Sistema de Gestión de Individuos (clientes, estudiantes, empresas, etc.)</label>
+                    </div>
+
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="sgatsgat" name="tipoproyecto" value="Sistema de Gestión Administrativa y Trazabilidad (stock, pagos, mercadería, transporte, turnos, préstamos, mantenimiento, etc.)">
+                        <label for="sgatsgat" class="label-editando">Sistema de Gestión Administrativa y Trazabilidad (stock, pagos, mercadería, transporte, turnos, préstamos, mantenimiento, etc.)</label>
+                    </div>
+
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="sacfsacf" name="tipoproyecto" value="Sistema de Administración de cursos y formación (talleres, charlas, asistencias, etc)">
+                        <label for="sacfsacf" class="label-editando">Sistema de Administración de cursos y formación (talleres, charlas, asistencias, etc)</label>
+                    </div>
+
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="landpge" name="tipoproyecto" value="Landing Page básica">
+                        <label for="landpge" class="label-editando">Landing Page básica</label>
+                    </div>
+
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="webboth" name="tipoproyecto" value="Página Web de 2 o más secciones">
+                        <label for="webboth" class="label-editando">Página Web de 2 o más secciones</label>
+                    </div>
+
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="webventa" name="tipoproyecto" value="Página Web tipo catálogo y/o ventas">
+                        <label for="webventa" class="label-editando">Página Web tipo catálogo y/o ventas</label>
+                    </div>
+
+                    <div class="rol-option">
+                        <input type="radio" class="radio-editando" id="socialred" name="tipoproyecto" value="Red social de complejidad baja">
+                        <label for="socialred" class="label-editando">Red social de complejidad baja</label>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- tab cronograma -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabcronograma">
+            <label for="tabcronograma" class="label-chip">
+                <span class="material-symbols-outlined">calendar_month</span>
+                <span class="titulo-chip">Cronograma</span>
+            </label>
+            <div class="tab tab-cronograma">
+                <span class="editando-titulo">Edición del Cronograma del Proyecto</span>
+    
+                <div class="columns-container">
+                    <!-- top -->
+                    <div class="tab-columns">
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Tiempo estimado</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- bot -->
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Fecha de Inicio</span>
+                                <input type="date" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Fecha de Finalización</span>
+                                <input type="date" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- tab estado -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabestado">
+            <label for="tabestado" class="label-chip">
+                <span class="material-symbols-outlined">bookmark_manager</span>
+                <span class="titulo-chip">Estado</span>
+            </label>
+            <div class="tab tab-estado">
+                <div class="estados-container">
+                    <ul class="estados">
+                        <li class="caret-down"><span style="width:22.35ch;"class="caret-down">Estado del Proyecto</span>
+                            <ul>
+                                <li><span class="caret-right">Activo</span>
+                                    <ul>
+                                        <li><span class="largo border-left">Relevamiento y reuniones iniciales</span>
+                                        <li><span class="largo border-left">Desarrollo de Aplicación</span>
+                                        <li><span class="largo border-left">Armado de testimoniales</span>
+                                        <li><span class="largo border-left">Demo final en servidor de prueba</span>
+                                    </ul>
+                                </li>
+                                <li><span class="caret-right">Pausado</span>
+                                    <ul>
+                                        <li><span class="extra-largo border-left">Propuesta con relevamiento inicial que no se inicia</span>
+                                        <li><span class="extra-largo border-left">Proyecto pausado por pedido</span>
+                                    </ul>
+                                </li>
+                                <li><span class="caret-right">Cerrado</span>
+                                    <ul>
+                                        <li><span class="largo border-left">Difusión de testimoniales realizada</span>
+                                        <li><span class="largo border-left">Intercambio de reciprocidad</span>
+                                        <li><span class="largo border-left">Medición de impacto a largo plazo</span>
+                                    </ul>
+                                </li>
+                                <li><span class="caret-right">Descartado</span>
+                                    <ul>
+                                        <li><span class="extra-extra-largo border-left">Propuesta no pasó a relevamiento </span>
+                                        <li><span class="extra-extra-largo border-left">Propuesta dada de baja en relevamiento</span>
+                                        <li><span class="extra-extra-largo border-left">Propuesta no se inicia, sin relevamiento inicial y ausencia de PO</span>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="input-modified-project-status-container" class="basic-actual basic-estado">
+                    <input id="input-modified-status" type="text" name="projectstate" class="input-estado" readonly>
+                </div>
+            </div>
+    
+            <!-- tab equipo gestion -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabcertificado">
+            <label for="tabcertificado" class="label-chip">
+                <span class="material-symbols-outlined">patient_list</span>
+                <span class="titulo-chip">Equipo de Gestión</span>
+            </label>
+            <div class="tab tab-equipo-gestion">
+                <span class="editando-titulo">Editar campos</span>
+                
+                <div class="columns-container-editando">
+                    <h2>Product Owner (PO)</h2>
+    
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Nombre y Apellido</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Discord</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Teléfono</span>
+                                <input type="text" class="dato-input" pattern="[0-9+]+"
+                                   autocomplete="off" title="SIN ESPACIOS NI LETRAS" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Correo electrónico</span>
+                                <input type="email" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <hr style="width: 95%;border-color:var(--verde-oscuro);">
+                    <h2>Project Manager (PM)</h2>
+    
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Nombre y Apellido</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Discord</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Teléfono</span>
+                                <input type="text" class="dato-input" pattern="[0-9+]+"
+                                   autocomplete="off" title="SIN ESPACIOS NI LETRAS" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Correo electrónico</span>
+                                <input type="email" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <hr style="width: 95%;border-color:var(--verde-oscuro);">
+                    <h2>Technical Leader (TL)</h2>
+    
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Nombre y Apellido</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Discord</span>
+                                <input type="text" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Teléfono</span>
+                                <input type="text" class="dato-input" pattern="[0-9+]+"
+                                   autocomplete="off" title="SIN ESPACIOS NI LETRAS" required>
+                            </div>
+                            <div class="dato-editable">
+                                <span class="dato-campo">Correo electrónico</span>
+                                <input type="email" class="dato-input" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- tab equipo desarrollo -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabaequipodesarrollo" disabled>
+            <label for="tabaequipodesarrollo" class="label-chip" data-tooltip="Ésta información se edita desde el apartado 'SEMILLA' (Proyectos Asignados)" style="cursor:not-allowed">
+                <span class="material-symbols-outlined">groups</span>
+                <span class="titulo-chip">Equipo de Desarrollo</span>
+            </label>
+            <div class="tab tab-equipo-desarrollo">
+            </div>
+        </div>
+
+        <!-- buttons edition control -->
+        <div class="form-send">
+            <a class="cancel">Cancelar</a>
+            <button form="form-all-items" type="submit"
+                    title="Observaciones generales también se van a guardar" class="guardar">
+                Guardar cambios
+            </button>
+        </div>
+    </form>
+</main>
+
+<div style="height: 20vh"></div>
+
+<!-- SCRIPTS -->
+<script src="/js/loading.js"></script>
+<!-- <script src="../../static/js/loading.js"></script> -->
+<script src="/js/proyecto.js"></script>
+<!-- <script src="../../static/js/proyecto.js"></script> -->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+<!-- <script th:inline="javascript">
+let seed = [[${seed}]];
+console.log(seed)
+</script> -->
+</body>
+</html>

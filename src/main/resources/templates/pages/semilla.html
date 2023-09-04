@@ -1,263 +1,474 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <!-- TITLE -->
-  <title>SEMILLA | SIGIS</title>
+    <!-- TITLE -->
+    <title>Semilla | Semillero</title>
 
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="/img/logo.png" />
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
 
-  <!-- MATERIAL TAILWIND -->
-  <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
 
-  <!-- STYLES -->
-  <link href="/css/nav.css" rel="stylesheet" />
-  <!-- <link href="../../static/css/nav.css" rel="stylesheet" /> -->
-  <link href="/css/semilla.css" rel="stylesheet" />
-  <!-- <link href="../../static/css/semilla.css" rel="stylesheet" /> -->
+    <!-- STYLES -->
+    <link rel="stylesheet" href="/css/loading.css"/>
+    <!-- <link rel="stylesheet" href="../../static/css/loading.css" /> -->
+    <link href="/css/nav-static.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/nav-static.css" rel="stylesheet" /> -->
+    <link href="/css/semilla.css" rel="stylesheet"/>
+    <!-- <link href="../../static/css/semilla.css" rel="stylesheet" /> -->
 
-  <!-- GOOGLE ICONS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- GOOGLE ICONS -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 </head>
 
 <body>
-  <nav th:replace=" fragments/nav :: _nav"></nav>
+<div th:replace="fragments/loading :: loader"></div>
+<nav th:replace="fragments/nav :: _nav"></nav>
 
-  <main th:object="${seed}">
+<main th:object="${seedDTO}">
+    <!-- ALERTAS -->
+    <!-- eliminado -->
+    <div id="delete-success-container" class="eliminado-exito-container">
+        <div class="eliminado-exito-box">
+            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
+            <!--            <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa">-->
+            <span>Observación eliminada con éxito</span>
+        </div>
+    </div>
+    <div id="delete-warn-container" class="eliminado-warn-container">
+        <div class="eliminado-warn-box">
+            <img src="/img/icons/alert-warn.svg" alt="Warn">
+            <!--            <img src="../../static/img/icons/alert-warn.svg" alt="Warn">-->
+            <span>Estás por eliminar ésta Observación</span>
+            <span class="alert-text-small">¿Deseas continuar?</span>
+            <div class="alert-buttons">
+                <button>Cancelar</button>
+                <button>Eliminar</button>
+            </div>
+        </div>
+    </div>
+
     <a th:href="@{/seed/list}" class="volver">
-      <span class="material-symbols-outlined">arrow_back</span>
-      <span>Volver</span>
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
     </a>
+    <!--<button class="volver" onclick="goBack()">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
+    </button>-->
 
     <div class="datos-semilla">
-      <div class="nombre">
-        <span class="campo">Nombre y Apellido:</span>
-        <span class="valor" th:text="${seed.personalData.firstName} + ' ' + ${seed.personalData.lastName}"></span>
-      </div>
+        <!-- top -->
+        <div class="flex-top">
+            <div class="nombre">
+                <span class="static-campo">Apellido y nombre:</span>
+                <span class="static-valor" th:text="*{firstName}"></span>
+            </div>
+        </div>
 
-      <div class="telefono">
-        <span class="campo">Teléfono:</span>
-        <span class="valor" th:text="${seed.contactData.telephone}"></span>
-      </div>
+		<!-- mid -->
+        <div class="flex-mid">
+	        <!-- izquierda -->
+            <div class="flex-mid-left">
+                <div class="rol">
+                    <span class="static-campo">Rol:</span>
+                    <span class="static-valor" th:text="*{rol}"></span>
+                </div>
 
-      <div class="rol">
-        <span class="campo">Rol:</span>
-        <span class="valor" th:text="${seed.postulationData.rol}"></span>
-      </div>
+                <div class="comision">
+                    <span class="static-campo">Comisión:</span>
+                    <span class="static-valor" th:text="*{commission}"></span>
+                </div>
 
-      <div class="estado">
-        <span class="campo">Estado:</span>
-        <span class="valor" th:text="${seed.followUp.status.primary} + ' - ' + ${seed.followUp.status.secondary}"></span>
-      </div>
+                <div class="turno">
+                    <span class="static-campo">Turno:</span>
+                    <span class="static-valor" th:text="*{turn}"></span>
+                </div>
+            </div>
 
-      <div class="comision">
-        <span class="campo">Comisión:</span>
-        <span class="valor" th:text="${seed.followUp.commission}"></span>
-      </div>
-      
-      <div class="certificado">
-        <span class="campo">Certificado:</span>
-        <th:block th:if="${seed.followUp.certification}">
-          <span class="valor">Enviado</span>
-        </th:block>
-        <th:block th:unless="${seed.followUp.certification}">
-          <span class="valor">No enviado</span>
-        </th:block>
-      </div>
+            <!-- derecha -->
+            <div class="flex-mid-right">
+                <div class="telefono">
+                    <span class="static-campo">Teléfono:</span>
+                    <span class="static-valor" th:text="*{telephone}"></span>
+                </div>
 
-      <div class="turno">
-        <span class="campo">Turno:</span>
-        <span class="valor" th:text="${seed.postulationData.turn}"></span>
-      </div>
+                <div class="estado">
+                    <span class="static-campo">Estado:</span>
+                    <span th:text="${seedDTO.secondary == null || seedDTO.secondary == ''
+						? seedDTO.primary : seedDTO.primary + ' - ' + seedDTO.secondary}"
+                          th:class="${seedDTO.secondary.toUpperCase() == 'EN ESPERA DE PROYECTO' ||
+                        seedDTO.secondary.toUpperCase() == 'ASIGNADA A PROYECTO' ||
+                        seedDTO.secondary.toUpperCase() == 'NO DISPONIBLE TEMPORALMENTE'
+                        ? 'green static-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO - NO EN IT' ||
+                        seedDTO.secondary.toUpperCase() == 'ABANDONÓ'
+                        ? 'red static-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO' ||
+                        seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA' ||
+                        seedDTO.primary.toUpperCase() == 'FINALIZÓ PROYECTO'
+                        ? 'blue static-valor' : 'black static-valor'))}"></span>
+                </div>
+
+                <!-- display-none en caso de no estar asignado a ningún proyecto -->
+                <div class="ifestado" th:if="${seedDTO.projectName != null || seedDTO.projectName != ''}">
+                    <span class="if static-campo">Proyecto:</span>
+                    <span class="if static-valor valor-large" th:text="*{projectName}"></span>
+                </div>
+
+                <div class="certificado">
+                    <span class="static-campo">Certificado:</span>
+                    <th:block th:unless="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
+                        <span class="static-valor si"
+                              th:if="${seedDTO.certificationString.toUpperCase() == 'ENVIADO'}">Enviado</span>
+                        <span class="static-valor no"
+                              th:if="${seedDTO.certificationString.toUpperCase() == 'NO ENVIADO'}">No enviado</span>
+                    </th:block>
+                    <th:block th:if="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
+                        <span class="static-valor no">No enviado</span>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+        
+        <!-- bot -->
+        <div class="flex-bot">
+            <div class="invitaciones">
+                <span class="static-campo">Invitaciones a Eventos:</span>
+                <span class="static-valor"></span>
+            </div>
+            <div class="asistencias">
+				<span class="static-campo">Asistencias:</span>
+				<span class="static-valor"></span>
+			</div>
+            <div class="porcentaje">
+				<span class="static-campo">Porcentaje de asistencia:</span>
+				<span class="static-valor"></span>
+			</div>
+        </div>
     </div>
 
     <!-- observaciones -->
-    <button class="observaciones-menu">Observaciones generales
-      <span class="material-symbols-outlined observaciones-arrow">arrow_drop_down</span>
-    </button>
-    
-    <div class="observaciones-form-container">
-      <form class="observaciones-form">
-        <textarea name="observacion" cols="1" rows="4"></textarea>
-        <button class="observaciones-submit" type="submit">Enviar</button>
-      </form>
+    <div class="observaciones-container">
+        <div class="observaciones-menu">Observación
+            <span class="material-symbols-outlined observaciones-arrow">arrow_drop_down</span>
+        </div>
+
+        <!-- observacion + editar o eliminar -->
+        <div class="observaciones-form-container"
+             th:unless="${seedDTO.observation == null || seedDTO.observation == ''}">
+            <div class="observaciones-list">
+                <div class="observacion">
+                    <span class="text" th:text="*{observation}"></span>
+                </div>
+
+                <button data-ripple-light="true" data-popover-target="popover-bottom-end"
+                        class="options material-symbols-outlined">more_vert
+                </button>
+                <div data-popover="popover-bottom-end" data-popover-placement="bottom-end" class="options-box w-max">
+                    <a th:href="@{/seed/update/{id}(id=*{id})}">
+                        <button>Editar</button>
+                    </a>
+                    <a>
+                        <button>Eliminar</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- sin observaciones + agregar -->
+        <div class="observaciones-form-container" th:if="${seedDTO.observation == null || seedDTO.observation == ''}">
+            <div class="sin-observaciones">
+                <div class="observacion">
+                    <span class="text">Sin observaciones</span>
+                </div>
+            </div>
+            <a th:href="@{/seed/update/{id}(id=*{id})}" class="observacion-agregar">Agregar</a>
+        </div>
     </div>
 
     <!-- tabs semilla -->
     <div class="tabs-semilla">
+        <!-- tab datos personales -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabdatospersonales" checked="checked">
+        <label for="tabdatospersonales" class="label-chip">
+            <span class="material-symbols-outlined">person</span>
+            <span class="titulo-chip">Datos personales</span>
+        </label>
+        <div class="tab tab-datos-personales">
+            <a id="editar-datos-personales" class="material-symbols-outlined editar-datos-pen"
+               th:href="@{/seed/update/{id}(id=*{id})}">edit_square</a>
 
-      <!-- tab datos personales -->
-      <input type="radio" name="tabs" id="tabdatospersonales" checked="checked">
-      <label for="tabdatospersonales">
-        <span class="material-symbols-outlined">person</span>
-        <span>Datos personales</span>
-      </label>
-      <div class="tab tab-datos-personales">
-        <div>
-          <span class="tab-campo">Fecha de nacimiento</span>
-          <span class="tab-valor" th:text="${seed.personalData.birthDate}"></span>
+            <!-- columns -->
+            <div class="tab-columns">
+                <!-- left -->
+                <div class="tab-left">
+                    <div class="dato">
+                        <span class="dato-campo">Apellido y nombre</span>
+                        <span class="dato-valor" th:text="*{firstName}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">Fecha de nacimiento</span>
+                        <span class="dato-valor" th:text="${#temporals.format(seedDTO.birthDate, 'dd/MM/yyyy')}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">Género</span>
+                        <span class="dato-valor" th:text="*{gender}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">Provincia</span>
+                        <span class="dato-valor" th:text="*{city}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">¿Cómo conoció al semillero?</span>
+                        <span class="dato-valor" th:text="*{meetSemilleroBy}"></span>
+                    </div>
+                </div>
+
+                <!-- right -->
+                <div class="tab-right">
+                    <div class="dato">
+                        <span class="dato-campo">DNI / Pasaporte</span>
+                        <span class="dato-valor" th:text="*{dni}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">Marca temporal</span>
+                        <span class="dato-valor"
+                              th:text="*{#temporals.format(postulationDate, 'dd/MM/yyyy | HH:mm:ss')}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">País</span>
+                        <span class="dato-valor" th:text="*{country}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">Otros estudios</span>
+                        <span class="dato-valor" th:text="*{studies}"></span>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div>
-          <span class="tab-campo">DNI / Pasaporte</span>
-          <span class="tab-valor" th:text="${seed.personalData.dni}"></span>
+
+        <!-- tab datos de contacto -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabdatosdecontacto">
+        <label for="tabdatosdecontacto" class="label-chip">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="titulo-chip">Datos de contacto</span>
+        </label>
+        <div class="tab tab-datos-de-contacto">
+            <a id="editar-datos-de-contacto" class="material-symbols-outlined editar-datos-pen"
+               th:href="@{/seed/update/{id}(id=*{id})}">edit_square</a>
+
+            <!-- columns -->
+            <div class="tab-columns">
+                <!-- left -->
+                <div class="tab-left">
+                    <div class="dato">
+                        <span class="dato-campo">Teléfono</span>
+                        <span class="dato-valor" th:text="*{telephone}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">Discord</span>
+                        <span class="dato-valor" th:text="*{discordUser}"></span>
+                    </div>
+                </div>
+
+                <!-- right -->
+                <div class="tab-right">
+                    <div class="dato">
+                        <span class="dato-campo">Correo electrónico</span>
+                        <span class="dato-valor" th:text="*{email}"></span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-campo">LinkedIn</span>
+                        <span class="dato-valor" th:text="*{linkedin}"></span>
+                    </div>
+                </div>
+            </div>
         </div>
-  
-        <div>
-          <span class="tab-campo">Género</span>
-          <span class="tab-valor" th:text="${seed.personalData.gender}"></span>
+
+        <!-- tab modificar rol -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabmodificarrol">
+        <label for="tabmodificarrol" class="label-chip">
+            <span class="material-symbols-outlined">desktop_windows</span>
+            <span class="titulo-chip">Rol</span>
+        </label>
+        <div class="tab tab-modificar-rol">
+            <div class="basic-actual">
+                <span class="basic-campo">Rol actual:</span>
+                <span class="basic-valor vacio"
+                      th:if="${seedDTO.rol == null || seedDTO.rol == ''}">Sin rol especificado</span>
+                <span class="basic-valor" th:unless="${seedDTO.rol == null || seedDTO.rol == ''}"
+                      th:text="*{rol}"></span>
+            </div>
+            <a id="editar-rol" class="modificar-button"
+               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Rol</a>
         </div>
-  
-        <div>
-          <span class="tab-campo">Ciudad</span>
-          <span class="tab-valor" th:text="${seed.personalData.city}"></span>
+
+        <!-- tab modificar turno -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabmodificarturno">
+        <label for="tabmodificarturno" class="label-chip">
+            <span class="material-symbols-outlined">schedule</span>
+            <span class="titulo-chip">Turno</span>
+        </label>
+        <div class="tab tab-asignar-proyecto">
+            <div class="basic-actual">
+                <span class="basic-campo">Turno actual:</span>
+                <span class="basic-valor vacio" th:if="${seedDTO.turn == null || seedDTO.turn == ''}">Sin turno especificado</span>
+                <span class="basic-valor" th:unless="${seedDTO.turn == null || seedDTO.turn == ''}"
+                      th:text="*{turn}"></span>
+            </div>
+            <a id="editar-turno" class="modificar-button"
+               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Turno</a>
         </div>
-  
-        <div>
-          <span class="tab-campo">Provincia</span>
-          <span class="tab-valor" th:text="${seed.personalData.city}"></span>
+
+        <!-- tab modificar estado -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabmodificarestado">
+        <label for="tabmodificarestado" class="label-chip">
+            <span class="material-symbols-outlined">manage_accounts</span>
+            <span class="titulo-chip">Estado</span>
+        </label>
+        <div class="tab tab-modificar-estado">
+            <div class="basic-actual">
+                <span class="basic-campo">Estado actual: </span>
+                <span th:text="${seedDTO.secondary == null || seedDTO.secondary == ''
+                        ? seedDTO.primary : seedDTO.primary + ' - ' + seedDTO.secondary}"
+                      th:class="${seedDTO.secondary.toUpperCase() == 'EN ESPERA DE PROYECTO' ||
+                        seedDTO.secondary.toUpperCase() == 'ASIGNADA A PROYECTO' ||
+                        seedDTO.secondary.toUpperCase() == 'NO DISPONIBLE TEMPORALMENTE'
+                        ? 'green basic-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO - NO EN IT' ||
+                        seedDTO.secondary.toUpperCase() == 'ABANDONÓ'
+                        ? 'red basic-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO' ||
+                        seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA' ||
+                        seedDTO.primary.toUpperCase() == 'FINALIZÓ PROYECTO'
+                        ? 'blue basic-valor' : 'black basic-valor'))}"></span>
+            </div>
+
+            <!-- NO HAY BOX: consiguió trabajo SI en IT pasó a quinto // asignada a proyecto // en espera de proyecto -->
+
+            <!-- SI VA BOX: no disponible temporalmente // consiguió trabajo NO en IT // abandonó // finalizó prpyecto // redefinir -->
+            <div id="box-status-comments" class="comentario-estado"
+                 th:if="${seedDTO.secondary.toUpperCase() == 'NO DISPONIBLE TEMPORALMENTE' ||
+                        seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO - NO EN IT' ||
+                        seedDTO.secondary.toUpperCase() == 'ABANDONÓ' ||
+                        seedDTO.primary.toUpperCase() == 'FINALIZÓ PROYECTO' ||
+                        seedDTO.primary.toUpperCase() == 'REDEFINIR'}">
+                <span>Comentarios del Estado actual de la Semilla</span>
+                <p id="input-comentario-estado" th:text="*{companyName}"></p>
+            </div>
+
+            <!-- BOX CON TITULO DIFERENTE: consiguió trabajo SI en IT en otra empresa -->
+            <div id="box-enterprise-name" class="comentario-estado"
+                 th:if="${seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA'}">
+                <span>Nombre de la empresa</span>
+                <p id="input-empresa-estado" th:text="*{companyName}"></p>
+            </div>
+
+            <a id="editar-estado" class="modificar-button"
+               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Estado</a>
         </div>
-  
-        <div>
-          <span class="tab-campo">País</span>
-          <span class="tab-valor" th:text="${seed.personalData.country}"></span>
+
+        <!-- tab asignar proyecto -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabasignarproyecto">
+        <label for="tabasignarproyecto" class="label-chip">
+            <span class="material-symbols-outlined">assignment_add</span>
+            <span class="titulo-chip">Proyecto</span>
+        </label>
+        <div class="tab tab-asignar-proyecto">
+            <div class="basic-actual">
+                <span class="basic-campo">Proyecto asignado:</span>
+                <span class="basic-valor vacio" th:if="${seedDTO.projectName == null || seedDTO.projectName == ''}">
+                    No pertenece a ningún proyecto</span>
+                <span class="basic-valor" th:unless="${seedDTO.projectName == null || seedDTO.projectName == ''}"
+                      th:text="*{projectName}"></span>
+            </div>
+            <!-- <a class="modificar-button-disabled">Próximamente...</a> -->
+            <a id="editar-proyecto" class="modificar-button"
+               th:href="@{/seed/update/{id}(id=*{id})}">Asignar Proyecto</a>
         </div>
-  
-        <div>
-          <span class="tab-campo">Marca temporal</span>
-          <span class="tab-valor" th:text="${seed.followUp.postulationDate}"></span>
+
+        <!-- tab certificado -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabcertificado">
+        <label for="tabcertificado" class="label-chip">
+            <span class="material-symbols-outlined">workspace_premium</span>
+            <span class="titulo-chip">Certificado</span>
+        </label>
+        <div class="tab tab-certificado">
+            <div class="basic-actual">
+                <span class="basic-campo" style="color: #171717;">Certificado de participación:</span>
+                <th:block th:unless="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
+                    <span class="basic-valor si"
+                          th:if="${seedDTO.certificationString.toUpperCase() == 'ENVIADO'}">Enviado</span>
+                    <span class="basic-valor no"
+                          th:if="${seedDTO.certificationString.toUpperCase() == 'NO ENVIADO'}">No enviado</span>
+                </th:block>
+                <th:block th:if="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
+                    <span class="basic-valor no">No enviado</span>
+                </th:block>
+            </div>
+            <a id="editar-certificado" class="modificar-button"
+               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Certificación</a>
         </div>
-  
-        <div>
-          <span class="tab-campo">¿Cómo conoció al semillero?</span>
-          <span class="tab-valor" th:text="${seed.postulationData.meetSemilleroBy}"></span>
+
+        <!-- tab recomendada -->
+        <input type="radio" class="radio-chip" name="tabs" id="tabrecomendada">
+        <label for="tabrecomendada" class="label-chip">
+            <span class="material-symbols-outlined">star</span>
+            <span class="titulo-chip">Recomendada</span>
+        </label>
+        <div class="tab tab-recomendada">
+            <div class="basic-actual">
+                <span class="basic-valor"
+                      th:if="${seedDTO.recommendationString == null ||
+                      seedDTO.recommendationString == ''}">Sin especificar...</span>
+                <th:block th:unless="${seedDTO.recommendationString == null ||
+                      seedDTO.recommendationString == ''}">
+                    <span class="basic-valor si"
+                          th:if="${seedDTO.recommendationString.toUpperCase() == 'SI'}">Semilla recomendada</span>
+                    <span class="basic-valor no"
+                          th:if="${seedDTO.recommendationString.toUpperCase() == 'NO'}">Semilla no recomendada</span>
+                </th:block>
+            </div>
+
+            <!-- SI NO HAY NOTA AUN, NO SE MUESTRA ÉSTE DIV -->
+            <div class="nota-recomendada" th:unless="${seedDTO.recommendationComment == null ||
+            seedDTO.recommendationComment == ''}">
+                <span>¿Cómo fue el desempeño de la Semilla?</span>
+                <p th:text="*{recommendationComment}"></p>
+            </div>
+            <!-- BOTON SE MUESTRA UNA ÚNICA VEZ, ESTE DATO NO ES MODIFICABLE -->
+            <a id="editar-recomendada" class="modificar-button"
+               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Recomendación</a>
         </div>
-  
-        <div>
-          <span class="tab-campo">Otros estudios</span>
-          <span class="tab-valor" th:text="${seed.postulationData.studies}"></span>
-        </div>
-      </div>
-      
-      <!-- tab datos de contacto -->
-      <input type="radio" name="tabs" id="tabdatosdecontacto">
-      <label for="tabdatosdecontacto">
-        <span class="material-symbols-outlined">mail</span>
-        <span>Datos de contacto</span>
-      </label>
-      <div class="tab tab-datos-de-contacto">
-        <div>
-          <span class="tab-campo">Teléfono</span>
-          <span class="tab-valor" th:text="'+' + ${seed.contactData.telephone}"></span>
-        </div>
-        
-        <div>
-          <span class="tab-campo">Correo electrónico</span>
-          <span class="tab-valor" th:text="${seed.contactData.email}"></span>
-        </div>
-  
-        <div>
-          <span class="tab-campo">Discord</span>
-          <span class="tab-valor" th:text="${seed.contactData.discordUser}"></span>
-        </div>
-  
-        <div>
-          <span class="tab-campo">LinkedIn</span>
-          <span class="tab-valor" th:text="${seed.contactData.linkedin}"></span>
-        </div>
-      </div>
-      
-      <!-- tab modificar estado -->
-      <input type="radio" name="tabs" id="tabmodificarestado">
-      <label for="tabmodificarestado">
-        <span class="material-symbols-outlined">manage_accounts</span>
-        <span>Modificar estado</span>
-      </label>
-      <div class="tab tab-modificar-estado">
-        <div>
-          <button class="modificar-estado-menu">
-            Modificar estado
-            <span class="material-symbols-outlined arrow">
-              arrow_right
-            </span>
-          </button>
-        </div>
-        
-        <div class="modificar-estado-options">
-          <button class="modificar-estado-option">Activo</button>
-          <button class="modificar-estado-option">Inactivo</button>
-          <button class="modificar-estado-option">Finalizó proyecto</button>
-          <button class="modificar-estado-option">Redefinir</button>
-        </div>
-      </div>
-      
-      <!-- tab asignar proyecto -->
-      <input type="radio" name="tabs" id="tabasignarproyecto">
-      <label for="tabasignarproyecto">
-        <span class="material-symbols-outlined">assignment_add</span>
-        <span>Asignar proyecto</span>
-      </label>
-      <div class="tab tab-asignar-proyecto">
-        <p>POR MAQUETAR...</p>
-        <!-- <div>
-          <button class="asignar-proyecto-menu">
-            Asignar proyecto
-            <span class="material-symbols-outlined arrow">
-              arrow_right
-            </span>
-          </button>
-        </div>
-        
-        <div class="asignar-proyecto-options">
-          <button>Activo</button>
-          <button>Inactivo</button>
-          <button>Finalizó proyecto</button>
-          <button>Redefinir</button>
-        </div> -->
-      </div>
-      
-      <!-- tab certificado -->
-      <input type="radio" name="tabs" id="tabcertificado">
-      <label for="tabcertificado">
-        <span class="material-symbols-outlined">workspace_premium</span>
-        <span>Certificado</span>
-      </label>
-      <div class="tab tab-certificado">
-        <p>POR MAQUETAR...</p>
-      </div>
-      
-      <!-- tab recomendada -->
-      <input type="radio" name="tabs" id="tabrecomendada">
-      <label for="tabrecomendada">
-        <span class="material-symbols-outlined">star</span>
-        <span>Recomendada</span>
-      </label>
-      <div class="tab tab-recomendada">
-        <p>POR MAQUETAR...</p>
-      </div>
     </div>
-    
+</main>
 
-  </main>
+<div style="height: 20vh;"></div>
 
-  <div style="height: 20vh;"></div>
-  
-  <!-- SCRIPTS -->
-  <script src="/js/semilla.js"></script>
-  <!-- <script src="../../static/js/semilla.js"></script> -->
-  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
-  <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
-
-  <!-- GUIA PARA APLICAR THYMELEAF EN VARIABLES JS: https://stackoverflow.com/questions/25687816/setting-up-a-javascript-variable-from-spring-model-by-using-thymeleaf -->
-  
-  <script th:inline="javascript">
-    let seed = [[${seed}]];
-    console.log(seed)
-  </script>
+<!-- SCRIPTS -->
+<script src="/js/loading.js"></script>
+<!-- <script src="../../static/js/loading.js"></script> -->
+<script src="/js/semilla.js"></script>
+<!-- <script src="../../static/js/semilla.js"></script> -->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+<!-- <script th:inline="javascript">
+  let seed = [[${seed}]];
+  console.log(seed)
+</script> -->
 </body>
 
 </html>

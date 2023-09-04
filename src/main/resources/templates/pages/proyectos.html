@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- TITLE -->
+    <title>Proyectos | Semillero</title>
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="/img/logo.png"/>
+
+    <!-- MATERIAL TAILWIND -->
+    <link rel="stylesheet" href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"/>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="/css/loading.css"/>
+    <!--<link rel="stylesheet" href="../../static/css/loading.css" />-->
+    <link rel="stylesheet" href="/css/nav.css"/>
+    <!--<link href="../../static/css/nav.css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="/css/proyectos.css"/>
+    <!--<link href="../../static/css/proyectos.css" rel="stylesheet" />-->
+
+    <!-- GOOGLE ICONS -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+</head>
+
+<body>
+<div th:replace="fragments/loading :: loader"></div>
+<nav th:replace="fragments/nav :: _nav"></nav>
+
+<main th:object="${projects}">
+    <!-- ALERTS -->
+    <div class="exito-container">
+        <div class="exito-box">
+            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
+            <!--<img src="../../static/img/icons/alert-exito.svg" alt="Exitosa">-->
+            <span>Importación exitosa</span>
+        </div>
+    </div>
+
+    <div class="error-container">
+        <div class="error-box">
+            <img src="/img/icons/alert-error.svg" alt="Error">
+            <!--<img src="../../static/img/icons/alert-error.svg" alt="Error">-->
+            <span>Error en la importación</span>
+        </div>
+    </div>
+
+    <h1 class="titulo-proyectos">Proyectos</h1>
+    <hr class="separador">
+
+    <!-- éste ¬ solo mostrar cuando ya se haya recargado la pagina con los filtros aplicados o búsquedas hechas, se deshace de todo y muestra la tabla completa -->
+    <a th:href="@{/project/list}" class="volver" title="Deshacer filtros aplicados o búsquedas hechas"
+       style="display: none" id="a-browse-back">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Volver</span>
+    </a>
+
+    <!-- éste también ¬ solo mostrar cuando ya se haya recargado la pagina con los filtros aplicados o búsquedas hechas, se deshace de todo y muestra la tabla completa -->
+    <h2 id="h2-browse-result" style="display: none">Resultados de búsqueda</h2>
+
+    <div class="proyectos-actions">
+        <a href="https://drive.google.com/uc?export=download&id=1T_DkRpI6rRkfKK-cF-Rq3DHPBgnx-x38"
+           class="importar-proyectos">
+            <button>
+                <span class="material-symbols-outlined">download</span>
+                Descargar plantilla
+            </button>
+        </a>
+        <div class="right-projects-action">
+            <a href="#" style="display: none" id="download_project_a">
+                <span class="material-symbols-outlined">download</span>
+                Descargar Proyectos
+            </a>
+            <label for="importarProyectosArchivo">
+                <span class="material-symbols-outlined">upload_file</span>
+                Importar Proyectos
+            </label>
+            <input id="importarProyectosArchivo" type="file"
+                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                   style="display: none;">
+        </div>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <form class="form-search-bar" th:action="@{/project/list/filter}" th:object="${projectFilters}" method="get"
+          style="display: none" id="form-search-bar">
+        <input type="search" class="busqueda" placeholder="Buscar Proyecto por Nombre, PM, PO, TL, Aliado"
+               th:field="*{searchBar}" autocomplete="off">
+        <button type="submit" class="material-symbols-outlined buscar">search</button>
+    </form>
+
+    <section>
+        <!-- FILTROS -->
+        <aside class="left" style="display: none" id="aside-filter">
+            <h3 class="filtros-titulo">
+                <span class="material-symbols-outlined">filter_alt</span>
+                Filtros
+            </h3>
+
+            <form class="form-filtros" th:action="@{/project/list/filter}" th:object="${projectFilters}" method="get">
+                <div class="option filtro-tipo-proyecto">
+                    <div th:class="${projectFilters.projectType?.length == 1 ||
+                    projectFilters.projectType == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Tipo de Proyecto</span>
+                        <div th:class="${projectFilters.projectType?.length == 1 ||
+                    projectFilters.projectType == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${projectFilters.projectType?.length == 1 ||
+                    projectFilters.projectType == null ? 'menu' : 'menu menu-open'}">
+                        <!--INPUT PARA SOLUCIONAR ERROR DE SQL-->
+                        <input type="hidden" name="projectType" value="primero">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="calc" name="tipo_proyecto"
+                                   value="Calculadora de complejidad baja" th:field="*{projectType}">
+                            <label for="calc" class="label-filtro">Calculadora de complejidad baja</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="sgi" name="tipo_proyecto"
+                                   value="Sistema de Gestión de Individuos (clientes, estudiantes, empresas, etc)"
+                                   th:field="*{projectType}">
+                            <label for="sgi" class="label-filtro">Sistema de Gestión de Individuos
+                                (clientes, estudiantes, empresas, etc.)</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro " id="sgat" name="tipo_proyecto"
+                                   value="Sistema de Gestión Administrativa y Trazabilidad (stock, pagos, mercadería, transporte, turnos, préstamos, mantenimiento, etc)"
+                                   th:field="*{projectType}">
+                            <label for="sgat" class="label-filtro label-long">Sistema de Gestión
+                                Administrativa y Trazabilidad (stock, pagos, mercadería,
+                                transporte, turnos, préstamos, mantenimiento, etc.)</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="sacf" name="tipo_proyecto"
+                                   value="Sistema de Administración de cursos y formación (talleres, charlas, asistencias, etc)"
+                                   th:field="*{projectType}">
+                            <label for="sacf" class="label-filtro label-long">Sistema de Administración de
+                                cursos y formación (talleres, charlas, asistencias, etc.)</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="landing" name="tipo_proyecto"
+                                   value="Landing Page básica"
+                                   th:field="*{projectType}">
+                            <label for="landing" class="label-filtro">Landing Page básica</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="bothweb" name="tipo_proyecto"
+                                   value="Página Web de 2 o más secciones"
+                                   th:field="*{projectType}">
+                            <label for="bothweb" class="label-filtro">Página Web de 2 o más
+                                secciones</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="ventaweb" name="tipo_proyecto"
+                                   value="Página Web tipo catálogo y/o ventas"
+                                   th:field="*{projectType}">
+                            <label for="ventaweb" class="label-filtro">Página Web tipo catálogo y/o
+                                ventas</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="redsocial" name="tipo_proyecto"
+                                   value="Red social de complejidad baja"
+                                   th:field="*{projectType}">
+                            <label for="redsocial" class="label-filtro">Red social de complejidad
+                                baja</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-proyecto-estado">
+                    <div th:class="${projectFilters.projectStage?.length == 1 ||
+                    projectFilters.projectStage == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Estado</span>
+                        <div th:class="${projectFilters.projectStage?.length == 1 ||
+                    projectFilters.projectStage == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${projectFilters.projectStage?.length == 1 ||
+                    projectFilters.projectStage == null ? 'menu' : 'menu menu-open'}">
+                        <!--INPUT PARA SOLUCIONAR ERROR DE SQL-->
+                        <input type="hidden" name="projectStage" value="primero">
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="rri" name="proyecto_stage"
+                                   value="Relevamiento y reuniones iniciales" th:field="*{projectStage}">
+                            <label for="rri" class="label-filtro green">Relevamiento y reuniones iniciales</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="desarrapp" name="proyecto_stage"
+                                   value="Desarrollo de Aplicación" th:field="*{projectStage}">
+                            <label for="desarrapp" class="label-filtro green">Desarrollo de Aplicación</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="armadotest" name="proyecto_stage"
+                                   value="Armado de testimoniales" th:field="*{projectStage}">
+                            <label for="armadotest" class="label-filtro green">Armado de testimoniales</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="demofinal" name="proyecto_stage"
+                                   value="Demo final en servidor de prueba" th:field="*{projectStage}">
+                            <label for="demofinal" class="label-filtro green">Demo final en servidor de prueba</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="propuestarelev" name="proyecto_stage"
+                                   value="Propuesta con relevamiento inicial que no se inicia"
+                                   th:field="*{projectStage}">
+                            <label for="propuestarelev" class="label-filtro yellow">Propuesta con relevamiento inicial
+                                que no se
+                                inicia</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="proypausado" name="proyecto_stage"
+                                   value="Proyecto pausado por pedido" th:field="*{projectStage}">
+                            <label for="proypausado" class="label-filtro yellow">Proyecto pausado por pedido</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="difusiontest" name="proyecto_stage"
+                                   value="Difusión de testimoniales realizada" th:field="*{projectStage}">
+                            <label for="difusiontest" class="label-filtro blue">Difusión de testimoniales
+                                realizada</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="intercrecipr" name="proyecto_stage"
+                                   value="Intercambio de reciprocidad" th:field="*{projectStage}">
+                            <label for="intercrecipr" class="label-filtro blue">Intercambio de reciprocidad</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="medicionlargo" name="proyecto_stage"
+                                   value="Medición de impacto a largo plazo" th:field="*{projectStage}">
+                            <label for="medicionlargo" class="label-filtro blue">Medición de impacto a largo
+                                plazo</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="propuestano" name="proyecto_stage"
+                                   value="Propuesta no pasó a relevamiento" th:field="*{projectStage}">
+                            <label for="propuestano" class="label-filtro red">Propuesta no pasó a relevamiento</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="propuestabaja" name="proyecto_stage"
+                                   value="Propuesta dada de baja en relevamiento" th:field="*{projectStage}">
+                            <label for="propuestabaja" class="label-filtro red">Propuesta dada de baja en
+                                relevamiento</label>
+                        </div>
+
+                        <div class="filtro">
+                            <input type="checkbox" class="checkbox-filtro" id="propuestaausencia" name="proyecto_stage"
+                                   value="Propuesta no se inicia, sin relevamiento inicial y ausencia de PO"
+                                   th:field="*{projectStage}">
+                            <label for="propuestaausencia" class="label-filtro red">Propuesta no se inicia, sin
+                                relevamiento inicial y
+                                ausencia de PO</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-proyecto-fecha-inicio">
+                    <div th:class="${projectFilters.initialDateFrom == null &&
+                    projectFilters.initialDateTo == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Fecha de inicio</span>
+                        <div th:class="${projectFilters.initialDateFrom == null &&
+                    projectFilters.initialDateTo == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${projectFilters.initialDateFrom == null &&
+                    projectFilters.initialDateTo == null ? 'menu' : 'menu menu-open'}">
+                        <div class="both-fecha">
+                            <div class="filtro-fecha">
+                                <span class="campo">Desde</span>
+                                <input type="date" class="fecha" th:field="*{initialDateFrom}">
+                            </div>
+                            <div class="filtro-fecha">
+                                <span class="campo">Hasta</span>
+                                <input type="date" class="fecha" th:field="*{initialDateTo}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-proyecto-fecha-fin">
+                    <div th:class="${projectFilters.endingDateFrom == null &&
+                    projectFilters.endingDateTo == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Fecha de finalización</span>
+                        <div th:class="${projectFilters.endingDateFrom == null &&
+                        projectFilters.endingDateTo == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${projectFilters.endingDateFrom == null &&
+                    projectFilters.endingDateTo == null ? 'menu' : 'menu menu-open'}">
+                        <div class="both-fecha">
+                            <div class="filtro-fecha">
+                                <span class="campo">Desde</span>
+                                <input type="date" class="fecha" th:field="*{endingDateFrom}">
+                            </div>
+                            <div class="filtro-fecha">
+                                <span class="campo">Hasta</span>
+                                <input type="date" class="fecha" th:field="*{endingDateTo}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-proyecto-comision">
+                    <div th:class="${projectFilters.commission?.length == 0 ||
+                    projectFilters.commission == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Comisión</span>
+                        <div th:class="${projectFilters.commission?.length == 0 ||
+                    projectFilters.commission == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${projectFilters.commission?.length == 0 ||
+                    projectFilters.commission == null ? 'menu' : 'menu menu-open'}">
+                        <div class="filtro" th:each="comission : ${commissionOptions}">
+                            <input type="checkbox" class="checkbox-filtro" th:id="${comission}" name="comision"
+                                   th:value="${comission}" th:field="*{commission}">
+                            <label th:for="${comission}" class="label-filtro" th:text="${comission}"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option filtro-proyecto-marcatemporal">
+                    <div th:class="${projectFilters.timestampFrom == null &&
+                    projectFilters.timestampTo == null ? 'select' : 'select select-clicked'}">
+                        <span class="desplegable">Marca temporal</span>
+                        <div th:class="${projectFilters.timestampFrom == null &&
+                    projectFilters.timestampTo == null ? 'caret' : 'caret caret-rotate'}"></div>
+                    </div>
+                    <div th:class="${projectFilters.timestampFrom == null &&
+                    projectFilters.timestampTo == null ? 'menu' : 'menu menu-open'}">
+                        <div class="both-fecha">
+                            <div class="filtro-fecha">
+                                <span class="campo">Desde</span>
+                                <input type="date" class="fecha" th:field="*{timestampFrom}">
+                            </div>
+                            <div class="filtro-fecha">
+                                <span class="campo">Hasta</span>
+                                <input type="date" class="fecha" th:field="*{timestampTo}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="aplicar">
+                    <button type="submit" class="aplicar-filtros">Aplicar Filtros</button>
+                </div>
+            </form>
+        </aside>
+
+        <!-- TABLA -->
+        <aside class="right" id="right-container" style="display: none">
+            <table cellspacing="0" cellpadding="0">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Aliado</th>
+                    <th>PM</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody id="tabla-proyectos">
+                <tr th:each="project : ${projects}">
+                    <td><a th:href="@{/project/{id}(id=${project.id})}" th:text="${project.projectName}"></a></td>
+                    <td><a th:href="@{/project/{id}(id=${project.id})}" th:text="${project.ally}"></a></td>
+                    <td><a th:href="@{/project/{id}(id=${project.id})}"
+                           th:text="${project.projectManagerFullName != null ?
+                               project.projectManagerFullName : 'Por definir...'}"></a></td>
+                    <td><a th:href="@{/project/{id}(id=${project.id})}"
+                           th:text="${#temporals.format(project.initialDate, 'dd/MM/yyyy')}"></a></td>
+                    <td><a th:href="@{/project/{id}(id=${project.id})}"
+                           th:text="${project.projectStage}"
+                           th:classappend="${project.projectStatus.toUpperCase() == 'ACTIVO' ? 'green' :
+                               (project.projectStatus.toUpperCase() == 'PAUSADO' ? 'yellow' :
+                               (project.projectStatus.toUpperCase() == 'CERRADO' ? 'blue' : 'red'))}"
+                           class="estado"></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </aside>
+    </section>
+</main>
+
+<div style="height: 20vh;"></div>
+
+<!-- SCRIPTS -->
+<script th:inline="javascript">
+    let projects = [[${projects}]];
+    let project_filters = [[${projectFilters}]];
+</script>
+
+<script src="/js/loading.js"></script>
+<!--<script src="../../static/js/loading.js"></script>-->
+<script src="/js/nav.js"></script>
+<!--<script src="../../static/js/nav.js"></script>-->
+<script src="/js/proyectos.js"></script>
+<!--<script src="../../static/js/proyectos.js"></script>-->
+<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
+<script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
+<script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+</body>
+</html>

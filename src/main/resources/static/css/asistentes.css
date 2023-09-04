@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* En caso de que haya algun problema con las direcciones de ubicación de las imágenes, también van a estar subidas virtualmente para copiar y pegar link.
+Link: https://imgur.com/a/6tV4pCo */
+
+:root {
+    --blanco1: #FAFAFA;
+    --blanco2: #F5F8F5;
+    --gris: #9D9E9E;
+    --gris-claro: #EEEDED;
+    --gris-oscuro: #676767;
+    --gris-oscuro2: #616161;
+    --negro: #171717;
+    --verde-claro: #4CAF44;
+    --verde-oscuro: #395727;
+    --verde-fondo: #F1FCEA;
+    --naranja: #FFAF03;
+    --naranja-oscuro: #DE9800;
+    --azul: #1d3daf;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--blanco2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+    box-sizing: border-box;
+}
+
+*::selection {
+    background: var(--verde-claro);
+    color: var(--blanco1);
+}
+
+*::placeholder {
+	user-select: none;
+}
+
+*::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--gris-oscuro2);
+    /*border-radius: 5px;*/
+}
+
+*::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:active {
+    background: var(--gris);
+}
+
+*::-webkit-scrollbar-track {
+	/*margin: 5px;*/
+    background: rgba(0, 0, 0, 0.001);
+}
+
+img {
+    user-select: none;
+}
+
+a {
+    user-select: none;
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+}
+
+/* NAV ITEMS */
+.item-inicio,
+.item-semillas,
+.item-proyectos {
+    color: var(--blanco1);
+    font-size: 1rem;
+}
+
+.item-inicio:hover,
+.item-semillas:hover,
+.item-proyectos:hover {
+    border-bottom: 2px solid var(--blanco1);
+    margin-bottom: -2px;
+}
+
+.item-eventos {
+    color: var(--blanco1);
+    font-weight: 600;
+    border-bottom: 2px solid var(--blanco1);
+    margin-bottom: -2px;
+}
+main {
+    display: relative;
+    width: 85%;
+    margin: 4rem auto 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.volver {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    color: var(--verde-oscuro);
+}
+
+.volver span:nth-child(2) {
+    margin-left: 8px;
+    font-weight: 400;
+    line-height: 23px;
+}
+
+.volver:hover {
+    color: var(--gris);
+}
+
+.asistentes-title {
+    width: 100%;
+    height: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--gris-claro);
+    color: var(--naranja-oscuro);
+    border-radius: 8px;
+    font-size: 1.5rem;
+}
+
+.evento-asistentes {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.evento-asistentes .dato {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .4rem;
+}
+
+.evento-asistentes .dato .campo {
+    color: var(--negro);
+}
+
+.evento-asistentes .dato .valor {
+    color: var(--gris-oscuro);
+    font-weight: 500;
+}
+
+.descargar-asistentes {
+	margin-top: 1rem;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 1.5rem;
+    border: 1px solid var(--verde-oscuro);
+    border-radius: 100px;
+    background: var(--verde-oscuro);
+    color: var(--blanco1);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    transition: all 150ms;
+    user-select: none;
+    cursor: pointer;
+}
+
+.descargar-asistentes:hover {
+	background: #648352;
+    border: 1px solid #648352;
+}
+
+table {
+    position: relative;
+    min-width: 60%;
+    border-radius: 16px;
+}
+
+thead {
+    background: var(--verde-oscuro);
+    color: var(--gris-claro);
+    border-radius: 16px 16px 0px 0px;
+    user-select: none;
+}
+
+th, td {
+    margin: auto;
+    text-align: left;
+}
+
+th {
+    padding: 1rem;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+th:first-child {
+    border-radius: 16px 0px 0px 0px;
+}
+
+th:last-child {
+    border-radius: 0px 16px 0px 0px;
+}
+
+tbody tr {
+    background: transparent;
+    color: var(--negro);
+}
+
+tbody tr:hover {
+    background-color: var(--blanco1);
+}
+
+tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--verde-claro);
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+}
+
+tfoot td.total-asistentes {
+    padding: .6rem 2rem;
+    color: var(--negro);
+    font-size: 20px;
+    text-align: end;
+}
