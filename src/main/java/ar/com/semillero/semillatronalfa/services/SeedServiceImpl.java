@@ -1,6 +1,12 @@
 package ar.com.semillero.semillatronalfa.services;
 
 import ar.com.semillero.semillatronalfa.models.converters.SeedConverter;
+import ar.com.semillero.semillatronalfa.models.dtos.ProjectDto;
+import ar.com.semillero.semillatronalfa.models.project.Project;
+import ar.com.semillero.semillatronalfa.models.project.ProjectSeed;
+import ar.com.semillero.semillatronalfa.repositories.ProjectSeedRepository;
+import ar.com.semillero.semillatronalfa.repositories.SeedAttendanceRepository;
+import ar.com.semillero.semillatronalfa.services.interfaces.ProjectService;
 import ar.com.semillero.semillatronalfa.services.interfaces.SeedService;
 import ar.com.semillero.semillatronalfa.models.dtos.SeedDto;
 import ar.com.semillero.semillatronalfa.models.filters.SeedFilter;
@@ -9,11 +15,16 @@ import ar.com.semillero.semillatronalfa.repositories.queries.SeedQueries;
 import ar.com.semillero.semillatronalfa.repositories.SeedRepository;
 import ar.com.semillero.semillatronalfa.utils.NullUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,16 +35,22 @@ public class SeedServiceImpl implements SeedService {
     private SeedRepository seedRepository;
     private SeedQueries seedQueries;
     private SeedConverter seedConverter;
+    private SeedAttendanceRepository seedAttendanceRepository;
+    @Autowired
+    private ProjectSeedRepository projectSeedRepository;
+    @Autowired
+    private ProjectService projectService;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public SeedServiceImpl(SeedRepository seedRepository, SeedQueries seedQueries, SeedConverter seedConverter, EntityManager entityManager) {
+    public SeedServiceImpl(SeedRepository seedRepository, @Qualifier("seed-queries") SeedQueries seedQueries,
+                           SeedConverter seedConverter, EntityManager entityManager, SeedAttendanceRepository seedAttendanceRepository) {
         this.seedRepository = seedRepository;
         this.seedQueries = seedQueries;
         this.seedConverter = seedConverter;
         this.entityManager = entityManager;
-        
+        this.seedAttendanceRepository = seedAttendanceRepository;
     }
 
     @Override
@@ -42,8 +59,8 @@ public class SeedServiceImpl implements SeedService {
     }
 
     @Override
-    public List<SeedDto> orderedSeedList(Optional<String> statusFilter, Optional<String> commissionOrder, Optional<String> lastNameOrder) {
-        return seedConverter.entitiesToDto(entityManager.createNativeQuery(seedQueries.orderedSeedList(statusFilter, commissionOrder, lastNameOrder), Seed.class).getResultList());
+    public List<SeedDto> orderedSeedList(Optional<String> commissionOrder, Optional<String> lastNameOrder) {
+        return seedConverter.entitiesToDto(entityManager.createNativeQuery(seedQueries.orderedSeedList(commissionOrder, lastNameOrder), Seed.class).getResultList());
     }
 
     @Override
@@ -77,6 +94,7 @@ public class SeedServiceImpl implements SeedService {
             dto.setId(id);
             Seed seed = seedConverter.dtoToEntity(dto);
             seedRepository.save(seed);
+            if(dto.getProjectNames() != null) asignProjectListToSeed(seed, dto.getProjectNames());
             return seedConverter.entityToDto(seed);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
@@ -93,7 +111,12 @@ public class SeedServiceImpl implements SeedService {
     //Event
     @Override
     public Seed findSeedByDni(Integer dni) {
-        return seedRepository.getSeedByDni(dni);
+        return seedRepository.getSeedByDni(dni).get(0);
+    }
+
+    @Override
+    public Seed findSeed(String id) {
+        return seedRepository.findSeedById(id);
     }
 
     @Override
@@ -101,6 +124,25 @@ public class SeedServiceImpl implements SeedService {
         Seed seed = seedRepository.findById(id).get();
         seed.setActive(false);
         seedRepository.save(seed);
+    }
+
+    @Override
+    public Integer getSeedAttendance(String seedId) {
+        try {
+            return seedAttendanceRepository.getSeedAttendance(seedId);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    @Override
+    public Integer getInvitedTo(String seedId) {
+        try {
+            return seedAttendanceRepository.getInvitedTo(seedId);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -117,19 +159,57 @@ public class SeedServiceImpl implements SeedService {
     @Override
     public List<SeedDto> filteredSeed(SeedFilter seedfilter) {
         List<Seed> seeds;
-        if (!NullUtils.nullOrEmpty(seedfilter.getSearchBar())) {
-            seeds = entityManager.createNativeQuery(SeedQueries.seachBarSeed2(seedfilter),Seed.class).getResultList();
-        }else{
-            seeds= entityManager.createNativeQuery(SeedQueries.filterSeed(seedfilter),Seed.class).getResultList();
-        }   
-     //List<Seed> seeds= entityManager.createNativeQuery(SeedQueries.filterSeed(seedfilter),Seed.class).getResultList();   
-     //List<Seed> seeds= entityManager.createQuery(SeedQueries.filterSeed(seedfilter)).getResultList();
-     return seedConverter.entitiesToDto(seeds);
+        seeds= entityManager.createNativeQuery(SeedQueries.filterSeed(seedfilter),Seed.class).getResultList();
+
+        return seedConverter.entitiesToDto(seeds);
     }
 
     @Override
     public List<String> listOfCommision() {
      return entityManager.createNativeQuery(seedQueries.listCommissionSeedActive()).getResultList();
     }
-        
+
+    //@Override
+    public Seed asignProjectToSeed(Seed seed, Project project) {
+        try {
+            if(project != null && seed != null && isProjectAsignedToSeed(project, seed)) {
+                ProjectSeed projectSeed = new ProjectSeed();
+                projectSeed.setSeed(seed);
+                projectSeed.setProject(project);
+                projectSeedRepository.save(projectSeed);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return seed;
+
+    }
+
+    private void compareProjectsNamesToProjectList(String seedId, List<String> projectNames) {
+        List<ProjectSeed> projectList = projectService.findProjectsListBySeedId(seedId);
+        for (ProjectSeed projectSeed : projectList) {
+            if(!projectNames.contains(projectSeed.getProject().getProjectName())) {
+                projectSeed.setIsActive(false);
+                projectSeedRepository.save(projectSeed);
+            }
+        }
+    }
+    public void asignProjectListToSeed(Seed seed, List<String> projectNames) {
+        try {
+            for (String name : projectNames) {
+                Project project = projectService.findProjectByName(name);
+                asignProjectToSeed(seed, project);
+            }
+            compareProjectsNamesToProjectList(seed.getId(), projectNames);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Boolean isProjectAsignedToSeed(Project project, Seed seed) {
+        ProjectSeed projectSeed = projectSeedRepository.findAsignedSeedToProject(project.getId(), seed.getId());
+        return projectSeed == null;
+    }
+
+
 }

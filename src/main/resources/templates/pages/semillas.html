@@ -36,27 +36,14 @@
 
 <main th:object="${seeds}">
     <!-- ALERTS -->
-    <div class="exito-container">
-        <div class="exito-box">
-            <img src="/img/icons/alert-exito.svg" alt="Exitosa"/>
-            <!-- <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa"> -->
-            <span>Importación exitosa</span>
-        </div>
-    </div>
-
-    <div class="error-container">
-        <div class="error-box">
-            <img src="/img/icons/alert-error.svg" alt="Error"/>
-            <!-- <img src="../../static/img/icons/alert-error.svg" alt="Error"> -->
-            <span>Error en la importación</span>
-        </div>
-    </div>
+    <div th:replace="fragments/alerts/import-success :: import-success"></div>
+    <div th:replace="fragments/alerts/import-error :: import-error"></div>
 
     <h1 class="titulo-semillas">Semillas</h1>
     <hr class="separador"/>
 
     <!-- éste ¬ solo mostrar cuando ya se haya recargado la pagina con los filtros aplicados o búsquedas hechas, se deshace de todo y muestra la tabla completa -->
-    <a th:href="@{/seed/list}" class="volver" title="Deshacer filtros aplicados o búsquedas hechas"
+    <a th:href="@{/seed/list}" class="volver" title="Deshacer filtros aplicados y/o búsquedas hechas"
        id="a-browse-back" style="display: none">
         <span class="material-symbols-outlined">arrow_back</span>
         <span>Volver</span>
@@ -66,16 +53,8 @@
     <h2 id="h2-browse-result" style="display: none">Resultados de búsqueda</h2>
 
     <div class="semillas-actions">
-        <a href="https://drive.google.com/uc?export=download&id=14M96JBf_P0Lm3mTukVBQ7QpZ2FqyCWQM"
-           class="importar-semillas">
-            <button>
-                <span class="material-symbols-outlined">download</span>
-                Descargar plantilla
-            </button>
-        </a>
-
-        <div class="right-seeds-action">
-            <a href="#" style="display: none" id="download_seed_a">
+        <div class="left-seeds-action">
+            <a href="/seed/list?format=xlsx" style="display: none" id="download_seed_a">
                 <span class="material-symbols-outlined">download</span>
                 Descargar Semillas
             </a>
@@ -85,461 +64,455 @@
             </label>
             <input id="importarSemillaArchivo" type="file"
                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                   style="display: none"
-            />
+                   style="display: none"/>
+        </div>
+        <div class="right-seeds-action">
+            <a th:href="@{/seed/sheet}"
+               class="importar-semillas">
+                <button>
+                    <span class="material-symbols-outlined">download</span>
+                    Descargar plantilla
+                </button>
+            </a>
         </div>
     </div>
 
-    <!-- SEARCH BAR -->
-    <form class="form-search-bar" th:action="@{/seed/list/filter}" th:object="${seedFilter}" method="get"
-          style="display: none" id="form-search-bar">
-        <input type="search" class="busqueda" placeholder="Buscar Semilla por Apellido y/o Nombre"
-               th:field="*{searchBar}" autocomplete="off">
-        <button type="submit" class="material-symbols-outlined buscar">search</button>
-    </form>
+    <form th:action="@{/seed/list/filter}" th:object="${seedFilter}" method="get" class="form-total">
 
-    <section>
+        <!-- SEARCH BAR -->
+        <div class="form-search-bar" style="display: none" id="form-search-bar">
+            <input type="text" class="busqueda" placeholder="Buscar Semilla por Apellido y/o Nombre"
+                   th:field="*{searchBar}" autocomplete="off">
+            <button type="submit" class="material-symbols-outlined buscar">search</button>
+        </div>
 
-        <!-- FILTROS -->
-        <aside class="left" style="display: none" id="aside-filter">
-            <h3 class="filtros-titulo">
-                <span class="material-symbols-outlined">filter_alt</span>
-                Filtros
-            </h3>
+        <section>
 
-            <form class="form-filtros" th:action="@{/seed/list/filter}" th:object="${seedFilter}" method="get">
-                <div class="option filtro-rol">
-                    <div th:class="${seedFilter.rol?.length == 0 ||
-                     seedFilter.rol == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Rol</span>
-                        <div th:class="${seedFilter.rol?.length == 0 ||
-                     seedFilter.rol == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.rol?.length == 0 ||
-                     seedFilter.rol == null ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="back" name="roles"
-                                   th:field="*{rol}" value="Backend">
-                            <label for="back" class="label-filtro">Backend</label>
+            <!-- FILTROS -->
+            <aside class="left" style="display: none" id="aside-filter">
+                <h3 class="filtros-titulo">
+                    <span class="material-symbols-outlined">filter_alt</span>
+                    Filtros
+                </h3>
+
+                <div class="form-filtros">
+                    <div class="option filtro-rol">
+                        <div th:class="${#lists.isEmpty(seedFilter.rol)
+                            ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Rol</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.rol)
+                            ? 'caret' : 'caret caret-rotate'}"></div>
                         </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.rol)
+                            ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="back" name="roles"
+                                       th:field="*{rol}" value="Backend">
+                                <label for="back" class="label-filtro">Backend</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="front" name="roles"
-                                   th:field="*{rol}" value="Frontend">
-                            <label for="front" class="label-filtro">Frontend</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="front" name="roles"
+                                       th:field="*{rol}" value="Frontend">
+                                <label for="front" class="label-filtro">Frontend</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="uxui" name="roles"
-                                   th:field="*{rol}" value="UX/UI/IxD">
-                            <label for="uxui" class="label-filtro">UX/UI/IxD</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="uxui" name="roles"
+                                       th:field="*{rol}" value="UX/UI/IxD">
+                                <label for="uxui" class="label-filtro">UX/UI/IxD</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="scrum" name="roles"
-                                   th:field="*{rol}" value="Scrum">
-                            <label for="scrum" class="label-filtro">Scrum</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="scrum" name="roles"
+                                       th:field="*{rol}" value="Scrum">
+                                <label for="scrum" class="label-filtro">Scrum</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="qa" name="roles"
-                                   th:field="*{rol}" value="QA">
-                            <label for="qa" class="label-filtro">QA</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="qa" name="roles"
+                                       th:field="*{rol}" value="QA">
+                                <label for="qa" class="label-filtro">QA</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="analista" name="roles"
-                                   th:field="*{rol}" value="Analista">
-                            <label for="analista" class="label-filtro">Analista</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="analista" name="roles"
+                                       th:field="*{rol}" value="Analista">
+                                <label for="analista" class="label-filtro">Analista</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="infraestructura" name="roles"
-                                   th:field="*{rol}" value="Infraestructura">
-                            <label for="infraestructura" class="label-filtro">Infraestructura</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="option filtro-estado">
-                    <div th:class="${(seedFilter.status?.length == 0 &&
-                     seedFilter.statusSecundary?.length == 0) ||
-                     (seedFilter.status == null &&
-                     seedFilter.statusSecundary == null ) ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Estado</span>
-                        <div th:class="${(seedFilter.status?.length == 0 &&
-                     seedFilter.statusSecundary?.length == 0) ||
-                     (seedFilter.status == null &&
-                     seedFilter.statusSecundary == null ) ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${(seedFilter.status?.length == 0 &&
-                     seedFilter.statusSecundary?.length == 0) ||
-                     (seedFilter.status == null &&
-                     seedFilter.statusSecundary == null ) ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="redefinir" name="estado"
-                                   th:field="*{status}" value="Redefinir">
-                            <label for="redefinir" class="label-filtro black">Redefinir</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="enespera" name="estado"
-                                   th:field="*{statusSecundary}" value="En espera de Proyecto">
-                            <label for="enespera" class="label-filtro green">En espera de Proyecto</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="asignada" name="estado"
-                                   th:field="*{statusSecundary}" value="Asignada a Proyecto">
-                            <label for="asignada" class="label-filtro green">Asignada a Proyecto</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="nodisponible" name="estado"
-                                   th:field="*{statusSecundary}" value="No disponible temporalmente">
-                            <label for="nodisponible" class="label-filtro green">No disponible temporalmente</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="ctop" name="estado"
-                                   th:field="*{statusSecundary}" value="Consiguió trabajo en IT - Otra empresa">
-                            <label for="ctop" class="label-filtro blue">Consiguió trabajo - Otra empresa</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="ctpaq" name="estado"
-                                   th:field="*{statusSecundary}" value="Consiguió trabajo en IT - Pasó a Quinto">
-                            <label for="ctpaq" class="label-filtro blue">Consiguió trabajo - Pasó a Quinto</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="finalizo" name="estado"
-                                   th:field="*{status}" value="Finalizó Proyecto">
-                            <label for="finalizo" class="label-filtro blue">Finalizó Proyecto</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="ctnei" name="estado"
-                                   th:field="*{statusSecundary}" value="Consiguió trabajo - No en IT">
-                            <label for="ctnei" class="label-filtro red">Consiguió trabajo - No en IT</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="abandono" name="estado"
-                                   th:field="*{statusSecundary}" value="Abandonó">
-                            <label for="abandono" class="label-filtro red">Abandonó</label>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="infraestructura" name="roles"
+                                       th:field="*{rol}" value="Infraestructura">
+                                <label for="infraestructura" class="label-filtro">Infraestructura</label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="option filtro-proyectos">
-                    <div th:class="${seedFilter.assignedProject?.length == 0 ||
-                     seedFilter.assignedProject == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Proyectos activos</span>
-                        <div th:class="${seedFilter.assignedProject?.length == 0 ||
-                     seedFilter.assignedProject == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.assignedProject?.length == 0 ||
-                     seedFilter.assignedProject == null ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro" th:each="project : ${projects}">
-                            <input type="checkbox" class="checkbox-filtro" th:id="${project}" name="proyectos"
-                                   th:field="${seedFilter.assignedProject}" th:value="${project}">
-                            <label th:for="${project}" class="label-filtro" th:text="${project}"></label>
+                    <div class="option filtro-estado">
+                        <div th:class="${#lists.isEmpty(seedFilter.status)
+                             && #lists.isEmpty(seedFilter.statusSecundary)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Estado</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.status)
+                             && #lists.isEmpty(seedFilter.statusSecundary)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
                         </div>
-                        <!--<div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="sigis" name="proyectos">
-                            <label for="sigis" class="label-filtro">SIGIS</label>
-                        </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.status)
+                             && #lists.isEmpty(seedFilter.statusSecundary)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="redefinir" name="estado"
+                                       th:field="*{status}" value="Redefinir">
+                                <label for="redefinir" class="label-filtro black">Redefinir</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="metabici" name="proyectos">
-                            <label for="metabici" class="label-filtro">Meta Bici</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="enespera" name="estado"
+                                       th:field="*{statusSecundary}" value="En espera de Proyecto">
+                                <label for="enespera" class="label-filtro green">En espera de Proyecto</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="torneoleones" name="proyectos">
-                            <label for="torneoleones" class="label-filtro">Torneo Leones</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="asignada" name="estado"
+                                       th:field="*{statusSecundary}" value="Asignada a Proyecto">
+                                <label for="asignada" class="label-filtro green">Asignada a Proyecto</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="chakruk" name="proyectos">
-                            <label for="chakruk" class="label-filtro">Chakruk</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="nodisponible" name="estado"
+                                       th:field="*{statusSecundary}" value="No disponible temporalmente">
+                                <label for="nodisponible" class="label-filtro green">No disponible temporalmente</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="stopinmza" name="proyectos">
-                            <label for="stopinmza" class="label-filtro">Stopin Mza</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="ctop" name="estado"
+                                       th:field="*{statusSecundary}" value="Consiguió trabajo en IT - Otra empresa">
+                                <label for="ctop" class="label-filtro blue">Consiguió trabajo - Otra empresa</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="ptoorganico" name="proyectos">
-                            <label for="ptoorganico" class="label-filtro">Pto Orgánico</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="ctpaq" name="estado"
+                                       th:field="*{statusSecundary}" value="Consiguió trabajo en IT - Pasó a Quinto">
+                                <label for="ctpaq" class="label-filtro blue">Consiguió trabajo - Pasó a Quinto</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="elafar" name="proyectos">
-                            <label for="elafar" class="label-filtro">El Afar</label>
-                        </div>-->
-                    </div>
-                </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="finalizo" name="estado"
+                                       th:field="*{status}" value="Finalizó Proyecto">
+                                <label for="finalizo" class="label-filtro blue">Finalizó Proyecto</label>
+                            </div>
 
-                <div class="option filtro-genero">
-                    <div th:class="${seedFilter.gender?.length == 0 ||
-                     seedFilter.gender == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Género</span>
-                        <div th:class="${seedFilter.gender?.length == 0 ||
-                     seedFilter.gender == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.gender?.length == 0 ||
-                     seedFilter.gender == null ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="femenino" name="genero"
-                                   th:field="*{gender}" value="Femenino">
-                            <label for="femenino" class="label-filtro">Femenino</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="ctnei" name="estado"
+                                       th:field="*{statusSecundary}" value="Consiguió trabajo - No en IT">
+                                <label for="ctnei" class="label-filtro red">Consiguió trabajo - No en IT</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="masculino" name="genero"
-                                   th:field="*{gender}" value="Masculino">
-                            <label for="masculino" class="label-filtro">Masculino</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="nobinario" name="genero"
-                                   th:field="*{gender}" value="No binario">
-                            <label for="nobinario" class="label-filtro">No binario</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="nodice" name="genero"
-                                   th:field="*{gender}" value="Prefiero no decirlo">
-                            <label for="nodice" class="label-filtro">Prefiero no decirlo</label>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="abandono" name="estado"
+                                       th:field="*{statusSecundary}" value="Abandonó">
+                                <label for="abandono" class="label-filtro red">Abandonó</label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="option filtro-turno">
-                    <div th:class="${seedFilter.turn?.length == 0 ||
-                     seedFilter.turn == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Turno</span>
-                        <div th:class="${seedFilter.turn?.length == 0 ||
-                     seedFilter.turn == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.turn?.length == 0 ||
-                     seedFilter.turn == null ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="morning" name="turno"
-                                   th:field="*{turn}" value="Mañana">
-                            <label for="morning" class="label-filtro">Mañana</label>
+                    <div class="option filtro-proyectos">
+                        <div th:class="${#lists.isEmpty(seedFilter.assignedProject)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Proyectos activos</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.assignedProject)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
                         </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.assignedProject)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro" th:each="project : ${projects}">
+                                <input type="checkbox" class="checkbox-filtro" th:id="${project}" name="proyectos"
+                                       th:field="${seedFilter.assignedProject}" th:value="${project}">
+                                <label th:for="${project}" class="label-filtro" th:text="${project}"></label>
+                            </div>
+                            <!--<div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="sigis" name="proyectos">
+                                <label for="sigis" class="label-filtro">SIGIS</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="afternoon" name="turno"
-                                   th:field="*{turn}" value="Tarde">
-                            <label for="afternoon" class="label-filtro">Tarde</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="metabici" name="proyectos">
+                                <label for="metabici" class="label-filtro">Meta Bici</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="night" name="turno"
-                                   th:field="*{turn}" value="Noche">
-                            <label for="night" class="label-filtro">Noche</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="torneoleones" name="proyectos">
+                                <label for="torneoleones" class="label-filtro">Torneo Leones</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="any" name="turno"
-                                   th:field="*{turn}" value="3 turnos">
-                            <label for="any" class="label-filtro">3 turnos</label>
-                        </div>
-                    </div>
-                </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="chakruk" name="proyectos">
+                                <label for="chakruk" class="label-filtro">Chakruk</label>
+                            </div>
 
-                <div class="option filtro-comision">
-                    <div th:class="${seedFilter.commission?.length == 0 ||
-                     seedFilter.commission == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Comisión</span>
-                        <div th:class="${seedFilter.commission?.length == 0 ||
-                     seedFilter.commission == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.commission?.length == 0 ||
-                     seedFilter.commission == null ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro" th:each="com : ${commission}">
-                            <input type="checkbox" class="checkbox-filtro" th:id="${com}" name="comision"
-                                   th:field="*{commission}" th:value="${com}">
-                            <label th:for="${com}" class="label-filtro" th:text="${com}"></label>
-                        </div>
-                    </div>
-                </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="stopinmza" name="proyectos">
+                                <label for="stopinmza" class="label-filtro">Stopin Mza</label>
+                            </div>
 
-                <div class="option filtro-pais">
-                    <div th:class="${seedFilter.country?.length == 0 ||
-                     seedFilter.country == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">País</span>
-                        <div th:class="${seedFilter.country?.length == 0 ||
-                     seedFilter.country == null  ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.country?.length == 0 ||
-                     seedFilter.country == null  ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro" th:each="country : ${countries}">
-                            <input type="checkbox" class="checkbox-filtro" th:id="${country}" name="pais"
-                                   th:field="${seedFilter.country}" th:value="${country}">
-                            <label th:for="${country}" class="label-filtro" th:text="${country}"></label>
-                        </div>
-                        <!--<div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="arg" name="pais">
-                            <label for="arg" class="label-filtro">Argentina</label>
-                        </div>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="ptoorganico" name="proyectos">
+                                <label for="ptoorganico" class="label-filtro">Pto Orgánico</label>
+                            </div>
 
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="chi" name="pais">
-                            <label for="chi" class="label-filtro">Chile</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="uru" name="pais">
-                            <label for="uru" class="label-filtro">Uruguay</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="col" name="pais">
-                            <label for="col" class="label-filtro">Colombia</label>
-                        </div>-->
-                    </div>
-                </div>
-
-                <div class="option filtro-certificado">
-                    <div th:class="${seedFilter.certificationString?.length == 0 ||
-                     seedFilter.certificationString == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Certificado</span>
-                        <div th:class="${seedFilter.certificationString?.length == 0 ||
-                     seedFilter.certificationString == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.certificationString?.length == 0 ||
-                     seedFilter.certificationString == null ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="sienviado" name="certificado"
-                                   th:field="*{certificationString}" value="Enviado">
-                            <label for="sienviado" class="label-filtro">Enviado</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="noenviado" name="certificado"
-                                   th:field="*{certificationString}" value="No enviado">
-                            <label for="noenviado" class="label-filtro">No enviado</label>
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="elafar" name="proyectos">
+                                <label for="elafar" class="label-filtro">El Afar</label>
+                            </div>-->
                         </div>
                     </div>
-                </div>
 
-                <div class="option filtro-marcatemporal">
-                    <div th:class="${seedFilter.fromDate == null &&
-                    seedFilter.untilDate == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Marca Temporal</span>
+                    <div class="option filtro-genero">
+                        <div th:class="${#lists.isEmpty(seedFilter.gender)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Género</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.gender)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
+                        </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.gender)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="femenino" name="genero"
+                                       th:field="*{gender}" value="Femenino">
+                                <label for="femenino" class="label-filtro">Femenino</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="masculino" name="genero"
+                                       th:field="*{gender}" value="Masculino">
+                                <label for="masculino" class="label-filtro">Masculino</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="nobinario" name="genero"
+                                       th:field="*{gender}" value="No binario">
+                                <label for="nobinario" class="label-filtro">No binario</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="nodice" name="genero"
+                                       th:field="*{gender}" value="Prefiero no decirlo">
+                                <label for="nodice" class="label-filtro">Prefiero no decirlo</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="option filtro-turno">
+                        <div th:class="${#lists.isEmpty(seedFilter.turn)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Turno</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.turn)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
+                        </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.turn)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="morning" name="turno"
+                                       th:field="*{turn}" value="Mañana">
+                                <label for="morning" class="label-filtro">Mañana</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="afternoon" name="turno"
+                                       th:field="*{turn}" value="Tarde">
+                                <label for="afternoon" class="label-filtro">Tarde</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="night" name="turno"
+                                       th:field="*{turn}" value="Noche">
+                                <label for="night" class="label-filtro">Noche</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="any" name="turno"
+                                       th:field="*{turn}" value="3 turnos">
+                                <label for="any" class="label-filtro">3 turnos</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="option filtro-comision">
+                        <div th:class="${#lists.isEmpty(seedFilter.commission)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Comisión</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.commission)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
+                        </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.commission)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro" th:each="com : ${commission}">
+                                <input type="checkbox" class="checkbox-filtro" th:id="${com}" name="comision"
+                                       th:field="*{commission}" th:value="${com}">
+                                <label th:for="${com}" class="label-filtro" th:text="${com}"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="option filtro-pais">
+                        <div th:class="${#lists.isEmpty(seedFilter.country)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">País</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.country)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
+                        </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.country)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro" th:each="country : ${countries}">
+                                <input type="checkbox" class="checkbox-filtro" th:id="${country}" name="pais"
+                                       th:field="${seedFilter.country}" th:value="${country}">
+                                <label th:for="${country}" class="label-filtro" th:text="${country}"></label>
+                            </div>
+                            <!--<div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="arg" name="pais">
+                                <label for="arg" class="label-filtro">Argentina</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="chi" name="pais">
+                                <label for="chi" class="label-filtro">Chile</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="uru" name="pais">
+                                <label for="uru" class="label-filtro">Uruguay</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="col" name="pais">
+                                <label for="col" class="label-filtro">Colombia</label>
+                            </div>-->
+                        </div>
+                    </div>
+
+                    <div class="option filtro-certificado">
+                        <div th:class="${#lists.isEmpty(seedFilter.certificationString)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Certificado</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.certificationString)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
+                        </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.certificationString)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="sienviado" name="certificado"
+                                       th:field="*{certificationString}" value="Enviado">
+                                <label for="sienviado" class="label-filtro">Enviado</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="noenviado" name="certificado"
+                                       th:field="*{certificationString}" value="No enviado">
+                                <label for="noenviado" class="label-filtro">No enviado</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="option filtro-marcatemporal">
                         <div th:class="${seedFilter.fromDate == null &&
+                    seedFilter.untilDate == null ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Marca Temporal</span>
+                            <div th:class="${seedFilter.fromDate == null &&
                     seedFilter.untilDate == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.fromDate == null &&
+                        </div>
+                        <div th:class="${seedFilter.fromDate == null &&
                     seedFilter.untilDate == null ? 'menu' : 'menu menu-open'}">
-                        <div class="both-fecha">
-                            <div class="filtro-fecha">
-                                <span class="campo">Desde</span>
-                                <input type="datetime-local" class="fecha" th:field="*{fromDate}">
+                            <div class="both-fecha">
+                                <div class="filtro-fecha">
+                                    <span class="campo">Desde</span>
+                                    <input type="date" class="fecha" th:field="*{fromDate}">
+                                </div>
+                                <div class="filtro-fecha">
+                                    <span class="campo">Hasta</span>
+                                    <input type="date" class="fecha" th:field="*{untilDate}">
+                                </div>
                             </div>
-                            <div class="filtro-fecha">
-                                <span class="campo">Hasta</span>
-                                <input type="datetime-local" class="fecha" th:field="*{untilDate}">
+                        </div>
+                    </div>
+
+                    <div class="option filtro-recomendada">
+                        <div th:class="${#lists.isEmpty(seedFilter.recommendationString)
+                             ? 'select' : 'select select-clicked'}">
+                            <span class="desplegable">Recomendada</span>
+                            <div th:class="${#lists.isEmpty(seedFilter.recommendationString)
+                             ? 'caret' : 'caret caret-rotate'}"></div>
+                        </div>
+                        <div th:class="${#lists.isEmpty(seedFilter.recommendationString)
+                             ? 'menu' : 'menu menu-open'}">
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="sirecomendada" name="recomendada"
+                                       th:field="*{recommendationString}" value="Si">
+                                <label for="sirecomendada" class="label-filtro">Si</label>
+                            </div>
+
+                            <div class="filtro">
+                                <input type="checkbox" class="checkbox-filtro" id="norecomendada" name="recomendada"
+                                       th:field="*{recommendationString}" value="No">
+                                <label for="norecomendada" class="label-filtro">No</label>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="option filtro-recomendada">
-                    <div th:class="${seedFilter.recommendationString?.length == 0 ||
-                     seedFilter.recommendationString == null ? 'select' : 'select select-clicked'}">
-                        <span class="desplegable">Recomendada</span>
-                        <div th:class="${seedFilter.recommendationString?.length == 0 ||
-                     seedFilter.recommendationString == null ? 'caret' : 'caret caret-rotate'}"></div>
-                    </div>
-                    <div th:class="${seedFilter.recommendationString?.length == 0 ||
-                     seedFilter.recommendationString == null ? 'menu' : 'menu menu-open'}">
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="sirecomendada" name="recomendada"
-                                   th:field="*{recommendationString}" value="Si">
-                            <label for="sirecomendada" class="label-filtro">Si</label>
-                        </div>
-
-                        <div class="filtro">
-                            <input type="checkbox" class="checkbox-filtro" id="norecomendada" name="recomendada"
-                                   th:field="*{recommendationString}" value="No">
-                            <label for="norecomendada" class="label-filtro">No</label>
-                        </div>
+                    <div class="aplicar">
+                        <button type="submit" class="aplicar-filtros" id="filtros-semillas">Aplicar Filtros</button>
+                        <a th:href="@{/seed/list}" style="display: none" type="submit" class="limpiar-filtros"
+                           id="limpiar-filtros">Limpiar Filtros</a>
                     </div>
                 </div>
+            </aside>
 
-                <div class="aplicar">
-                    <button type="submit" class="aplicar-filtros" id="">Aplicar Filtros</button>
-                </div>
-            </form>
-        </aside>
+            <!-- TABLA -->
+            <aside class="right" id="right-container" style="display: none">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th>Apellido y Nombre</th>
+                        <th>Rol</th>
+                        <th>Comisión</th>
+                        <th>Turno</th>
+                        <th>Estado</th>
+                    </tr>
+                    </thead>
 
-        <!-- TABLA -->
-        <aside class="right" id="right-container" style="display: none">
-            <table cellspacing="0" cellpadding="0">
-                <thead>
-                <tr>
-                    <th>Apellido y Nombre</th>
-                    <th>Rol</th>
-                    <th>Comisión</th>
-                    <th>Turno</th>
-                    <th>Estado</th>
-                </tr>
-                </thead>
-
-                <tbody id="tabla-semillas">
-                <tr th:each="seed : ${seeds}">
-                    <td>
-                        <a
-                                th:href="@{/seed/item/{id}(id=${seed.id})}"
-                                th:text="${seed.firstName}"
-                        ></a>
-                    </td>
-                    <td>
-                        <a
-                                th:href="@{/seed/item/{id}(id=${seed.id})}"
-                                th:text="${seed.rol}"
-                        ></a>
-                    </td>
-                    <td>
-                        <a
-                                th:href="@{/seed/item/{id}(id=${seed.id})}"
-                                th:text="${seed.commission}"
-                        ></a>
-                    </td>
-                    <td>
-                        <a
-                                th:href="@{/seed/item/{id}(id=${seed.id})}"
-                                th:text="${seed.turn}"
-                        ></a>
-                    </td>
-                    <td>
-                        <a
-                                th:href="@{/seed/item/{id}(id=${seed.id})}"
-                                th:text="${seed.secondary == '' || seed.secondary == null ? seed.primary : seed.secondary}"
-                                th:classappend="${seed.secondary.toUpperCase() == 'EN ESPERA DE PROYECTO' ||
-                            seed.secondary.toUpperCase() == 'ASIGNADA A PROYECTO' ||
-                            seed.secondary.toUpperCase() == 'NO DISPONIBLE TEMPORALMENTE'
-                            ? 'green' : (seed.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO - NO EN IT' ||
-                            seed.secondary.toUpperCase() == 'ABANDONÓ'
-                            ? 'red' : (seed.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO' ||
-                            seed.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA' ||
-                            seed.primary.toUpperCase() == 'FINALIZÓ PROYECTO'
-                            ? 'blue' : 'black'))}"
-                                class="estado"
-                        ></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </aside>
-    </section>
+                    <tbody id="tabla-semillas">
+                    <tr th:each="seed : ${seeds}">
+                        <td>
+                            <a th:href="@{/seed/item/{id}(id=${seed.id})}" th:text="${seed.firstName}"></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/seed/item/{id}(id=${seed.id})}" th:text="${seed.rol}"></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/seed/item/{id}(id=${seed.id})}" th:text="${seed.commission}"></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/seed/item/{id}(id=${seed.id})}" th:text="${seed.turn}"></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/seed/item/{id}(id=${seed.id})}"
+                               th:text="${seed.secondary == '' || seed.secondary == null ? seed.primary : seed.secondary}"
+                               th:classappend="${#strings.equalsIgnoreCase(seed.secondary, 'EN ESPERA DE PROYECTO')||
+                           #strings.equalsIgnoreCase(seed.secondary, 'ASIGNADA A PROYECTO')||
+                           #strings.equalsIgnoreCase(seed.secondary, 'NO DISPONIBLE TEMPORALMENTE')
+                           ? 'green' : (#strings.equalsIgnoreCase(seed.secondary, 'CONSIGUIÓ TRABAJO - NO EN IT')||
+                           #strings.equalsIgnoreCase(seed.secondary, 'ABANDONÓ')
+                           ? 'red' : (#strings.equalsIgnoreCase(seed.secondary, 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO')||
+                           #strings.equalsIgnoreCase(seed.secondary, 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA')||
+                           #strings.equalsIgnoreCase(seed.primary, 'FINALIZÓ PROYECTO')
+                           ? 'blue' : 'black'))}" class="estado"></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </aside>
+        </section>
+    </form>
 </main>
 
 <div style="height: 20vh"></div>
@@ -548,8 +521,8 @@
 <script src="/js/loading.js"></script>
 <!-- <script src="../../static/js/loading.js"></script> -->
 <script th:inline="javascript">
-  let seeds = [[${seeds}]];
-  let seed_filter = [[${seedFilter}]];
+    let seeds = [[${seeds}]];
+    let seed_filter = [[${seedFilter}]];
 </script>
 <script src="/js/nav.js"></script>
 <!-- <script src="../../static/js/nav.js"></script> -->
@@ -560,4 +533,5 @@
 <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
 <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 </body>
+
 </html>

@@ -18,6 +18,7 @@ public class ProjectDto implements Serializable {
     // PROJECT
     private String id;
     private String projectName;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime timestamp;
     private String commission;
     private String production;

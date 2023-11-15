@@ -1,59 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
-/* En caso de que haya algun problema con las direcciones de ubicación de las imágenes, también van a estar subidas virtualmente para copiar y pegar link.
-Link: https://imgur.com/a/6tV4pCo */
-
-:root {
-    --blanco1: #FAFAFA;
-    --blanco2: #F5F8F5;
-    --gris: #9D9E9E;
-    --gris-claro: #EEEDED;
-    --gris-oscuro: #676767;
-    --negro: #171717;
-    --verde-claro: #4CAF44;
-    --verde-oscuro: #395727;
-    --verde-fondo: #F1FCEA;
-    --naranja: #FFAF03;
-    --naranja-oscuro: #DE9800;
-    --azul: #1d3daf;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background: var(--blanco2);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Ubuntu', sans-serif;
-    box-sizing: border-box;
-}
-
-*::selection {
-    background: var(--verde-claro);
-    color: var(--blanco1);
-}
-
-*::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-img {
-    user-select: none;
-}
-
-a {
-    user-select: none;
-    text-decoration: none;
-    cursor: pointer;
-    color: inherit;
-}
-
 nav {
     position: relative;
     display: flex;
@@ -85,6 +29,13 @@ nav img {
     font-family: 'Roboto', sans-serif;
     font-size: 20px;
     font-weight: 500;
+    transition: all 200ms;
+}
+
+
+.user .avatar:hover,
+.user .avatar:focus {
+	background-color: #4F66B6;
 }
 
 .user div {
@@ -108,6 +59,7 @@ nav img {
     color: var(--verde-oscuro);
     font-weight: 500;
     user-select: none;
+    transition: all 150ms;
     cursor: pointer;
 }
 
@@ -135,24 +87,13 @@ main a {
     align-items: center;
     border-radius: 16px;
     transition: 100ms ease;
+    background: linear-gradient(180deg, #535353 1.02%, #9D9E9E 100%);
 }
 
-.semillas {
-    background: linear-gradient(0deg, rgba(23, 23, 23, 0.2), rgba(23, 23, 23, 0.2)), var(--naranja);
-}
-
-.proyectos {
-    background: linear-gradient(0deg, rgba(23, 23, 23, 0.2), rgba(23, 23, 23, 0.2)), var(--verde-oscuro);
-}
-
-.eventos {
-    background: linear-gradient(0deg, rgba(23, 23, 23, 0.2), rgba(23, 23, 23, 0.2)), var(--verde-claro);
-}
 
 main a:hover {
     background: url(/img/recurso.png) center center/cover no-repeat;
-    /* background: url(../img/recurso.png) center center/cover no-repeat; */
-    background-color: var(--gris);
+    background-color: #9D9E9E;
 }
 
 main span {

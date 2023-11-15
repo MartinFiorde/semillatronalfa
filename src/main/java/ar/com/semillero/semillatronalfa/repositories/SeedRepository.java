@@ -1,5 +1,6 @@
 package ar.com.semillero.semillatronalfa.repositories;
 
+import ar.com.semillero.semillatronalfa.models.project.ProjectSeed;
 import ar.com.semillero.semillatronalfa.models.seed.Seed;
 
 import java.util.List;
@@ -15,15 +16,18 @@ import org.springframework.stereotype.Repository;
 public interface SeedRepository extends JpaRepository<Seed, Object> {
 
     @Query(value = "select * from seed where seed.is_active = 1", nativeQuery = true)
-    public List<Seed> getSeedList();
+    List<Seed> getSeedList();
     
-    @Query(value = "select * from seed inner join seed_personal_data on seed.id = seed_personal_data.seed_id_id where seed_personal_data.dni = :dni", nativeQuery = true)
-    public Seed getSeedByDni(@Param("dni") Integer dni);
+    @Query(value = "select * from seed inner join seed_personal_data on seed.id = seed_personal_data.seed_id_id where seed.is_active = 1 and seed_personal_data.dni = :dni", nativeQuery = true)
+    List<Seed> getSeedByDni(@Param("dni") Integer dni);
 
     @Query(value = "select s.* from seed s inner join seed_personal_data spd on spd.seed_id_id = s.id " +
             "inner join seed_contact_data scd on scd.seed_id_id = s.id inner join seed_follow_up sfu on sfu.seed_id_id = s.id " +
             "inner join seed_postulation_data spdata on spdata.seed_id_id = s.id where s.id = :id", nativeQuery = true)
-    public Seed findSeedById(@Param("id") String id);
+    Seed findSeedById(@Param("id") String id);
+
+    @Query(value = "SELECT s.* FROM seed s INNER JOIN project p ON p.id = s.project_id WHERE p.id = :id", nativeQuery = true)
+    List<Seed> findAsignedSeedsToProject(@Param("id") String id);
     
     /*@Query(value = "select distinct country from seed_personal_data inner join seed on seed.id = seed_personal_data.seed_id_id "+
             "where seed.is_active = 1 order by seed_personal_data.country asc", nativeQuery = true)

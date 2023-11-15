@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import javax.servlet.http.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -55,9 +56,9 @@ public class EventsExcel extends AbstractXlsxView {
             dataRow.createCell(11).setCellValue(event.getDestination());
             dataRow.createCell(12).setCellValue(event.getDuration());
             dataRow.createCell(13).setCellValue(event.getModality());
-            //dataRow.createCell(14).setCellValue(LocalDateTime.from(event.getStartTime()));
-            //dataRow.createCell(15).setCellValue(LocalDateTime.from(event.getEndingTime()));
-            dataRow.createCell(14).setCellValue(event.getTotalAttendance());
+            dataRow.createCell(14).setCellValue(event.getStartTime().toString());
+            dataRow.createCell(15).setCellValue(event.getEndingTime().toString());
+            dataRow.createCell(16).setCellValue(event.getTotalAttendance());
             rowNumber++;
         }
     }

@@ -53,7 +53,4 @@ public class SeedStatus {
         this.digitalEmployment = digitalEmployment;
         this.companyName = companyName;
     }
-
-
-    
 }

@@ -1,83 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
-/* En caso de que haya algun problema con las direcciones de ubicación de las imágenes, también van a estar subidas virtualmente para copiar y pegar link.
-Link: https://imgur.com/a/6tV4pCo */
-
-:root {
-    --blanco1: #FAFAFA;
-    --blanco2: #F5F8F5;
-    --gris: #9D9E9E;
-    --gris-claro: #EEEDED;
-    --gris-oscuro: #676767;
-    --gris-oscuro2: #616161;
-    --negro: #171717;
-    --verde-claro: #4CAF44;
-    --verde-oscuro: #395727;
-    --verde-fondo: #F1FCEA;
-    --naranja: #FFAF03;
-    --naranja-oscuro: #DE9800;
-    --azul: #1d3daf;
-    --rojo: #C30000;
-    --evento-formacion: #851F4A;
-    --evento-integracion: #451959;
-    --evento-sensibilizacion: #285359;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background: var(--blanco2);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Ubuntu', sans-serif;
-    box-sizing: border-box;
-}
-
-*::selection {
-    background: var(--verde-claro);
-    color: var(--blanco1);
-}
-
-*::placeholder {
-	user-select: none;
-}
-
-*::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-}
-
-*::-webkit-scrollbar-thumb {
-    background: var(--gris-oscuro2);
-    /*border-radius: 5px;*/
-}
-
-*::-webkit-scrollbar-thumb:hover,
-*::-webkit-scrollbar-thumb:active {
-    background: var(--gris);
-}
-
-*::-webkit-scrollbar-track {
-	/*margin: 5px;*/
-    background: rgba(0, 0, 0, 0.001);
-}
-
-img {
-    user-select: none;
-}
-
-a {
-    user-select: none;
-    text-decoration: none;
-    cursor: pointer;
-    color: inherit;
-}
-
 /* NAV ITEMS */
 .item-inicio,
 .item-semillas,
@@ -185,8 +105,19 @@ main {
 
 /* END ALERTAS */
 
+h2 {
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 3rem;
+    line-height: 34.25px;
+    letter-spacing: 0.5%;
+    color: var(--negro);
+}
+
+
 .volver {
     margin-right: auto;
+    margin-bottom: 2rem;
     display: flex;
     align-items: center;
     color: var(--verde-oscuro);
@@ -203,7 +134,7 @@ main {
 }
 
 .eventos-actions {
-    margin: 4rem 0 2rem auto;
+    margin: 0.5rem auto 2rem 0;
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
@@ -211,7 +142,7 @@ main {
 
 .eventos-actions .descargar-plantilla,
 .eventos-actions .crear-nuevo-evento {
-    width: 240px;
+    width: 230px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -229,8 +160,9 @@ main {
 }
 
 .eventos-actions .descargar-plantilla:hover {
-    border: 1px solid #526C43;
-    color: #526C43;
+    border: 1px solid var(--verde-claro);
+    color: var(--verde-claro);
+    box-shadow: 0px 1px 4px 0px rgba(18, 18, 18, 0.4);
 }
 
 .eventos-actions .crear-nuevo-evento {
@@ -239,8 +171,9 @@ main {
 }
 
 .eventos-actions .crear-nuevo-evento:hover {
-    background: #526C43;
-    border: 1px solid #526C43;
+    border: 1px solid var(--verde-claro);
+    background: var(--verde-claro);
+    box-shadow: 0px 1px 4px 0px rgba(18, 18, 18, 0.4);
 }
 
 .evento-title {
@@ -297,8 +230,8 @@ main {
 
 .evento-head .options:hover,
 .evento-head .options:focus {
-    border: 1px solid var(--naranja-oscuro);
-    color: var(--naranja-oscuro);
+    border: 1px solid var(--verde-claro);
+    color: var(--verde-claro);
 }
 
 .evento-head .options-box {
@@ -314,6 +247,7 @@ main {
 }
 
 .evento-head .options-box a {
+	color: var(--negro);
     font-size: .9rem;
     text-align: left;
     padding: .5rem;
@@ -329,7 +263,7 @@ main {
 }
 
 .evento-head .options-box a:hover {
-    background: var(--verde-fondo);
+    background: var(--gris-claro)
 }
 
 .evento-data {
@@ -358,9 +292,10 @@ main {
 }
 
 .wrap-container {
+	width: 100%;
     display: flex;
     flex-direction: column;
-    gap: .3rem;
+    gap: .5rem;
 }
 
 .wrap {
@@ -373,15 +308,10 @@ main {
 
 .not-wrap {
     /* width: 5rem; */
-    text-align: center;
-    /*display: flex;
-    gap: .4rem;*/
-    /*font-weight: 400;*/
+    margin: auto;
+    display: flex;
+    gap: .4rem;
 }
-
-/*.wrap .campo {
-	font-weight: 400;
-}*/
 
 .wrap .dat,
 .not-wrap .dat {
@@ -403,11 +333,12 @@ main {
 }
 
 .see-attendance button {
+	width: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: .5rem;
-    padding: .5rem 1.5rem;
+    padding: .5rem 0;
     border: 1px solid var(--verde-oscuro);
     border-radius: 100px;
     background: var(--verde-oscuro);
@@ -420,8 +351,9 @@ main {
 }
 
 .see-attendance button:hover {
-    background: #526C43;
-    border: 1px solid #526C43;
+    border: 1px solid var(--verde-claro);
+    background: var(--verde-claro);
+    box-shadow: 0px 1px 4px 0px rgba(18, 18, 18, 0.4);
 }
 
 .import-attendance-actions {
@@ -436,11 +368,12 @@ main {
 
 .import-attendance-actions .download-attendance,
 .import-attendance-actions label {
+	width: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: .5rem;
-    padding: .5rem 1.5rem;
+    padding: .5rem 0;
     border: 1px solid var(--verde-oscuro);
     border-radius: 100px;
     background: transparent;
@@ -458,13 +391,16 @@ main {
 }
 
 .import-attendance-actions label:hover {
-    background: #526C43;
-    border: 1px solid #526C43;
+    border: 1px solid var(--verde-claro);
+    background: var(--verde-claro);
+    box-shadow: 0px 1px 4px 0px rgba(18, 18, 18, 0.4);
 }
 
 .import-attendance-actions .download-attendance:hover {
-    border: 1px solid #526C43;
-    color: #526C43;
+    border: 1px solid var(--verde-claro);
+    color: var(--verde-claro);
+    background: transparent;
+    box-shadow: 0px 1px 4px 0px rgba(18, 18, 18, 0.4);
 }
 
 .estado.planificado {
@@ -514,15 +450,30 @@ main {
 }
 
 .line-f {
-    border-bottom: 3px solid var(--evento-formacion);
+	width: 100%;
+	display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--evento-formacion);
 }
 
 .line-i {
-    border-bottom: 3px solid var(--evento-integracion);
+	width: 100%;
+	display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--evento-integracion);
 }
 
 .line-s {
-    border-bottom: 3px solid var(--evento-sensibilizacion);
+	width: 100%;
+	display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--evento-sensibilizacion);
 }
 
 .roboto {

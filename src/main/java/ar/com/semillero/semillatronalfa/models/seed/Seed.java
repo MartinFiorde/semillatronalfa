@@ -1,18 +1,15 @@
 package ar.com.semillero.semillatronalfa.models.seed;
 
 import ar.com.semillero.semillatronalfa.models.project.Project;
+import ar.com.semillero.semillatronalfa.models.project.ProjectSeed;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import javax.persistence.*;
+
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -40,6 +37,11 @@ public class Seed {
 
     @OneToOne(mappedBy = "seedId", cascade = CascadeType.ALL)
     private SeedPostulationData postulationData;
+
+    @OneToMany(mappedBy = "seed", fetch = FetchType.LAZY)
+    @Getter(value = AccessLevel.NONE)
+    //@JsonIgnore
+    private List<ProjectSeed> projectSeed;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "project_id")

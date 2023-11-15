@@ -4,15 +4,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SeedDto {
+public class SeedDto implements Serializable {
 
     private String id;
     // CONTACT DATA
@@ -49,6 +53,10 @@ public class SeedDto {
     // private Boolean certification;
     private String certificationString;
     private String observation;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate endDate;
 
     // SEED STATUS
     private String primary;
@@ -57,4 +65,6 @@ public class SeedDto {
     private String projectName;
     private Boolean digitalEmployment;
     private String companyName;
+
+    private List<String> projectNames;
 }

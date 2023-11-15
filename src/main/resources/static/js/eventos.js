@@ -140,9 +140,11 @@ if (facilitado_no) facilitado_no.addEventListener("change", handleChangeFacilita
 function showBackOption() {
     let aBrowseBack = d.getElementById("a-browse-back");
     let h2BrowseResult = d.getElementById("h2-browse-result");
+    let limpiar_filtros = d.getElementById("limpiar-filtros");
 
     if (aBrowseBack) aBrowseBack.style.display = "flex";
     if (h2BrowseResult) h2BrowseResult.style.display = "flex";
+    if(limpiar_filtros) limpiar_filtros.style.display = "flex";
 }
 
 //----------------------------CARGAR DATOS------------------------------------------------
@@ -213,7 +215,6 @@ function get_events_by_scope(scope) {
             return dateA.getDate() - dateB.getDate();
         }
     });
-    console.log(array);
     return array;
 }
 
@@ -756,13 +757,26 @@ const functionToLoad = () => {
             validateExistEvents();
             const right_container = d.getElementById("right-container");
             if (right_container) {
-                if (events_filters.searchBar === null) {
+                if (events_filters.searchBar === null || events_filters.searchBar === "") {
                     right_container.innerHTML =
-                        `<h3 class=\"no-results\">NO SE ENCONTRARON RESULTADOS</h3>`;
+                        `<div class=\"no-results\">
+                        	<h3>
+                        		<span class="material-symbols-outlined" style="font-size:4rem;padding-right:0.6rem">search_off</span>
+                        		No se encontraron resultados
+                        	</h3>
+                        	<span style="font-size:1.2rem">Intentá nuevamente con otra búsqueda</span>
+                        </div>`;
                 }
-                if (events_filters.searchBar !== null) {
+                if (events_filters.searchBar !== null && events_filters.searchBar !== "") {
                     right_container.innerHTML =
-                        `<h3 class=\"no-results\">NO SE ENCONTRARON RESULTADOS PARA "<mark>${events_filters.searchBar}</mark>"</h3>`;
+                    `<div class=\"no-results\">
+                        	<h3>
+                        		<span class="material-symbols-outlined" style="font-size:4rem;padding-right:0.6rem">search_off</span>
+                        		No se encontraron resultados para&nbsp;
+                        		<mark>"${events_filters.searchBar}"</mark>
+                        	</h3>
+                        	<span style="font-size:1.2rem">Intentá nuevamente con otra búsqueda</span>
+                        </div>`;
                 }
             }
         }
@@ -836,44 +850,51 @@ const handleChange = async () => {
 
     let content = await readXlsxFile(importarEvento.files[0]);
     let realContent = content.splice(14, content.length);
-    let eventsToImport = [];
+    if (realContent.length > 0) {
+        if(realContent[0].length === 17){
+            let eventsToImport = [];
 
-    for (let i = 0; i < realContent.length; i++) {
+            for (let i = 0; i < realContent.length; i++) {
 
-        let offeredBySemillero = (realContent[i][7].toUpperCase() === "SI");
+                let offeredBySemillero = (realContent[i][7].toUpperCase() === "SI");
 
-        let newEvent = new Event(realContent[i][0], refactorDate(realContent[i][1]), refactorTime(realContent[i][2]),
-            refactorTime(realContent[i][3]), realContent[i][4], realContent[i][5], realContent[i][6], offeredBySemillero,
-            realContent[i][8], realContent[i][9], realContent[i][10], realContent[i][11], realContent[i][12],
-            realContent[i][13], realContent[i][14], realContent[i][15], realContent[i][16]);
-        eventsToImport.push(newEvent);
-    }
+                let newEvent = new Event(realContent[i][0], refactorDate(realContent[i][1]), refactorTime(realContent[i][2]),
+                    refactorTime(realContent[i][3]), realContent[i][4], realContent[i][5], realContent[i][6], offeredBySemillero,
+                    realContent[i][8], realContent[i][9], realContent[i][10], realContent[i][11], realContent[i][12],
+                    realContent[i][13], realContent[i][14], realContent[i][15], realContent[i][16]);
+                eventsToImport.push(newEvent);
+            }
+            const url = new URL(window.location.href);
+            url.pathname = "/event/import";
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(eventsToImport)
+            };
 
-    if (eventsToImport.length > 0) {
-        const url = "http://localhost:8080/event/import";
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(eventsToImport)
-        };
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Respuesta del servidor:", data);
+                })
+                .catch(error => {
+                    console.error("Error en la solicitud:", error);
+                });
 
-        fetch(url, options)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Respuesta del servidor:", data);
-            })
-            .catch(error => {
-                console.error("Error en la solicitud:", error);
-            });
-
-        d.querySelector('.importacion-exito-container').classList.add('active')
-        setTimeout(() => {
-            d.querySelector('.importacion-exito-container').classList.remove('active')
-            window.location.reload()
-        }, 2000);
-    } else {
+            d.querySelector('.importacion-exito-container').classList.add('active')
+            setTimeout(() => {
+                d.querySelector('.importacion-exito-container').classList.remove('active')
+                window.location.reload()
+            }, 2000);
+        }else{
+            d.querySelector('.importacion-error-container').classList.add('active')
+            setTimeout(() => {
+                d.querySelector('.importacion-error-container').classList.remove('active')
+            }, 2000);
+        }
+    }else{
         d.querySelector('.importacion-error-container').classList.add('active')
         setTimeout(() => {
             d.querySelector('.importacion-error-container').classList.remove('active')

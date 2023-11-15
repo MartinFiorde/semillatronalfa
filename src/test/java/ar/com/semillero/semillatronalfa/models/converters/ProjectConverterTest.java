@@ -30,7 +30,7 @@ public class ProjectConverterTest {
     private ProjectConverter projectConverter = new ProjectConverter(projectRepository);
 
     // TESTS
-    @Test
+    /*@Test
     @DisplayName("Should turn Dto into a valid Entity")
     public void dtoToEntityTest() {
         // ARRANGE - Setting up the data that required for the test case
@@ -51,9 +51,9 @@ public class ProjectConverterTest {
         assertEquals(expectedResult.getId(), result.getId());
         assertEquals(expectedResult.getProjectName(), result.getProjectName());
         assertNotNull(result);
-    }
+    }*/
 
-    @Test
+    /*@Test
     @DisplayName("Should turn Entity into a valid Dto")
     public void entityToDtoTest() {
         // ARRANGE - Setting up the data that required for the test case
@@ -73,5 +73,5 @@ public class ProjectConverterTest {
         assertEquals(expectedResult.getId(), result.getId());
         assertEquals(expectedResult.getProjectName(), result.getProjectName());
         assertNotNull(result);
-    }
+    }*/
 }

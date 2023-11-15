@@ -24,6 +24,17 @@ public class EventQueries {
         return query.toString();
     }
 
+    public static String searchBar(String searchBar) {
+        StringBuilder query = new StringBuilder();
+                query.append(" and (")
+                .append("(event_details.instructor like '%"+ searchBar +"%' ")
+                .append("or event_details.location like '%"+ searchBar +"%' ")
+                .append("or event_details.description like '%"+ searchBar +"%' ")
+                .append("or event.organized_by like '%"+ searchBar +"%' ")
+                .append("or event.title like '%"+ searchBar +"%')) ");
+        return query.toString();
+    }
+
     // FUNCIONALIDAD PARA FILTRO DE EVENTOS
     public static String filterEvent(EventFilter eventFilter) {
         StringBuilder query = new StringBuilder();
@@ -72,6 +83,9 @@ public class EventQueries {
         if (eventFilter.getStatus().length > 0 && eventFilter.getStatus() != null) {
             String column = " and event.status";
             query.append(QueryMethods.queryIterator(eventFilter.getStatus(), column));
+        }
+        if (eventFilter.getSearchBar() != null || !eventFilter.getSearchBar().isEmpty()) {
+            query.append(searchBar(eventFilter.getSearchBar()));
         }
         query.append(" order by event.date desc");
         System.out.println(query);

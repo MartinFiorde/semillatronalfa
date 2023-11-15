@@ -2,6 +2,7 @@ package ar.com.semillero.semillatronalfa.models.filters;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,11 +24,15 @@ public class SeedFilter {
     private String[] status;
     private String[] statusSecundary;
     private String[] certificationString;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime fromDate;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime untilDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate fromDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate untilDate;
     private String[] assignedProject;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate endDate;
 
     public SeedFilter(String searchBar) {
         this.searchBar = searchBar;
@@ -37,8 +42,9 @@ public class SeedFilter {
                       String[] country, String[] rol, String[] gender,
                       String[] turn, String[] commission, boolean isRecommended,
                       String[] status, String[]statusSecundary, String[] certificationString,
-                      LocalDateTime fromDate, LocalDateTime untilDate,String[] assignedProject,
-                      String[] recommendationString) {
+                      LocalDate fromDate, LocalDate untilDate,String[] assignedProject,
+                      String[] recommendationString, LocalDate startDate,
+                      LocalDate endDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -54,5 +60,7 @@ public class SeedFilter {
         this.recommendationString = recommendationString;
         this.statusSecundary = statusSecundary;
         this.certificationString = certificationString;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

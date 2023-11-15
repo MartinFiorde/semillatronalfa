@@ -35,66 +35,31 @@
 <main id="main-event-container-js" th:object="${event}" th:data-id="${event.id}">
     <!-- ALERTAS -->
     <!-- eliminado -->
-    <div id="delete-success-container" class="eliminado-exito-container">
-        <div class="eliminado-exito-box">
-            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
-            <!-- <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa"> -->
-            <span>Evento eliminado con éxito</span>
-        </div>
-    </div>
-    <div id="delete-warn-container" class="eliminado-warn-container">
-        <div class="eliminado-warn-box">
-            <img src="/img/icons/alert-warn.svg" alt="Warn">
-            <!-- <img src="../../static/img/icons/alert-warn.svg" alt="Warn"> -->
-            <span>Estás por eliminar este Evento</span>
-            <span class="alert-text-small">¿Deseas continuar?</span>
-            <div class="alert-buttons">
-                <button th:onclick="handleWarn()">Cancelar</button>
-                <button th:attr="data-event-id=${event.id}" onclick="handleDelete(this.getAttribute('data-event-id'))">
-                    Eliminar Evento
-                </button>
-            </div>
-        </div>
-    </div>
-    <!-- Asistentes -->
-    <div class="importacion-exito-container">
-        <div class="importacion-exito-box">
-            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
-            <!-- <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa"> -->
-            <span>Importación exitosa</span>
-        </div>
-    </div>
-    <div class="importacion-error-container">
-        <div class="importacion-error-box">
-            <button>
-                <span>X</span>
-            </button>
-            <img src="/img/icons/alert-error.svg" alt="Error">
-            <!-- <img src="../../static/img/icons/alert-error.svg" alt="Error"> -->
-            <span>¡Lo sentimos!</span>
-            <p>Se detecto un error en la improtación</p>
-            <button>
-                <span>Intentar nuevamente</span>
-            </button>
-        </div>
-    </div>
+    <div th:replace="fragments/alerts/event-delete-success :: event-delete-success"></div>
+    <div th:replace="fragments/alerts/event-delete-warn :: event-delete-warn"></div>
 
-    <a th:href="@{/event/list}" class="volver">
+    <!-- Asistentes -->
+    <div th:replace="fragments/alerts/import-success :: import-success"></div>
+    <div th:replace="fragments/alerts/event-attendance-error :: event-attendance-error"></div>
+
+    <h2>Vista individual de Evento</h2>
+
+    <!--<a th:href="@{/event/list}" class="volver">
         <span class="material-symbols-outlined">arrow_back</span>
         <span>Volver</span>
-    </a>
+    </a>-->
     <!--<button class="volver" onclick="goBack()">
         <span class="material-symbols-outlined">arrow_back</span>
         <span>Volver</span>
     </button>-->
 
     <div class="eventos-actions">
-        <a href="https://drive.google.com/uc?export=download&id=1UEvClspoRwfhpK5sV31RhniYKjuUAL9Z">
+        <!-- <a href="https://drive.google.com/uc?export=download&id=1UEvClspoRwfhpK5sV31RhniYKjuUAL9Z">
             <button class="descargar-plantilla">
                 <span class="material-symbols-outlined">download</span>
                 Descargar plantilla
             </button>
-        </a>
+        </a> -->
 
         <a th:href="@{/event/create-event}" class="crear-nuevo-evento">
             <span class="material-symbols-outlined">add_circle</span>
@@ -107,19 +72,22 @@
     <!-- bgc-i | text-i -->
     <!-- bgc-s | text-s -->
     <div class="evento-title"
-         th:classappend="${event.approach == 'Formación' ? 'bgc-f text-f' :
-         (event.approach == 'Integración Social' ? 'bgc-i text-i' : 'bgc-s text-s')}"
+         th:classappend="${#strings.equalsIgnoreCase(event.approach,'Formación')
+         ? 'bgc-f text-f' :(#strings.equalsIgnoreCase(event.approach,'Integración Social')
+         ? 'bgc-i text-i' : 'bgc-s text-s')}"
          th:text="${event.date.year} + ' | ' + ${#temporals.monthName(event.date)}"></div>
 
     <div class="evento-container">
         <div class="evento-head"
-             th:classappend="${event.approach == 'Formación' ? 'bgc-f text-f' :
-         (event.approach == 'Integración Social' ? 'bgc-i text-i' : 'bgc-s text-s')}">
+             th:classappend="${#strings.equalsIgnoreCase(event.approach,'Formación')
+         ? 'bgc-f text-f' :(#strings.equalsIgnoreCase(event.approach,'Integración Social')
+         ? 'bgc-i text-i' : 'bgc-s text-s')}">
             <!--<img th:src="'/img/' + *{image}" alt="imagen evento">-->
             <!-- <img src="../../static/img/evento-imagen-ejemplo.png" alt="imagen evento"> -->
-            <img th:unless="${event.base64 == null}" src="data:image/jpeg;base64,"
+            <img th:unless="${#strings.isEmpty(event.base64)}" src="data:image/jpeg;base64,"
                  th:attrappend="src=${event.base64}" alt="Imagen evento"/>
-            <span th:if="${event.base64 == null}" title="SIN IMAGEN CARGADA" style="cursor:default;user-select:none;">ㅤ</span>
+            <span th:if="${#strings.isEmpty(event.base64)}" title="SIN IMAGEN CARGADA"
+                  style="cursor:default;user-select:none;">ㅤ</span>
 
             <button data-ripple-light="true"
                     data-popover-target="popover-bottom-end" class="options material-symbols-outlined">more_vert
@@ -138,8 +106,9 @@
             <div class="data-top">
                 <span class="top-title">Título: </span>
                 <span class="medium" th:text="*{title}"
-                      th:classappend="${event.approach == 'Formación' ? 'text-f' :
-                        (event.approach == 'Integración Social' ? 'text-i' : 'text-s')}"
+                      th:classappend="${#strings.equalsIgnoreCase(event.approach,'Formación')
+                      ? 'text-f' :(#strings.equalsIgnoreCase(event.approach,'Integración Social')
+                      ? 'text-i' : 'text-s')}"
                 ></span>
             </div>
 
@@ -161,9 +130,10 @@
                         <span class="campo">Estado:</span>
                         <!-- clases colores: planificado-confirmado-terminado-pospuesto -->
                         <span class="estado" th:text="*{status}"
-                              th:classappend="${event.status == 'Planificado' ? 'planificado' :
-         (event.status == 'Confirmado' ? 'confirmado' :
-         (event.status == 'Terminado' ? 'terminado' : 'pospuesto'))}"></span>
+                              th:classappend="${#strings.equalsIgnoreCase(event.status,'Planificado')
+                              ? 'planificado' :(#strings.equalsIgnoreCase(event.status,'Confirmado')
+                              ? 'confirmado' :(#strings.equalsIgnoreCase(event.status,'Terminado')
+                              ? 'terminado' : 'pospuesto'))}"></span>
                     </div>
                     <div class="wrap">
                         <span class="campo">Instructor:</span>
@@ -183,8 +153,9 @@
                     <div class="wrap">
                         <span class="campo">Enfoque:</span>
                         <span class="enfoque roboto" th:text="*{approach}"
-                              th:classappend="${event.approach == 'Formación' ? 'text-f' :
-                        (event.approach == 'Integración Social' ? 'text-i' : 'text-s')}">
+                              th:classappend="${#strings.equalsIgnoreCase(event.approach, 'Formación')
+                              ? 'text-f medium' : (#strings.equalsIgnoreCase(event.approach,'Integración Social')
+                              ? 'text-i medium' : 'text-s medium')}">
                         </span>
                     </div>
                     <div class="wrap">
@@ -206,19 +177,22 @@
                         <span class="campo">Modalidad:</span>
                         <span class="dat" th:text="*{modality}"></span>
                     </div>
-                    <div class="wrap" th:if="${event.modality == 'Presencial'}">
+                    <div class="wrap" th:if="${!#strings.equalsIgnoreCase(event.modality,'ONLINE')}">
                         <span class="campo">Ubicación:</span>
                         <span class="dat"
-                              th:text="${event.location == null || event.location == ''? 'Por definir...' : event.location}"></span>
+                              th:text="${#strings.isEmpty(event.location)
+                              ? 'Por definir...' : event.location}"></span>
                     </div>
                 </div>
             </div>
 
             <div class="data-bot">
                 <div class="wrap-container">
-                    <div class="not-wrap" th:unless="${event.description == null || event.description == ''}">
-                        <!-- <span class="campo"></span> -->
-                        <span class="dat" th:text="*{'Descripción del Evento: ' + description}"></span>
+                    <div class="not-wrap" th:unless="${#strings.isEmpty(event.description)}">
+                        <span class="campo" th:classappend="${#strings.equalsIgnoreCase(event.approach, 'Formación')
+                              ? 'text-f' : (#strings.equalsIgnoreCase(event.approach,'Integración Social')
+                              ? 'text-i' : 'text-s')}">Descripción del Evento:</span> 
+                        <span class="dat" th:text="*{description}"></span>
                     </div>
                     <div class="wrap">
                         <span class="campo">Duración:</span>
@@ -237,12 +211,7 @@
         </div>
     </div>
     <div class="import-attendance-actions" th:unless="${event.totalAttendance > 0}">
-        <a href="https://drive.google.com/uc?export=download&id=1Z50wuyC3ksBpo7AfZDrS5odHhonJVD6Y">
-            <button class="download-attendance">
-                <span class="material-symbols-outlined">download</span>
-                Descargar plantilla
-            </button>
-        </a>
+
         <label for="importarAsistentesArchivo">
             <span class="material-symbols-outlined">upload_file</span>
             Importar Asistentes
@@ -250,6 +219,12 @@
         <input id="importarAsistentesArchivo" type="file"
                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                style="display: none;">
+        <a th:href="@{/attendance-list/sheet}">
+            <button class="download-attendance">
+                <span class="material-symbols-outlined">download</span>
+                Descargar plantilla Asistentes
+            </button>
+        </a>
     </div>
 </main>
 

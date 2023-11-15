@@ -1,3 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Ubuntu:wght@300;400;500&display=swap');
+
+/* En caso de que haya algun problema con las direcciones de ubicación de las imágenes, también van a estar subidas virtualmente para copiar y pegar link.
+Link: https://imgur.com/a/6tV4pCo */
+
+:root {
+    --blanco1: #FAFAFA;
+    --blanco2: #F5F8F5;
+    --gris: #9D9E9E;
+    --gris-claro: #EEEDED;
+    --gris-oscuro: #535353;
+    --gris-oscuro2: #616161;
+    --negro: #171717;
+    --verde-claro: #4CAF44;
+    --verde-oscuro: #395727;
+    --verde-activo: #186413;
+    --verde-fondo: #F1FCEA;
+    --naranja: #FFAF03;
+    --naranja-oscuro: #DE9800;
+    --azul: #1d3daf;
+    --rojo: #C30000;
+    --evento-formacion: #851F4A;
+    --evento-integracion: #451959;
+    --evento-sensibilizacion: #285359;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--blanco2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+    box-sizing: border-box;
+}
+
+*::selection {
+    background: var(--verde-claro);
+    color: var(--blanco1);
+}
+
+*::placeholder {
+	user-select: none;
+}
+
+*::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--verde-oscuro);
+    /*border-radius: 5px;*/
+}
+
+*::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:active {
+    background: #6D8E59;
+}
+
+*::-webkit-scrollbar-track {
+	/*margin: 5px;*/
+    background: rgba(0, 0, 0, 0.001);
+}
+
+img {
+    user-select: none;
+}
+
+a {
+    user-select: none;
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+}
+
 /* LOADING */
 .loading-container {
     position: fixed;

@@ -1,6 +1,7 @@
 package ar.com.semillero.semillatronalfa.services;
 
 import ar.com.semillero.semillatronalfa.models.Attendance;
+import ar.com.semillero.semillatronalfa.models.dtos.AttendanceDto;
 import ar.com.semillero.semillatronalfa.models.dtos.EventDto;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Map;
 
-@Component("pages/evento.html")
+@Component("pages/asistentes.html")
 public class AttendancesExcel extends AbstractXlsxView {
     @Override
     protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -36,15 +37,14 @@ public class AttendancesExcel extends AbstractXlsxView {
             cell.setCellValue(columns[i]);
         }
 
-        List<Attendance> attendanceList = (List<Attendance>) model.get("attendance");
+        List<AttendanceDto> attendanceList = (List<AttendanceDto>) model.get("attendances");
 
-        // / 1000.0 / 86400 + 70 * 365.25 + 1
         int rowNumber = 4;
-        for (Attendance attendance : attendanceList) {
+        for (AttendanceDto attendance : attendanceList) {
             dataRow = sheet.createRow(rowNumber);
             dataRow.createCell(0).setCellValue(attendance.getFullName());
             dataRow.createCell(1).setCellValue(attendance.getDni());
-            dataRow.createCell(2).setCellValue(DateUtil.getExcelDate(attendance.getTimestamp()));
+            dataRow.createCell(2).setCellValue(attendance.getTimestamp());
             rowNumber++;
         }
     }

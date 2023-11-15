@@ -211,7 +211,7 @@ modalidad.forEach(dropdown => {
 });
 
 function text(x) {
-  if (x == 1) {
+  if (x !== 0) {
     document.getElementById('ubicacion').style.display = 'inherit';
   } else {
     document.getElementById('ubicacion').style.display = 'none';
@@ -248,21 +248,51 @@ function preview(event) {
 
 inputForImage.addEventListener("change", preview);
 
-let deleteImageButton = document.getElementById("deleteImageButton");
+/*fecha*/
 
-const handleDeleteImage = (e) =>{
-  e.preventDefault();
-  let input = document.getElementById("image");
-  let imgSrc = document.getElementById("previewImage");
-  let footer = document.getElementById("loadImageFooter");
-  let label = document.getElementById("labelLoadImage");
+const formulario = document.getElementById("formulario");
+const alert_error_fields = document.getElementById("alert-error-fields");
+const alert_error_hour = document.getElementById("alert-error-hour");
 
-  imgSrc.src = "#";
-  footer.style.display = "none";
-  label.style.display = "flex";
-  input.value = null;
+const validateForm = (event) => {
+  event.preventDefault();
+  const objForm = new FormData(formulario);
+  let formValid = true;
+
+  if(objForm.get("title") === "") formValid = false;
+  if(objForm.get("instructor") === "") formValid = false;
+  if(objForm.get("organizedBy") === "") formValid = false;
+  if(objForm.get("status") === "") formValid = false;
+  if(objForm.get("date") === "") formValid = false;
+  if(objForm.get("startTime") === "") formValid = false;
+  if(objForm.get("endingTime") === "") formValid = false;
+  if(objForm.get("offeredBySemillero") === "") formValid = false;
+  if(objForm.get("approach") === "") formValid = false;
+  if(objForm.get("type") === "") formValid = false;
+  if(objForm.get("origin") === "") formValid = false;
+  if(objForm.get("destination") === "") formValid = false;
+  if(objForm.get("modality") === "") formValid = false;
+  if(objForm.get("modality") === "Presencial" && objForm.get("location") === "") formValid = false;
+
+  if (formValid) {
+    let timeValid = true;
+    if(objForm.get("startTime") >= objForm.get("endingTime")) timeValid = false;
+
+    if(timeValid){
+      formulario.submit();
+    }else{
+      alert_error_hour.classList.add("active")
+      setTimeout(() => {
+        alert_error_hour.classList.remove('active')
+      }, 2000);
+    }
+  } else {
+    alert_error_fields.classList.add("active")
+    setTimeout(() => {
+      alert_error_fields.classList.remove('active')
+    }, 2000);
+  }
+
 }
 
-deleteImageButton.addEventListener("click", handleDeleteImage);
-
-/* fecha */
+formulario.addEventListener("submit", validateForm);

@@ -23,41 +23,44 @@ public class ProjectConverter extends Converter<Project, ProjectDto> {
 
     @Override
     public ProjectDto entityToDto(Project entity) {
+
         // PROJECT
         ProjectDto dto = modelMapper.map(entity, ProjectDto.class);  // APLICA SOLO A LAS VARIABLES DIRECTAS DE PROJECT Y A LIST<SEED>, NO A VARIABLES CONTENIDAS EN SUBCALSES
-
         // PROJECT DETAILS
-        dto.setPurpose(entity.getDetails().getPurpose());
-        dto.setProjectType(entity.getDetails().getProjectType());
-        dto.setProjectStatus(entity.getDetails().getProjectStatus());
-        dto.setProjectStage(entity.getDetails().getProjectStage());
-        dto.setObservations(entity.getDetails().getObservations());
-        dto.setInitialDate(entity.getDetails().getInitialDate());
-        dto.setEndingDate(entity.getDetails().getEndingDate());
-        dto.setEstimatedTime(entity.getDetails().getEstimatedTime());
-
+        if(entity.getDetails() != null) {
+            dto.setPurpose(entity.getDetails().getPurpose());
+            dto.setProjectType(entity.getDetails().getProjectType());
+            dto.setProjectStatus(entity.getDetails().getProjectStatus());
+            dto.setProjectStage(entity.getDetails().getProjectStage());
+            dto.setObservations(entity.getDetails().getObservations());
+            dto.setInitialDate(entity.getDetails().getInitialDate());
+            dto.setEndingDate(entity.getDetails().getEndingDate());
+            dto.setEstimatedTime(entity.getDetails().getEstimatedTime());
+        }
         // MANAGEMENT TEAM
-        dto.setProductOwnerFullName(entity.getManagementTeam().getProductOwnerFullName());
-        dto.setProductOwnerEmail(entity.getManagementTeam().getProductOwnerEmail());
-        dto.setProductOwnerTelephone(entity.getManagementTeam().getProductOwnerTelephone());
-        dto.setProductOwnerDiscordUser(entity.getManagementTeam().getProductOwnerDiscordUser());
+        if(entity.getManagementTeam() != null) {
+            dto.setProductOwnerFullName(entity.getManagementTeam().getProductOwnerFullName());
+            dto.setProductOwnerEmail(entity.getManagementTeam().getProductOwnerEmail());
+            dto.setProductOwnerTelephone(entity.getManagementTeam().getProductOwnerTelephone());
+            dto.setProductOwnerDiscordUser(entity.getManagementTeam().getProductOwnerDiscordUser());
 
-        dto.setProjectManagerFullName(entity.getManagementTeam().getProjectManagerFullName());
-        dto.setProjectManagerEmail(entity.getManagementTeam().getProjectManagerEmail());
-        dto.setProjectManagerTelephone(entity.getManagementTeam().getProjectManagerTelephone());
-        dto.setProjectManagerDiscordUser(entity.getManagementTeam().getProjectManagerDiscordUser());
+            dto.setProjectManagerFullName(entity.getManagementTeam().getProjectManagerFullName());
+            dto.setProjectManagerEmail(entity.getManagementTeam().getProjectManagerEmail());
+            dto.setProjectManagerTelephone(entity.getManagementTeam().getProjectManagerTelephone());
+            dto.setProjectManagerDiscordUser(entity.getManagementTeam().getProjectManagerDiscordUser());
 
-        dto.setTeamLeaderFullName(entity.getManagementTeam().getTeamLeaderFullName());
-        dto.setTeamLeaderEmail(entity.getManagementTeam().getTeamLeaderEmail());
-        dto.setTeamLeaderTelephone(entity.getManagementTeam().getTeamLeaderTelephone());
-        dto.setTeamLeaderDiscordUser(entity.getManagementTeam().getTeamLeaderDiscordUser());
-
-        dto.setAlly(entity.getCompanyData().getAlly());
-        dto.setAddress(entity.getCompanyData().getAddress());
-        dto.setResponsible(entity.getCompanyData().getResponsible());
-        dto.setResponsibleEmail(entity.getCompanyData().getResponsibleEmail());
-        dto.setResponsiblePhoneNumber(entity.getCompanyData().getResponsiblePhoneNumber());
-
+            dto.setTeamLeaderFullName(entity.getManagementTeam().getTeamLeaderFullName());
+            dto.setTeamLeaderEmail(entity.getManagementTeam().getTeamLeaderEmail());
+            dto.setTeamLeaderTelephone(entity.getManagementTeam().getTeamLeaderTelephone());
+            dto.setTeamLeaderDiscordUser(entity.getManagementTeam().getTeamLeaderDiscordUser());
+        }
+        if(entity.getCompanyData() != null) {
+            dto.setAlly(entity.getCompanyData().getAlly());
+            dto.setAddress(entity.getCompanyData().getAddress());
+            dto.setResponsible(entity.getCompanyData().getResponsible());
+            dto.setResponsibleEmail(entity.getCompanyData().getResponsibleEmail());
+            dto.setResponsiblePhoneNumber(entity.getCompanyData().getResponsiblePhoneNumber());
+        }
         return dto;
     }
 

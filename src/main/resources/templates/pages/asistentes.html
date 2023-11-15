@@ -33,12 +33,12 @@
 <nav th:replace="fragments/nav :: _nav"></nav>
 
 <main th:object="${event}">
-    <a th:href="@{/event/{eventId}(eventId=*{id})}" class="volver">
+    <!--<a th:href="@{/event/{eventId}(eventId=*{id})}" class="volver">
         <span class="material-symbols-outlined">arrow_back</span>
         <span>Volver</span>
-    </a>
+    </a>-->
 
-    <div class="asistentes-title">Semillas Asistentes</div>
+    <h2>Visualización de Semillas asistentes al Evento</h2>
 
     <div class="evento-asistentes">
         <div class="dato">
@@ -51,16 +51,22 @@
         </div>
     </div>
     
-    <!-- cambiar el <div> por <a> o <button> según funcione -->
-    <div class="descargar-asistentes">
-		<span class="material-symbols-outlined">download</span>
-		Descargar Asistentes
+    <div class="asistentes-actions">
+	    <a href="?format=xlsx" class="descargar-asistentes">
+			<span class="material-symbols-outlined">download</span>
+			Descargar Asistentes
+		</a>
+		
+		<a href="#" class="descargar-plantilla">
+			<span class="material-symbols-outlined">download</span>
+			Descargar plantilla Asistentes
+		</a>
 	</div>
 
     <table>
         <thead>
         <tr>
-            <th>Nombre y Apellido</th>
+            <th>Nombre</th>
             <th>DNI / Pasaporte</th>
         </tr>
         </thead>

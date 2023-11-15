@@ -1,0 +1,13 @@
+<div th:fragment="observation-warn" id="delete-warn-container" class="eliminado-warn-container">
+    <div class="eliminado-warn-box">
+        <img src="/img/icons/alert-warn.svg" alt="Warn">
+        <!--            <img src="../../static/img/icons/alert-warn.svg" alt="Warn" />-->
+        <span>Estás por eliminar ésta Observación</span>
+        <span class="alert-text-small">¿Deseas continuar?</span>
+        <div class="alert-buttons">
+            <button onclick="handleWarn()">Cancelar</button>
+            <button th:attr="data-seed-id=${project.id}"
+                    onclick="handleDelete(this.getAttribute('data-seed-id'))">Eliminar</button>
+        </div>
+    </div>
+</div>

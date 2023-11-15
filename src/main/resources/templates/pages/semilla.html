@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
+
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -35,34 +36,19 @@
 <main th:object="${seedDTO}">
     <!-- ALERTAS -->
     <!-- eliminado -->
-    <div id="delete-success-container" class="eliminado-exito-container">
-        <div class="eliminado-exito-box">
-            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
-            <!--            <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa">-->
-            <span>Observación eliminada con éxito</span>
-        </div>
-    </div>
-    <div id="delete-warn-container" class="eliminado-warn-container">
-        <div class="eliminado-warn-box">
-            <img src="/img/icons/alert-warn.svg" alt="Warn">
-            <!--            <img src="../../static/img/icons/alert-warn.svg" alt="Warn">-->
-            <span>Estás por eliminar ésta Observación</span>
-            <span class="alert-text-small">¿Deseas continuar?</span>
-            <div class="alert-buttons">
-                <button>Cancelar</button>
-                <button>Eliminar</button>
-            </div>
-        </div>
-    </div>
+    <div th:replace="fragments/alerts/delete-observation-seed-success :: observation-success"></div>
+    <div th:replace="fragments/alerts/delete-observation-seed-warn :: observation-warn"></div>
 
-    <a th:href="@{/seed/list}" class="volver">
+    <h2>Vista individual de Semilla</h2>
+
+    <!--<a th:href="@{/seed/list}" class="volver">
         <span class="material-symbols-outlined">arrow_back</span>
         <span>Volver</span>
-    </a>
+    </a>-->
     <!--<button class="volver" onclick="goBack()">
-        <span class="material-symbols-outlined">arrow_back</span>
-        <span>Volver</span>
-    </button>-->
+    <span class="material-symbols-outlined">arrow_back</span>
+    <span>Volver</span>
+</button>-->
 
     <div class="datos-semilla">
         <!-- top -->
@@ -73,9 +59,9 @@
             </div>
         </div>
 
-		<!-- mid -->
+        <!-- mid -->
         <div class="flex-mid">
-	        <!-- izquierda -->
+            <!-- izquierda -->
             <div class="flex-mid-left">
                 <div class="rol">
                     <span class="static-campo">Rol:</span>
@@ -91,6 +77,22 @@
                     <span class="static-campo">Turno:</span>
                     <span class="static-valor" th:text="*{turn}"></span>
                 </div>
+
+                <div class="fecha-inicio">
+                    <span class="static-campo help"
+                          data-tooltip="La fecha de Inicio se edita al modificar el Estado de la Semilla a “Activa - Asignada a Proyecto”"><span
+                            class="material-symbols-outlined tooltip-help">help</span>Fecha de Inicio:</span>
+                    <span class="static-valor"
+                          th:text="${#strings.isEmpty(seedDTO.startDate) ? '???' : seedDTO.startDate}"></span>
+                </div>
+
+                <div class="fecha-finalizacion">
+                    <span class="static-campo help"
+                          data-tooltip="La fecha de Finalización se edita al modificar el Estado de la Semilla a “Inactiva” o “Finalizó Proyecto”"><span
+                            class="material-symbols-outlined tooltip-help">help</span>Fecha de Finalización:</span>
+                    <span class="static-valor"
+                          th:text="${#strings.isEmpty(seedDTO.endDate) ? '???' : seedDTO.endDate}"></span>
+                </div>
             </div>
 
             <!-- derecha -->
@@ -102,358 +104,911 @@
 
                 <div class="estado">
                     <span class="static-campo">Estado:</span>
-                    <span th:text="${seedDTO.secondary == null || seedDTO.secondary == ''
+                    <span class="static-valor" th:text="${#strings.isEmpty(seedDTO.secondary)
 						? seedDTO.primary : seedDTO.primary + ' - ' + seedDTO.secondary}"
-                          th:class="${seedDTO.secondary.toUpperCase() == 'EN ESPERA DE PROYECTO' ||
-                        seedDTO.secondary.toUpperCase() == 'ASIGNADA A PROYECTO' ||
-                        seedDTO.secondary.toUpperCase() == 'NO DISPONIBLE TEMPORALMENTE'
-                        ? 'green static-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO - NO EN IT' ||
-                        seedDTO.secondary.toUpperCase() == 'ABANDONÓ'
-                        ? 'red static-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO' ||
-                        seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA' ||
-                        seedDTO.primary.toUpperCase() == 'FINALIZÓ PROYECTO'
-                        ? 'blue static-valor' : 'black static-valor'))}"></span>
+                          th:classappend="${#strings.equalsIgnoreCase(seedDTO.secondary, 'EN ESPERA DE PROYECTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'ASIGNADA A PROYECTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'NO DISPONIBLE TEMPORALMENTE')
+                           ? 'green' : (#strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO - NO EN IT')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'ABANDONÓ')
+                           ? 'red' : (#strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA')||
+                           #strings.equalsIgnoreCase(seedDTO.primary, 'FINALIZÓ PROYECTO')
+                           ? 'blue' : 'black'))}"></span>
                 </div>
 
                 <!-- display-none en caso de no estar asignado a ningún proyecto -->
-                <div class="ifestado" th:if="${seedDTO.projectName != null || seedDTO.projectName != ''}">
+                <div class="ifestado" th:unless="${#lists.isEmpty(seedDTO.projectNames)}">
                     <span class="if static-campo">Proyecto:</span>
-                    <span class="if static-valor valor-large" th:text="*{projectName}"></span>
+                    <span class="if static-valor valor-large"
+                          th:text="${#strings.arrayJoin(seedDTO.projectNames, ', ')}"></span>
                 </div>
 
                 <div class="certificado">
                     <span class="static-campo">Certificado:</span>
-                    <th:block th:unless="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
+                    <th:block th:unless="${#strings.isEmpty(seedDTO.certificationString)}">
                         <span class="static-valor si"
-                              th:if="${seedDTO.certificationString.toUpperCase() == 'ENVIADO'}">Enviado</span>
+                              th:if="${#strings.equalsIgnoreCase(seedDTO.certificationString,'ENVIADO')}">Enviado</span>
                         <span class="static-valor no"
-                              th:if="${seedDTO.certificationString.toUpperCase() == 'NO ENVIADO'}">No enviado</span>
+                              th:if="${#strings.equalsIgnoreCase(seedDTO.certificationString,'NO ENVIADO')}">No enviado</span>
                     </th:block>
-                    <th:block th:if="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
+                    <th:block th:if="${#strings.isEmpty(seedDTO.certificationString)}">
                         <span class="static-valor no">No enviado</span>
                     </th:block>
                 </div>
             </div>
         </div>
-        
+
         <!-- bot -->
         <div class="flex-bot">
             <div class="invitaciones">
                 <span class="static-campo">Invitaciones a Eventos:</span>
-                <span class="static-valor"></span>
+                <span class="static-valor" th:text="${invitedTo}"></span>
             </div>
             <div class="asistencias">
-				<span class="static-campo">Asistencias:</span>
-				<span class="static-valor"></span>
-			</div>
+                <span class="static-campo">Asistencias:</span>
+                <span class="static-valor" th:text="${hasAttended}"></span>
+            </div>
             <div class="porcentaje">
-				<span class="static-campo">Porcentaje de asistencia:</span>
-				<span class="static-valor"></span>
-			</div>
+                <span class="static-campo">Porcentaje de asistencia:</span>
+                <span class="static-valor"
+                      th:text="${hasAttended == 0 ? hasAttended : (invitedTo / hasAttended) * 100} + '%'"></span>
+            </div>
         </div>
     </div>
 
-    <!-- observaciones -->
-    <div class="observaciones-container">
-        <div class="observaciones-menu">Observación
-            <span class="material-symbols-outlined observaciones-arrow">arrow_drop_down</span>
-        </div>
+    <form id="form-all-items" th:action="@{/seed/update/{id}(id=*{id})}" th:object="${seedDTO}"
+          method="post">
 
-        <!-- observacion + editar o eliminar -->
-        <div class="observaciones-form-container"
-             th:unless="${seedDTO.observation == null || seedDTO.observation == ''}">
-            <div class="observaciones-list">
-                <div class="observacion">
-                    <span class="text" th:text="*{observation}"></span>
-                </div>
+        <input type="text" th:field="*{commission}" style="display: none">
+        <input type="text" th:field="*{digitalEmployment}" style="display: none">
 
-                <button data-ripple-light="true" data-popover-target="popover-bottom-end"
-                        class="options material-symbols-outlined">more_vert
-                </button>
-                <div data-popover="popover-bottom-end" data-popover-placement="bottom-end" class="options-box w-max">
-                    <a th:href="@{/seed/update/{id}(id=*{id})}">
-                        <button>Editar</button>
-                    </a>
-                    <a>
-                        <button>Eliminar</button>
-                    </a>
+        <!-- observaciones -->
+        <div id="without_observations" class="observaciones-container" th:if="${#strings.isEmpty(seedDTO.observation)}">
+            <div class="observaciones-menu">Observaciones generales
+                <span class="material-symbols-outlined observaciones-arrow">arrow_drop_down</span>
+            </div>
+
+            <!-- sin observaciones + agregar -->
+            <div class="observaciones-form-container">
+                <div class="sin-observaciones">
+                    <div class="observacion">
+                        <span class="text">Sin observaciones</span>
+                    </div>
                 </div>
+                <button class="observacion-agregar" onclick="handleShowEdit(8)">Agregar</button>
             </div>
         </div>
 
-        <!-- sin observaciones + agregar -->
-        <div class="observaciones-form-container" th:if="${seedDTO.observation == null || seedDTO.observation == ''}">
-            <div class="sin-observaciones">
-                <div class="observacion">
-                    <span class="text">Sin observaciones</span>
-                </div>
+        <!-- observaciones -->
+        <div id="with_observations" class="observaciones-container"
+             th:unless="${#strings.isEmpty(seedDTO.observation)}">
+            <div class="observaciones-menu">Observaciones generales
+                <span class="material-symbols-outlined observaciones-arrow">arrow_drop_down</span>
             </div>
-            <a th:href="@{/seed/update/{id}(id=*{id})}" class="observacion-agregar">Agregar</a>
-        </div>
-    </div>
 
-    <!-- tabs semilla -->
-    <div class="tabs-semilla">
-        <!-- tab datos personales -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabdatospersonales" checked="checked">
-        <label for="tabdatospersonales" class="label-chip">
-            <span class="material-symbols-outlined">person</span>
-            <span class="titulo-chip">Datos personales</span>
-        </label>
-        <div class="tab tab-datos-personales">
-            <a id="editar-datos-personales" class="material-symbols-outlined editar-datos-pen"
-               th:href="@{/seed/update/{id}(id=*{id})}">edit_square</a>
-
-            <!-- columns -->
-            <div class="tab-columns">
-                <!-- left -->
-                <div class="tab-left">
-                    <div class="dato">
-                        <span class="dato-campo">Apellido y nombre</span>
-                        <span class="dato-valor" th:text="*{firstName}"></span>
+            <!-- observacion + editar o eliminar -->
+            <div class="observaciones-form-container">
+                <div class="observaciones-list">
+                    <div class="observacion">
+                        <span class="text" th:text="*{observation}"></span>
                     </div>
 
-                    <div class="dato">
-                        <span class="dato-campo">Fecha de nacimiento</span>
-                        <span class="dato-valor" th:text="${#temporals.format(seedDTO.birthDate, 'dd/MM/yyyy')}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">Género</span>
-                        <span class="dato-valor" th:text="*{gender}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">Provincia</span>
-                        <span class="dato-valor" th:text="*{city}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">¿Cómo conoció al semillero?</span>
-                        <span class="dato-valor" th:text="*{meetSemilleroBy}"></span>
-                    </div>
-                </div>
-
-                <!-- right -->
-                <div class="tab-right">
-                    <div class="dato">
-                        <span class="dato-campo">DNI / Pasaporte</span>
-                        <span class="dato-valor" th:text="*{dni}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">Marca temporal</span>
-                        <span class="dato-valor"
-                              th:text="*{#temporals.format(postulationDate, 'dd/MM/yyyy | HH:mm:ss')}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">País</span>
-                        <span class="dato-valor" th:text="*{country}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">Otros estudios</span>
-                        <span class="dato-valor" th:text="*{studies}"></span>
+                    <button onclick="event.preventDefault();"
+                            data-ripple-light="true" data-popover-target="popover-bottom-end"
+                            class="options material-symbols-outlined">more_vert
+                    </button>
+                    <div data-popover="popover-bottom-end" data-popover-placement="bottom-end"
+                         class="options-box w-max">
+                        <a onclick="handleShowEdit(8)">
+                            <button>Editar</button>
+                        </a>
+                        <a onclick="handleWarn()">
+                            <button onclick="event.preventDefault()">Eliminar</button>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- tab datos de contacto -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabdatosdecontacto">
-        <label for="tabdatosdecontacto" class="label-chip">
-            <span class="material-symbols-outlined">mail</span>
-            <span class="titulo-chip">Datos de contacto</span>
-        </label>
-        <div class="tab tab-datos-de-contacto">
-            <a id="editar-datos-de-contacto" class="material-symbols-outlined editar-datos-pen"
-               th:href="@{/seed/update/{id}(id=*{id})}">edit_square</a>
+        <!-- observaciones -->
+        <div id="edit_observations" class="observaciones-container deactiveShow">
+            <div class="observaciones-menu active">Observaciones generales
+                <span class="material-symbols-outlined observaciones-arrow active">arrow_drop_down</span>
+            </div>
 
-            <!-- columns -->
-            <div class="tab-columns">
-                <!-- left -->
-                <div class="tab-left">
-                    <div class="dato">
-                        <span class="dato-campo">Teléfono</span>
-                        <span class="dato-valor" th:text="*{telephone}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">Discord</span>
-                        <span class="dato-valor" th:text="*{discordUser}"></span>
-                    </div>
-                </div>
-
-                <!-- right -->
-                <div class="tab-right">
-                    <div class="dato">
-                        <span class="dato-campo">Correo electrónico</span>
-                        <span class="dato-valor" th:text="*{email}"></span>
-                    </div>
-
-                    <div class="dato">
-                        <span class="dato-campo">LinkedIn</span>
-                        <span class="dato-valor" th:text="*{linkedin}"></span>
+            <div class="observaciones-form-container active">
+                <div class="observaciones-form">
+                    <input type="text" autocomplete="off" placeholder="Agregar observación (opcional)"
+                           th:field="*{observation}"></textarea>
+                    <div class="observaciones-send">
+                        <button class="observaciones-cancel" onclick="handleShowEdit(8, true)">Cancelar</button>
+                        <button type="submit" class="observaciones-submit">Enviar</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- tab modificar rol -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabmodificarrol">
-        <label for="tabmodificarrol" class="label-chip">
-            <span class="material-symbols-outlined">desktop_windows</span>
-            <span class="titulo-chip">Rol</span>
-        </label>
-        <div class="tab tab-modificar-rol">
-            <div class="basic-actual">
-                <span class="basic-campo">Rol actual:</span>
-                <span class="basic-valor vacio"
-                      th:if="${seedDTO.rol == null || seedDTO.rol == ''}">Sin rol especificado</span>
-                <span class="basic-valor" th:unless="${seedDTO.rol == null || seedDTO.rol == ''}"
-                      th:text="*{rol}"></span>
-            </div>
-            <a id="editar-rol" class="modificar-button"
-               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Rol</a>
-        </div>
+        <!-- tabs semilla -->
+        <div class="tabs-semilla">
+            <!-- tab datos personales -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabdatospersonales" checked="checked">
+            <label for="tabdatospersonales" class="label-chip">
+                <span class="material-symbols-outlined">person</span>
+                <span class="titulo-chip">Información</span>
+            </label>
+            <div class="tab tab-datos-personales">
+                <div id="tab_no_editable_personal" class="tab_no_editable">
+                    <span class="editando-titulo">Información personal</span>
+                    <!-- columns -->
+                    <div class="tab-columns">
 
-        <!-- tab modificar turno -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabmodificarturno">
-        <label for="tabmodificarturno" class="label-chip">
-            <span class="material-symbols-outlined">schedule</span>
-            <span class="titulo-chip">Turno</span>
-        </label>
-        <div class="tab tab-asignar-proyecto">
-            <div class="basic-actual">
-                <span class="basic-campo">Turno actual:</span>
-                <span class="basic-valor vacio" th:if="${seedDTO.turn == null || seedDTO.turn == ''}">Sin turno especificado</span>
-                <span class="basic-valor" th:unless="${seedDTO.turn == null || seedDTO.turn == ''}"
-                      th:text="*{turn}"></span>
-            </div>
-            <a id="editar-turno" class="modificar-button"
-               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Turno</a>
-        </div>
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato">
+                                <span class="dato-campo">Apellido y nombre</span>
+                                <span class="dato-valor" th:text="*{firstName}"></span>
+                            </div>
 
-        <!-- tab modificar estado -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabmodificarestado">
-        <label for="tabmodificarestado" class="label-chip">
-            <span class="material-symbols-outlined">manage_accounts</span>
-            <span class="titulo-chip">Estado</span>
-        </label>
-        <div class="tab tab-modificar-estado">
-            <div class="basic-actual">
-                <span class="basic-campo">Estado actual: </span>
-                <span th:text="${seedDTO.secondary == null || seedDTO.secondary == ''
+                            <div class="dato">
+                                <span class="dato-campo">Marca temporal</span>
+                                <span class="dato-valor"
+                                      th:text="*{#temporals.format(postulationDate, 'dd/MM/yyyy | HH:mm:ss')}"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span class="dato-campo">Provincia</span>
+                                <span class="dato-valor" th:text="*{city}"></span>
+                            </div>
+                        </div>
+
+                        <!-- center -->
+                        <div class="tab-center">
+                            <div class="dato">
+                                <span class="dato-campo">DNI / Pasaporte</span>
+                                <span class="dato-valor" th:text="*{dni}"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span class="dato-campo">Género</span>
+                                <span class="dato-valor" th:text="*{gender}"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span class="dato-campo">Otros estudios</span>
+                                <span class="dato-valor" th:text="*{studies}"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato">
+                                <span class="dato-campo">Fecha de nacimiento</span>
+                                <span class="dato-valor"
+                                      th:text="${#temporals.format(seedDTO.birthDate, 'dd/MM/yyyy')}"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span class="dato-campo">País</span>
+                                <span class="dato-valor" th:text="*{country}"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span class="dato-campo">¿Cómo conoció al semillero?</span>
+                                <span class="dato-valor" th:text="*{meetSemilleroBy}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="modificar-button" onclick="handleShowEdit(0)">
+                        Editar Datos
+                    </button>
+                </div>
+                
+                <!-- EDITANDO -->
+                <div id="tab_editable_personal" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">Editar campos de información</span>
+                    <!-- columns -->
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Apellido y Nombre</span>
+                                <input type="text" class="dato-input" th:field="*{firstName}" autocomplete="off"
+                                       required>
+                            </div>
+
+                            <div class="dato-editable">
+                                <span class="dato-campo">Marca Temporal</span>
+                                <input type="hidden" id="postulation-dateTime-input-behind"
+                                       th:field="*{postulationDate}"/>
+                                <input type="datetime-local" class="dato-input" id="postulation-dateTime-input"
+                                       th:value="${#temporals.format(seedDTO.postulationDate, 'yyyy-MM-dd HH:mm')}"
+                                       autocomplete="off" required/>
+                            </div>
+
+                            <div class="dato-editable">
+                                <span class="dato-campo">Provincia</span>
+                                <input type="text" class="dato-input" th:field="*{city}" autocomplete="off"
+                                       required>
+                            </div>
+                        </div>
+
+                        <!-- center -->
+                        <div class="tab-center">
+                            <div class="dato-editable">
+                                <span class="dato-campo" title="SIN ESPACIOS NI LETRAS">DNI / Pasaporte</span>
+                                <input type="text" class="dato-input" th:field="*{dni}" pattern="[0-9+]+"
+                                       autocomplete="off"
+                                       title="SIN ESPACIOS NI LETRAS" required>
+                            </div>
+
+                            <div class="dato-editable gender">
+                                <span class="dato-campo">Género</span>
+                                <div class="select">
+                                    <!-- <input type="text" class="dato-input" th:field="*{gender}" autocomplete="off" required value="Masculino"> -->
+                                    <input type="text" class="dato-input desplegable selected"
+                                           th:field="*{gender}" readonly
+                                           required>
+                                    <div class="caret"></div>
+                                </div>
+                                <ul class="menu">
+                                    <li>Masculino</li>
+                                    <li>Femenino</li>
+                                    <li>No binario</li>
+                                    <li>Otro</li>
+                                </ul>
+                            </div>
+
+                            <div class="dato-editable">
+                                <span class="dato-campo">Otros estudios</span>
+                                <input type="text" class="dato-input" th:field="*{studies}" autocomplete="off"
+                                       required>
+                            </div>
+                        </div>
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Fecha de nacimiento</span>
+                                <input type="date" class="dato-input" th:field="*{birthDate}" autocomplete="off"
+                                       required>
+                            </div>
+
+                            <div class="dato-editable">
+                                <span class="dato-campo">País</span>
+                                <input type="text" class="dato-input" th:field="*{country}" autocomplete="off"
+                                       required>
+                            </div>
+
+                            <div class="dato-editable how-meet">
+                                <span class="dato-campo">¿Cómo conoció al semillero?</span>
+                                <div class="select">
+                                    <!-- <input type="text" class="dato-input" th:field="*{meetSemilleroBy}" autocomplete="off" required value="LinkedIn"> -->
+                                    <input type="text" class="dato-input desplegable selected"
+                                           th:field="*{meetSemilleroBy}"
+                                           readonly required>
+                                    <div class="caret"></div>
+                                </div>
+                                <ul class="menu">
+                                    <li>Redes sociales</li>
+                                    <li>Por recomendación</li>
+                                    <li>Publicidad</li>
+                                    <li>Otro</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(0, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tab datos de contacto -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabdatosdecontacto">
+            <label for="tabdatosdecontacto" class="label-chip">
+                <span class="material-symbols-outlined">mail</span>
+                <span class="titulo-chip">Contacto</span>
+            </label>
+            <div class="tab tab-datos-de-contacto">
+                <div id="tab_no_editable_contacto" class="tab_no_editable">
+                    <span class="editando-titulo">Datos de contacto</span>
+
+                    <!-- columns -->
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato">
+                                <span class="dato-campo">Teléfono</span>
+                                <span class="dato-valor" th:text="*{telephone}"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span class="dato-campo">Discord</span>
+                                <span class="dato-valor" th:text="*{discordUser}"></span>
+                            </div>
+                        </div>
+
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato">
+                                <span class="dato-campo">Correo electrónico</span>
+                                <span class="dato-valor" th:text="*{email}"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span class="dato-campo">LinkedIn</span>
+                                <span class="dato-valor" th:text="*{linkedin}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="modificar-button" onclick="handleShowEdit(1)">
+                        Editar Datos
+                    </button>
+                </div>
+                
+                <!-- EDITANDO -->
+                <div id="tab_editable_contacto" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">Editar campos de contacto</span>
+                    <!-- columns -->
+                    <div class="tab-columns">
+                        <!-- left -->
+                        <div class="tab-left">
+                            <div class="dato-editable">
+                                <span class="dato-campo" title="SIN ESPACIOS NI LETRAS">Teléfono</span>
+                                <input type="text" class="dato-input" th:field="*{telephone}" pattern="[0-9+]+"
+                                       autocomplete="off" title="SIN ESPACIOS NI LETRAS" required>
+                            </div>
+
+                            <div class="dato-editable">
+                                <span class="dato-campo">Discord</span>
+                                <input type="text" class="dato-input" th:field="*{discordUser}" autocomplete="off"
+                                       required>
+                            </div>
+                        </div>
+
+                        <!-- right -->
+                        <div class="tab-right">
+                            <div class="dato-editable">
+                                <span class="dato-campo">Correo electrónico</span>
+                                <input type="email" class="dato-input" th:field="*{email}" autocomplete="off" required>
+                            </div>
+
+                            <div class="dato-editable">
+                                <span class="dato-campo">LinkedIn</span>
+                                <input type="text" class="dato-input" th:field="*{linkedin}" autocomplete="off"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(1, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tab modificar rol -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabmodificarrol">
+            <label for="tabmodificarrol" class="label-chip">
+                <span class="material-symbols-outlined">desktop_windows</span>
+                <span class="titulo-chip">Rol</span>
+            </label>
+            <div class="tab tab-modificar-rol">
+                <div id="tab_no_editable_rol" class="tab_no_editable">
+                    <span class="editando-titulo">Rol desempeñado</span>
+                    <div class="basic-actual">
+                        <span class="basic-campo">Rol actual:</span>
+                        <span class="basic-valor vacio"
+                              th:if="${#strings.isEmpty(seedDTO.rol)}">Sin rol especificado</span>
+                        <span class="basic-valor" th:unless="${#strings.isEmpty(seedDTO.rol)}"
+                              th:text="*{rol}"></span>
+                    </div>
+                    <button id="editar-rol" class="modificar-button" onclick="handleShowEdit(2)">Editar Rol</button>
+                </div>
+                
+                
+                <!-- EDITANDO -->
+                <div id="tab_editable_rol" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">Seleccionar Roll</span>
+
+                    <div class="form-radio">
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="back" name="rol" value="Backend"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.rol, 'Backend')}">
+                            <label for="back" class="label-editando">Backend</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="front" name="rol" value="Frontend"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.rol, 'Frontend')}">
+                            <label for="front" class="label-editando">Frontend</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="uxui" name="rol" value="UX/UI/IxD"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.rol, 'UX/UI/IxD')}">
+                            <label for="uxui" class="label-editando">UX/UI/IxD</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="scrum" name="rol" value="Scrum"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.rol, 'Scrum')}">
+                            <label for="scrum" class="label-editando">Scrum</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="qa" name="rol" value="QA"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.rol, 'QA')}">
+                            <label for="qa" class="label-editando">QA</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="analista" name="rol" value="Analista"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.rol, 'Analista')}">
+                            <label for="analista" class="label-editando">Analista</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="infraestructura"
+                                   name="rol" value="Infraestructura"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.rol, 'Infraestructura')}">
+                            <label for="infraestructura" class="label-editando">Infraestructura</label>
+                        </div>
+                    </div>
+
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(2, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tab modificar turno -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabmodificarturno">
+            <label for="tabmodificarturno" class="label-chip">
+                <span class="material-symbols-outlined">schedule</span>
+                <span class="titulo-chip">Turno</span>
+            </label>
+            <div class="tab tab-asignar-proyecto">
+                <div id="tab_no_editable_turn" class="tab_no_editable">
+                    <span class="editando-titulo">Turno de participación escogido</span>
+                    <div class="basic-actual">
+                        <span class="basic-campo">Turno actual:</span>
+                        <span class="basic-valor vacio"
+                              th:if="${#strings.isEmpty(seedDTO.turn)}">Sin turno especificado</span>
+                        <span class="basic-valor" th:unless="${#strings.isEmpty(seedDTO.turn)}"
+                              th:text="*{turn}"></span>
+                    </div>
+                    <button id="editar-turno" class="modificar-button" onclick="handleShowEdit(3)">Editar Turno
+                    </button>
+                </div>
+                <div id="tab_editable_turn" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">Seleccionar Turno</span>
+
+                    <div class="form-radio">
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="morning" name="turn" value="Mañana"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.turn, 'Mañana')}">
+                            <label for="morning" class="label-editando">Mañana</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="afternoon" name="turn" value="Tarde"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.turn, 'Tarde')}">
+                            <label for="afternoon" class="label-editando">Tarde</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="night" name="turn" value="Noche"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.turn, 'Noche')}">
+                            <label for="night" class="label-editando">Noche</label>
+                        </div>
+
+                        <div class="rol-option">
+                            <input type="radio" class="radio-editando" id="any" name="turn" value="3 turnos"
+                                   th:checked="${#strings.equalsIgnoreCase(seedDTO.turn, '3 turnos')}">
+                            <label for="any" class="label-editando">3 turnos</label>
+                        </div>
+
+                    </div>
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(3, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tab modificar estado -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabmodificarestado">
+            <label for="tabmodificarestado" class="label-chip">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                <span class="titulo-chip">Estado</span>
+            </label>
+            <div class="tab tab-modificar-estado">
+                <div id="tab_no_editable_status" class="tab_no_editable">
+                    <span class="editando-titulo">Estado de la semilla</span>
+                    <div class="basic-actual">
+                        <span class="basic-campo" id="basic-campo">Estado actual: </span>
+                        <span class="static-valor" th:text="${#strings.isEmpty(seedDTO.secondary)
                         ? seedDTO.primary : seedDTO.primary + ' - ' + seedDTO.secondary}"
-                      th:class="${seedDTO.secondary.toUpperCase() == 'EN ESPERA DE PROYECTO' ||
-                        seedDTO.secondary.toUpperCase() == 'ASIGNADA A PROYECTO' ||
-                        seedDTO.secondary.toUpperCase() == 'NO DISPONIBLE TEMPORALMENTE'
-                        ? 'green basic-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO - NO EN IT' ||
-                        seedDTO.secondary.toUpperCase() == 'ABANDONÓ'
-                        ? 'red basic-valor' : (seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO' ||
-                        seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA' ||
-                        seedDTO.primary.toUpperCase() == 'FINALIZÓ PROYECTO'
-                        ? 'blue basic-valor' : 'black basic-valor'))}"></span>
+                              th:classappend="${#strings.equalsIgnoreCase(seedDTO.secondary, 'EN ESPERA DE PROYECTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'ASIGNADA A PROYECTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'NO DISPONIBLE TEMPORALMENTE')
+                           ? 'green' : (#strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO - NO EN IT')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'ABANDONÓ')
+                           ? 'red' : (#strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA')||
+                           #strings.equalsIgnoreCase(seedDTO.primary, 'FINALIZÓ PROYECTO')
+                           ? 'blue' : 'black'))}"></span>
+                    </div>
+
+                    <!-- NO HAY BOX: consiguió trabajo SI en IT pasó a quinto // asignada a proyecto // en espera de proyecto -->
+
+                    <!-- SI VA BOX: no disponible temporalmente // consiguió trabajo NO en IT // abandonó // finalizó prpyecto // redefinir -->
+                    <div class="comentario-estado"
+                         th:if="${#strings.equalsIgnoreCase(seedDTO.secondary, 'NO DISPONIBLE TEMPORALMENTE')||
+                          #strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO - NO EN IT')||
+                          #strings.equalsIgnoreCase(seedDTO.secondary, 'ABANDONÓ')||
+                          #strings.equalsIgnoreCase(seedDTO.primary, 'FINALIZÓ PROYECTO')||
+                          #strings.equalsIgnoreCase(seedDTO.primary, 'REDEFINIR')
+                                }">
+                        <span>Comentarios del Estado actual de la Semilla</span>
+                        <p th:text="${#strings.isEmpty(seedDTO.companyName) ?
+                        'Sin comentarios...' : seedDTO.companyName}"></p>
+                    </div>
+
+                    <!-- BOX CON TITULO DIFERENTE: consiguió trabajo SI en IT en otra empresa -->
+                    <div class="comentario-estado"
+                         th:if="${#strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA')}">
+                        <span>Nombre de la empresa</span>
+                        <p th:text="${#strings.isEmpty(seedDTO.companyName) ?
+                        'Sin comentarios...' : seedDTO.companyName}"></p>
+                    </div>
+
+                    <button id="editar-estado" class="modificar-button"
+                            onclick="handleShowEdit(4)">Editar Estado
+                    </button>
+                </div>
+
+                <div id="tab_editable_status" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">Seleccionar Estado</span>
+                    <div class="estados-container">
+                        <ul class="estados">
+                            <li class="caret-down"><span style="width: 22.35ch;"
+                                                         class="caret-down">Estado de la Semilla</span>
+                                <ul>
+                                    <li><span class="caret-right">Activa</span>
+                                        <ul>
+                                            <li><span class="largo border-left"
+                                                      onclick="editStatus(0)">En espera de Proyecto</span>
+                                            <li><span class="largo border-left"
+                                                      onclick="editStatus(1)">Asignada a Proyecto</span>
+                                            <li><span class="largo border-left" onclick="editStatus(2)">No disponible temporalmente</span>
+                                        </ul>
+                                    </li>
+                                    <li><span class="caret-right">Inactiva</span>
+                                        <ul>
+                                            <li><span class="caret-right border-left">Consiguió trabajo</span>
+                                                <ul>
+                                                    <li><span class="caret-right border-left">¿Empleo en IT?</span>
+                                                        <ul>
+                                                            <li><span class="caret-right border-left">Si</span>
+                                                                <ul>
+                                                                    <li><span class="border-left"
+                                                                              onclick="editStatus(3)">Pasó a Quinto</span>
+                                                                    </li>
+                                                                    <li><span class="border-left"
+                                                                              onclick="editStatus(4)">Otra empresa</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="border-left"
+                                                                      onclick="editStatus(5)">No</span>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="border-left" onclick="editStatus(6)">Abandonó</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><span onclick="editStatus(7)">Finalizó Proyecto</span></li>
+                                    <li><span onclick="editStatus(8)">Redefinir</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <input id="real-input-primary" type="text" th:field="*{primary}" style="display: none;">
+                    <input id="real-input-secondary" type="text" th:field="*{secondary}" style="display: none;">
+
+                    <div id="input-modified-status-container" class="basic-actual basic-estado">
+                        <input id="input-modified-status" type="text" name="state" class="input-estado"
+                               th:value="${#strings.isEmpty(seedDTO.secondary)
+                           ? seedDTO.primary : seedDTO.primary + ' - ' + seedDTO.secondary}"
+                               readonly
+                               th:classappend="${#strings.equalsIgnoreCase(seedDTO.secondary, 'EN ESPERA DE PROYECTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'ASIGNADA A PROYECTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'NO DISPONIBLE TEMPORALMENTE')
+                           ? 'green' : (#strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO - NO EN IT')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'ABANDONÓ')
+                           ? 'red' : (#strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO EN IT - PASÓ A QUINTO')||
+                           #strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA')||
+                           #strings.equalsIgnoreCase(seedDTO.primary, 'FINALIZÓ PROYECTO')
+                           ? 'blue' : 'black'))}">
+                    </div>
+
+                    <!-- NO HAY BOX: consiguió trabajo SI en IT pasó a quinto // asignada a proyecto // en espera de proyecto -->
+                    <!--APARECE: si estado activo // asignado a proyecto -->
+                    <div class="dato-editable" id="seed_start_date_div"
+                         th:style="${#strings.equalsIgnoreCase(seedDTO.secondary, 'ASIGNADA A PROYECTO')
+                ? 'display: flex' : 'display: none'}">
+                        <span class="dato-campo">Fecha de Inicio</span>
+                        <input type="date" class="dato-input" id="start-date-input" autocomplete="off"
+                               th:value="${#temporals.format(seedDTO.startDate, 'yyyy-MM-dd')}"/>
+                    </div>
+                    <input type="hidden" id="seed_start_date_behind"
+                           th:field="*{startDate}"/>
+
+                    <!--APARECE: si estado inactivo // finalizó proyecto -->
+                    <div class="dato-editable" id="seed_end_date_div"
+                         th:style="${#strings.equalsIgnoreCase(seedDTO.primary, 'INACTIVA') ||
+                #strings.equalsIgnoreCase(seedDTO.primary, 'FINALIZÓ PROYECTO')
+                ? 'display: flex' : 'display: none'}">
+                        <span class="dato-campo">Fecha de Finalización</span>
+                        <input type="date" class="dato-input" id="end-date-input" autocomplete="off"
+                               th:value="${#temporals.format(seedDTO.endDate, 'yyyy-MM-dd')}"/>
+                    </div>
+                    <input type="hidden" id="seed_end_date_behind"
+                           th:field="*{endDate}"/>
+
+                    <!-- SI VA BOX: no disponible temporalmente // consiguió trabajo NO en IT // abandonó // finalizó prpyecto // redefinir -->
+                    <div id="box-status-comments" class="comentario-estado"
+                         th:style="${#strings.equalsIgnoreCase(seedDTO.secondary, 'NO DISPONIBLE TEMPORALMENTE')||
+                                #strings.equalsIgnoreCase(seedDTO.secondary, 'CONSIGUIÓ TRABAJO - NO EN IT')||
+                                #strings.equalsIgnoreCase(seedDTO.secondary, 'ABANDONÓ')||
+                                #strings.equalsIgnoreCase(seedDTO.primary, 'FINALIZÓ PROYECTO')||
+                                #strings.equalsIgnoreCase(seedDTO.primary, 'REDEFINIR')
+                                ? 'display: flex' : 'display: none'}">
+                        <span>Comentarios del Estado actual de la Semilla</span>
+                        <input type="text" id="input-comentario-estado" autocomplete="off"
+                               placeholder="Agregar comentario (opcional)" th:value="*{companyName}">
+                    </div>
+
+                    <!-- BOX CON TITULO DIFERENTE: consiguió trabajo SI en IT en otra empresa -->
+                    <div id="box-enterprise-name" class="comentario-estado"
+                         th:style="${#strings.equalsIgnoreCase(seedDTO.secondary,'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA')
+                                ? 'display: flex' : 'display: none'}">
+                        <span>Nombre de la empresa</span>
+                        <input type="text" id="input-empresa-estado" autocomplete="off" placeholder="(opcional)"
+                               th:value="*{companyName}">
+                    </div>
+                    <input type="text" id="realCompanyNameInput" th:field="*{companyName}" style="display: none;">
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(4, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <!-- NO HAY BOX: consiguió trabajo SI en IT pasó a quinto // asignada a proyecto // en espera de proyecto -->
-
-            <!-- SI VA BOX: no disponible temporalmente // consiguió trabajo NO en IT // abandonó // finalizó prpyecto // redefinir -->
-            <div id="box-status-comments" class="comentario-estado"
-                 th:if="${seedDTO.secondary.toUpperCase() == 'NO DISPONIBLE TEMPORALMENTE' ||
-                        seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO - NO EN IT' ||
-                        seedDTO.secondary.toUpperCase() == 'ABANDONÓ' ||
-                        seedDTO.primary.toUpperCase() == 'FINALIZÓ PROYECTO' ||
-                        seedDTO.primary.toUpperCase() == 'REDEFINIR'}">
-                <span>Comentarios del Estado actual de la Semilla</span>
-                <p id="input-comentario-estado" th:text="*{companyName}"></p>
-            </div>
-
-            <!-- BOX CON TITULO DIFERENTE: consiguió trabajo SI en IT en otra empresa -->
-            <div id="box-enterprise-name" class="comentario-estado"
-                 th:if="${seedDTO.secondary.toUpperCase() == 'CONSIGUIÓ TRABAJO EN IT - OTRA EMPRESA'}">
-                <span>Nombre de la empresa</span>
-                <p id="input-empresa-estado" th:text="*{companyName}"></p>
-            </div>
-
-            <a id="editar-estado" class="modificar-button"
-               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Estado</a>
-        </div>
-
-        <!-- tab asignar proyecto -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabasignarproyecto">
-        <label for="tabasignarproyecto" class="label-chip">
-            <span class="material-symbols-outlined">assignment_add</span>
-            <span class="titulo-chip">Proyecto</span>
-        </label>
-        <div class="tab tab-asignar-proyecto">
-            <div class="basic-actual">
-                <span class="basic-campo">Proyecto asignado:</span>
-                <span class="basic-valor vacio" th:if="${seedDTO.projectName == null || seedDTO.projectName == ''}">
+            <!-- tab asignar proyecto -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabasignarproyecto">
+            <label for="tabasignarproyecto" class="label-chip">
+                <span class="material-symbols-outlined">assignment_add</span>
+                <span class="titulo-chip">Proyecto</span>
+            </label>
+            <div class="tab tab-asignar-proyecto">
+                <div id="tab_no_editable_proyecto" class="tab_no_editable">
+                    <span class="editando-titulo">Proyecto en el que participa</span>
+                    <div class="basic-actual">
+                        <span class="basic-campo">Proyecto asignado:</span>
+                        <span class="basic-valor vacio" th:if="${#lists.isEmpty(seedDTO.projectNames)}">
                     No pertenece a ningún proyecto</span>
-                <span class="basic-valor" th:unless="${seedDTO.projectName == null || seedDTO.projectName == ''}"
-                      th:text="*{projectName}"></span>
-            </div>
-            <!-- <a class="modificar-button-disabled">Próximamente...</a> -->
-            <a id="editar-proyecto" class="modificar-button"
-               th:href="@{/seed/update/{id}(id=*{id})}">Asignar Proyecto</a>
-        </div>
+                        <span class="basic-valor" th:unless="${#lists.isEmpty(seedDTO.projectNames)}"
+                              th:text="${#strings.arrayJoin(seedDTO.projectNames, ', ')}"></span>
+                    </div>
+                    <!-- <a class="modificar-button-disabled">Próximamente...</a> -->
+                    <button id="editar-proyecto" class="modificar-button"
+                            onclick="handleShowEdit(5)">Asignar Proyecto
+                    </button>
+                </div>
+                <div id="tab_editable_proyecto" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">Seleccionar Proyecto</span>
+                    <input type="text" style="display: none" th:field="*{projectId}">
 
-        <!-- tab certificado -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabcertificado">
-        <label for="tabcertificado" class="label-chip">
-            <span class="material-symbols-outlined">workspace_premium</span>
-            <span class="titulo-chip">Certificado</span>
-        </label>
-        <div class="tab tab-certificado">
-            <div class="basic-actual">
-                <span class="basic-campo" style="color: #171717;">Certificado de participación:</span>
-                <th:block th:unless="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
+                    <div class="form-radio">
+                        <div class="rol-option" th:if="${#lists.isEmpty(projects)}">
+                            <span>NO HAY PROYECTOS ACTIVOS</span>
+                        </div>
+                        <div class="rol-option" th:each="project : ${projects}">
+                            <input type="checkbox" class="checkbox-editando" th:id="${project}"
+                                   th:field="*{projectNames}" th:value="${project}">
+                            <label th:for="${project}" class="label-editando" th:text="${project}"></label>
+                        </div>
+                    </div>
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(5, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tab certificado -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabcertificado">
+            <label for="tabcertificado" class="label-chip">
+                <span class="material-symbols-outlined">workspace_premium</span>
+                <span class="titulo-chip">Certificado</span>
+            </label>
+            <div class="tab tab-certificado">
+                <div id="tab_no_editable_certificado" class="tab_no_editable">
+                    <span class="editando-titulo">Estado del envío de Certificado de Participación</span>
+                    <div class="basic-actual">
+                        <span class="basic-campo" style="color: #171717;">Certificado de participación:</span>
+                        <th:block th:unless="${#strings.isEmpty(seedDTO.certificationString)}">
                     <span class="basic-valor si"
-                          th:if="${seedDTO.certificationString.toUpperCase() == 'ENVIADO'}">Enviado</span>
-                    <span class="basic-valor no"
-                          th:if="${seedDTO.certificationString.toUpperCase() == 'NO ENVIADO'}">No enviado</span>
-                </th:block>
-                <th:block th:if="${seedDTO.certificationString == null || seedDTO.certificationString == ''}">
-                    <span class="basic-valor no">No enviado</span>
-                </th:block>
-            </div>
-            <a id="editar-certificado" class="modificar-button"
-               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Certificación</a>
-        </div>
+                          th:if="${#strings.equalsIgnoreCase(seedDTO.certificationString, 'ENVIADO')}">Enviado</span>
+                            <span class="basic-valor no"
+                                  th:if="${#strings.equalsIgnoreCase(seedDTO.certificationString, 'NO ENVIADO')}">No enviado</span>
+                        </th:block>
+                        <th:block th:if="${#strings.isEmpty(seedDTO.certificationString)}">
+                            <span class="basic-valor no">No enviado</span>
+                        </th:block>
+                    </div>
+                    <button id="editar-certificado" class="modificar-button"
+                            onclick="handleShowEdit(6)">Editar Certificación
+                    </button>
+                </div>
+                <div id="tab_editable_certificado" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">Seleccionar Estado del Certificado</span>
 
-        <!-- tab recomendada -->
-        <input type="radio" class="radio-chip" name="tabs" id="tabrecomendada">
-        <label for="tabrecomendada" class="label-chip">
-            <span class="material-symbols-outlined">star</span>
-            <span class="titulo-chip">Recomendada</span>
-        </label>
-        <div class="tab tab-recomendada">
-            <div class="basic-actual">
-                <span class="basic-valor"
-                      th:if="${seedDTO.recommendationString == null ||
-                      seedDTO.recommendationString == ''}">Sin especificar...</span>
-                <th:block th:unless="${seedDTO.recommendationString == null ||
-                      seedDTO.recommendationString == ''}">
-                    <span class="basic-valor si"
-                          th:if="${seedDTO.recommendationString.toUpperCase() == 'SI'}">Semilla recomendada</span>
-                    <span class="basic-valor no"
-                          th:if="${seedDTO.recommendationString.toUpperCase() == 'NO'}">Semilla no recomendada</span>
-                </th:block>
+                    <div class="form-radio">
+                        <th:block th:if="${#strings.isEmpty(seedDTO.certificationString)}">
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="certificado-si"
+                                       name="certificationString"
+                                       value="Enviado">
+                                <label for="certificado-si" class="label-editando">Enviado</label>
+                            </div>
+
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="certificado-no"
+                                       name="certificationString"
+                                       value="No enviado" checked>
+                                <label for="certificado-no" class="label-editando">No enviado</label>
+                            </div>
+                        </th:block>
+                        <th:block th:unless="${#strings.isEmpty(seedDTO.certificationString)}">
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="certificado-si"
+                                       name="certificationString"
+                                       value="Enviado"
+                                       th:checked="${#strings.equalsIgnoreCase(seedDTO.certificationString, 'ENVIADO')}">
+                                <label for="certificado-si" class="label-editando">Enviado</label>
+                            </div>
+
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="certificado-no"
+                                       name="certificationString"
+                                       value="No enviado"
+                                       th:checked="${#strings.equalsIgnoreCase(seedDTO.certificationString, 'NO ENVIADO')}">
+                                <label for="certificado-no" class="label-editando">No enviado</label>
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(6, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <!-- SI NO HAY NOTA AUN, NO SE MUESTRA ÉSTE DIV -->
-            <div class="nota-recomendada" th:unless="${seedDTO.recommendationComment == null ||
-            seedDTO.recommendationComment == ''}">
-                <span>¿Cómo fue el desempeño de la Semilla?</span>
-                <p th:text="*{recommendationComment}"></p>
+            <!-- tab recomendada -->
+            <input type="radio" class="radio-chip" name="tabs" id="tabrecomendada">
+            <label for="tabrecomendada" class="label-chip">
+                <span class="material-symbols-outlined">star</span>
+                <span class="titulo-chip">Recomendada</span>
+            </label>
+            <div class="tab tab-recomendada">
+                <div id="tab_no_editable_recomendada" class="tab_no_editable">
+                    <span class="editando-titulo">Recomendación en base al desempeño de la Semilla</span>
+                    <div class="basic-actual">
+                        <span class="basic-valor"
+                              th:if="${#strings.isEmpty(seedDTO.recommendationString)}">Sin especificar...</span>
+                        <span class="basic-valor si"
+                              th:if="${#strings.equalsIgnoreCase(seedDTO.recommendationString, 'SI')}">Semilla recomendada</span>
+                        <span class="basic-valor no"
+                              th:if="${#strings.equalsIgnoreCase(seedDTO.recommendationString, 'NO')}">Semilla no recomendada</span>
+                    </div>
+
+                    <!-- SI NO HAY NOTA AUN, NO SE MUESTRA ÉSTE DIV -->
+                    <div class="nota-recomendada" th:unless="${#strings.isEmpty(seedDTO.recommendationComment)}">
+                        <span>¿Cómo fue el desempeño de la Semilla?</span>
+                        <p th:text="${#strings.isEmpty(seedDTO.recommendationComment) ?
+                        'Sin comentarios' : seedDTO.recommendationComment}"></p>
+                    </div>
+                    <!-- BOTON SE MUESTRA UNA ÚNICA VEZ, ESTE DATO NO ES MODIFICABLE -->
+                    <button id="editar-recomendada" class="modificar-button"
+                       onclick="handleShowEdit(7)">Editar Recomendación</button>
+                </div>
+                <div id="tab_editable_recomendada" class="tab_editable deactiveShow">
+                    <span class="editando-titulo">¿Esta Semilla es recomendada?</span>
+                    <div class="form-radio">
+                        <th:block th:if="${#strings.isEmpty(seedDTO.recommendationString)}">
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="recomendada-si"
+                                       name="recommendationString"
+                                       value="Si">
+                                <label for="recomendada-si" class="label-editando">Si</label>
+                            </div>
+
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="recomendada-no"
+                                       name="recommendationString"
+                                       value="No">
+                                <label for="recomendada-no" class="label-editando">No</label>
+                            </div>
+                        </th:block>
+                        <th:block th:unless="${#strings.isEmpty(seedDTO.recommendationString)}">
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="recomendada-si"
+                                       name="recommendationString"
+                                       value="Si"
+                                       th:checked="${#strings.equalsIgnoreCase(seedDTO.recommendationString, 'SI')}">
+                                <label for="recomendada-si" class="label-editando">Si</label>
+                            </div>
+
+                            <div class="rol-option">
+                                <input type="radio" class="radio-editando" id="recomendada-no"
+                                       name="recommendationString"
+                                       value="No"
+                                       th:checked="${#strings.equalsIgnoreCase(seedDTO.recommendationString, 'NO')}">
+                                <label for="recomendada-no" class="label-editando">No</label>
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="nota-recomendada">
+                        <span>¿Cómo fue el desempeño de la Semilla?</span>
+                        <input type="text" id="nota-recomendada" autocomplete="off"
+                               placeholder="Agregar nota (opcional)"
+                               th:field="*{recommendationComment}">
+                    </div>
+                    <div class="form-send">
+                        <button class="cancel" onclick="handleShowEdit(7, true)">Cancelar</button>
+                        <button form="form-all-items" type="submit"
+                                title="Observaciones generales también se van a guardar" class="guardar">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
             </div>
-            <!-- BOTON SE MUESTRA UNA ÚNICA VEZ, ESTE DATO NO ES MODIFICABLE -->
-            <a id="editar-recomendada" class="modificar-button"
-               th:href="@{/seed/update/{id}(id=*{id})}">Modificar Recomendación</a>
         </div>
-    </div>
+    </form>
 </main>
 
 <div style="height: 20vh;"></div>
@@ -465,10 +1020,9 @@
 <!-- <script src="../../static/js/semilla.js"></script> -->
 <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
 <script type="module" src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js"></script>
-<!-- <script th:inline="javascript">
-  let seed = [[${seed}]];
-  console.log(seed)
-</script> -->
+ <script th:inline="javascript">
+  let seed = [[${seedDTO}]];
+</script>
 </body>
 
 </html>

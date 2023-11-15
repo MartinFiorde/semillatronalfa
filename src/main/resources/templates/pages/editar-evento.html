@@ -35,21 +35,10 @@
 <main>
     <!-- ALERTAS -->
     <!-- cambios -->
-    <div class="cambios-exito-container">
-        <div class="cambios-exito-box">
-            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
-            <!-- <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa"> -->
-            <span>¡Cambios guardados con éxito!</span>
-        </div>
-    </div>
-    <div class="cambios-error-container">
-        <div class="cambios-error-box">
-            <img src="/img/icons/alert-error.svg" alt="Error">
-            <!-- <img src="../../static/img/icons/alert-error.svg" alt="Error"> -->
-            <span>¡Lo sentimos!</span>
-            <span class="alert-text-small">En este momento, los cambios no se pudieron guardar</span>
-        </div>
-    </div>
+    <div th:replace="fragments/alerts/event-create-success :: event-success"></div>
+    <div th:replace="fragments/alerts/event-create-error :: event-error"></div>
+    <div th:replace="fragments/alerts/event-create-fields :: event-error-fields"></div>
+    <div th:replace="fragments/alerts/event-create-time :: event-error-time"></div>
 
     <!--<a th:href="@{/event/list}" class="volver">
         <span class="material-symbols-outlined">arrow_back</span>
@@ -60,7 +49,7 @@
 
     <div class="editar-evento-container">
         <form id="formulario" th:action="@{/event/update/{id}(id=${event.id})}" method="post" th:object="${event}"
-              enctype="multipart/form-data">
+              enctype="multipart/form-data" novalidate>
             <!-- left -->
             <div class="form-left">
                 <div class="option titulo">
@@ -125,7 +114,7 @@
 
                 <div class="option descripcion">
                     <span class="campo opcional">Descripción del Evento (opcional)</span>
-                    <textarea rows="4" th:field="*{description}"></textarea>
+                    <textarea rows="4" th:field="*{description}" placeholder="(no más de 1 renglón)"></textarea>
                 </div>
             </div>
 
@@ -217,9 +206,10 @@
                 </div>
 
                 <div class="option ubicacion" id="ubicacion"
-                     th:style="${event.modality == 'Presencial' ? 'display: flex' : 'display: none'}">
+                     th:style="${#strings.equalsIgnoreCase(event.modality, 'ONLINE')?
+                     'display : none' : 'display: inherit'}">
                     <span class="campo">Ubicacion del Evento</span>
-                    <input type="text" value="Dirección del lugar" th:field="*{location}" autocomplete="off">
+                    <input type="text" value="Dirección del lugar" th:field="*{location}" autocomplete="off" placeholder="(opcional)">
                 </div>
 
                 <div class="option imagen">
@@ -236,10 +226,6 @@
 
                     <div id="loadImageFooter" class="img-footer"
                          th:style="${event.base64 == null ? 'display: none' : 'display: flex' }">
-                        <button id="deleteImageButton" class="eliminar-imagen">
-                            <img src="/img/icons/eliminar-imagen.svg">
-                            <!-- <img src="../../static/img/icons/eliminar-imagen.svg"> -->
-                        </button>
                         <label for="image" class="editar-imagen" style="cursor: pointer;">
                             <img src="/img/icons/editar-imagen.svg">
                             <!-- <img src="../../static/img/icons/editar-imagen.svg"> -->

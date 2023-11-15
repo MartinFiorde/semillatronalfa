@@ -24,55 +24,61 @@ public class EventConverter extends Converter<Event, EventDto> {
 
     @Override
     public EventDto entityToDto(Event event) {
-        EventDto eventDto = modelMapper.map(event, EventDto.class);
-
-        eventDto.setInstructor(event.getDetails().getInstructor());
-        eventDto.setDescription(event.getDetails().getDescription());
-        eventDto.setLocation(event.getDetails().getLocation());
-        eventDto.setOrigin(event.getDetails().getOrigin());
-        eventDto.setDestination(event.getDetails().getDestination());
-        eventDto.setDuration(event.getDetails().getDuration());
-        eventDto.setModality(event.getDetails().getModality());
-        eventDto.setStartTime(event.getDetails().getStartTime());
-        eventDto.setEndingTime(event.getDetails().getEndingTime());
-        eventDto.setDuration((int) ChronoUnit.MINUTES.between(event.getDetails().getStartTime(), event.getDetails().getEndingTime()));
-        if(event.getImage() != null) {
+        EventDto eventDto = null;
+        if(event != null) {
+            eventDto = modelMapper.map(event, EventDto.class);
+            eventDto.setInstructor(event.getDetails().getInstructor());
+            eventDto.setDescription(event.getDetails().getDescription());
+            eventDto.setLocation(event.getDetails().getLocation());
+            eventDto.setOrigin(event.getDetails().getOrigin());
+            eventDto.setDestination(event.getDetails().getDestination());
+            eventDto.setDuration(event.getDetails().getDuration());
+            eventDto.setModality(event.getDetails().getModality());
+            eventDto.setStartTime(event.getDetails().getStartTime());
+            eventDto.setEndingTime(event.getDetails().getEndingTime());
+            eventDto.setDuration((int) ChronoUnit.MINUTES.between(event.getDetails().getStartTime(), event.getDetails().getEndingTime()));
             setBase64(eventDto);
+            eventDto.setAttendanceList(event.getAttendance());
         }
-        eventDto.setAttendanceList(event.getAttendance());
         return eventDto;
     }
 
     @Override
     public Event dtoToEntity(EventDto eventDto) throws ParseException {
-        Event event = modelMapper.map(eventDto, Event.class);
-        EventDetails eventDetails = modelMapper.map(eventDto, EventDetails.class);
-        event.setDetails(eventDetails);
-        eventDetails.setEvent(event);
-        event.getDetails().setDuration((int) ChronoUnit.MINUTES.between(eventDto.getStartTime(), eventDto.getEndingTime()));
-
+        Event event = null;
+        EventDetails eventDetails = null;
+        if(eventDto != null) {
+            event = modelMapper.map(eventDto, Event.class);
+            eventDetails = modelMapper.map(eventDto, EventDetails.class);
+            event.setDetails(eventDetails);
+            eventDetails.setEvent(event);
+            event.getDetails().setDuration((int) ChronoUnit.MINUTES.between(eventDto.getStartTime(), eventDto.getEndingTime()));
+        }
         return event;
     }
 
 
     public Event updateDtoToEntity(EventDto eventDto, Event event) throws ParseException {
-        event.setStatus(eventDto.getStatus());
-        event.setTitle(eventDto.getTitle());
-        event.setApproach(eventDto.getApproach());
-        event.setDate(eventDto.getDate());
-        event.setOfferedBySemillero(eventDto.getOfferedBySemillero());
-        event.setOrganizedBy(eventDto.getOrganizedBy());
-        event.setType(eventDto.getType());
-        event.getDetails().setDescription(eventDto.getDescription());
-        event.getDetails().setDestination(eventDto.getDestination());
-        event.getDetails().setInstructor(eventDto.getInstructor());
-        event.getDetails().setLocation(eventDto.getLocation());
-        event.getDetails().setModality(eventDto.getModality());
-        event.getDetails().setOrigin(eventDto.getOrigin());
-        event.getDetails().setStartTime(eventDto.getStartTime());
-        event.getDetails().setEndingTime(eventDto.getEndingTime());
-        event.getDetails().setDuration((int) ChronoUnit.MINUTES.between(eventDto.getStartTime(), eventDto.getEndingTime()));
-
+        if(event != null && eventDto != null) {
+            event.setStatus(eventDto.getStatus());
+            event.setTitle(eventDto.getTitle());
+            event.setApproach(eventDto.getApproach());
+            event.setDate(eventDto.getDate());
+            event.setOfferedBySemillero(eventDto.getOfferedBySemillero());
+            event.setOrganizedBy(eventDto.getOrganizedBy());
+            event.setType(eventDto.getType());
+            if(event.getDetails() != null) {
+                event.getDetails().setDescription(eventDto.getDescription());
+                event.getDetails().setDestination(eventDto.getDestination());
+                event.getDetails().setInstructor(eventDto.getInstructor());
+                event.getDetails().setLocation(eventDto.getLocation());
+                event.getDetails().setModality(eventDto.getModality());
+                event.getDetails().setOrigin(eventDto.getOrigin());
+                event.getDetails().setStartTime(eventDto.getStartTime());
+                event.getDetails().setEndingTime(eventDto.getEndingTime());
+                event.getDetails().setDuration((int) ChronoUnit.MINUTES.between(eventDto.getStartTime(), eventDto.getEndingTime()));
+            }
+        }
         return event;
     }
 

@@ -20,7 +20,8 @@ function handleSuccess (){
 
 //Manejo de la eliminación de un evento
 function handleDelete (id){
-    const url = `http://localhost:8080/event/delete/${id}`;
+    const url = new URL(window.location.href);
+    url.pathname = `event/delete/${id}`;
     const options = {
         method: "PATCH",
         headers: {
@@ -60,46 +61,53 @@ const handleChange = async () => {
 
     let content = await readXlsxFile(importAttendances.files[0]);
     let realContent = content.splice(14, content.length);
-    let attendancesToImport = [];
+    if (realContent.length > 0) {
+        if(realContent[0].length === 3){
+            let attendancesToImport = [];
 
-    for (let i = 0; i < realContent.length; i++) {
-        let newAttendance = new Attendance(realContent[i][2], realContent[i][1], refactorDate(realContent[i][0]));
-        attendancesToImport.push(newAttendance);
-    }
+            for (let i = 0; i < realContent.length; i++) {
+                let newAttendance = new Attendance(realContent[i][2], realContent[i][1], refactorDate(realContent[i][0]));
+                attendancesToImport.push(newAttendance);
+            }
+            let mainContainer = d.getElementById("main-event-container-js");
+            const url = new URL(window.location.href);
+            url.pathname = `/attendance-list/import/${mainContainer.getAttribute('data-id')}`;
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(attendancesToImport)
+            };
 
-   if (attendancesToImport.length > 0) {
-       let mainContainer = d.getElementById("main-event-container-js");
-        const url = `http://localhost:8080/attendance-list/import/${mainContainer.getAttribute('data-id')}`;
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(attendancesToImport)
-        };
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Respuesta del servidor:", data);
+                })
+                .catch(error => {
+                    console.error("Error en la solicitud:", error);
+                });
 
-        fetch(url, options)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Respuesta del servidor:", data);
-            })
-            .catch(error => {
-                console.error("Error en la solicitud:", error);
-            });
+            d.querySelector('.importacion-exito-container').classList.add('active')
+            setTimeout(() => {
+                d.querySelector('.importacion-exito-container').classList.remove('active')
+                window.location.href = new URL(`/attendance-list/list/${mainContainer.getAttribute("data-id")}`
+                    , new URL(window.location.href).origin).href;
+            }, 2000);
 
-        d.querySelector('.importacion-exito-container').classList.add('active')
-        setTimeout(() => {
-            d.querySelector('.importacion-exito-container').classList.remove('active')
-            window.location.href = new URL(`/attendance-list/list/${mainContainer.getAttribute("data-id")}`
-                , new URL(window.location.href).origin).href;
-        }, 2000);
-
+        }else {
+            d.querySelector('.importacion-error-container').classList.add('active')
+            setTimeout(() => {
+                d.querySelector('.importacion-error-container').classList.remove('active')
+            }, 2500);
+        }
     } else {
         d.querySelector('.importacion-error-container').classList.add('active')
         setTimeout(() => {
             d.querySelector('.importacion-error-container').classList.remove('active')
-        }, 2000);
+        }, 2500);
     }
 };
 
-if(importAttendances)importAttendances.addEventListener("change", handleChange);
+importAttendances.addEventListener("change", handleChange);

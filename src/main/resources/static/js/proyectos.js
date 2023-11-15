@@ -76,7 +76,7 @@ d.querySelectorAll('.filtro-proyecto-marcatemporal').forEach(dropdown => {
 
 
 /* TABLE PAGINATION */
- if (document.getElementById("tabla-proyectos") && projects.length > 0) {
+if (document.getElementById("tabla-proyectos") && projects.length > 0) {
     let $table = document.getElementById("tabla-proyectos"),
         $n = 10,
         $rowCount = $table.rows.length,
@@ -173,68 +173,75 @@ const refactorDate = (date) => {
 const handleChange = async () => {
     let content = await readXlsxFile(excelInput.files[0]);
     let realContent = content.splice(14, content.length);
-    let projectsToImport = [];
+    if (realContent.length > 0) {
+        if (realContent[0].length === 20) {
+            let projectsToImport = [];
 
-    for (let i = 0; i < realContent.length; i++) {
+            for (let i = 0; i < realContent.length; i++) {
 
-        let status_stage = dividirTexto(realContent[i][19])
+                let status_stage = dividirTexto(realContent[i][19])
 
-        let newProject = new Project(realContent[i][0], realContent[i][1], realContent[i][2],
-            refactorDate(realContent[i][3]), refactorDate(realContent[i][4]), realContent[i][5],
-            realContent[i][6], realContent[i][7], realContent[i][8], realContent[i][9], realContent[i][10],
-            realContent[i][11], realContent[i][12], realContent[i][13], realContent[i][14], realContent[i][15],
-            realContent[i][16], realContent[i][17], realContent[i][18], status_stage[0].trim(), status_stage[1].trim());
-        projectsToImport.push(newProject);
-    }
+                let newProject = new Project(realContent[i][0], realContent[i][1], realContent[i][2],
+                    refactorDate(realContent[i][3]), refactorDate(realContent[i][4]), realContent[i][5],
+                    realContent[i][6], realContent[i][7], realContent[i][8], realContent[i][9], realContent[i][10],
+                    realContent[i][11], realContent[i][12], realContent[i][13], realContent[i][14], realContent[i][15],
+                    realContent[i][16], realContent[i][17], realContent[i][18], status_stage[0].trim(), status_stage[1].trim());
+                projectsToImport.push(newProject);
+            }
+            const url = new URL(window.location.href);
+            url.pathname = "/project/import";
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(projectsToImport)
+            };
 
-    if (projectsToImport.length > 0) {
-        const url = "http://localhost:8080/project/import";
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(projectsToImport)
-        };
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Respuesta del servidor:", data);
+                })
+                .catch(error => {
+                    console.error("Error en la solicitud:", error);
+                });
 
-        fetch(url, options)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Respuesta del servidor:", data);
-            })
-            .catch(error => {
-                console.error("Error en la solicitud:", error);
-            });
-
-        document.querySelector('.exito-container').classList.add('active')
-        setTimeout(() => {
-            document.querySelector('.exito-container').classList.remove('active')
-            window.location.reload()
-        }, 2000);
-
+            document.querySelector('.importacion-exito-container').classList.add('active')
+            setTimeout(() => {
+                document.querySelector('.importacion-exito-container').classList.remove('active')
+                window.location.reload()
+            }, 2000);
+        } else {
+            document.querySelector('.importacion-error-container').classList.add('active')
+            setTimeout(() => {
+                document.querySelector('.importacion-error-container').classList.remove('active')
+            }, 2000);
+        }
     } else {
-        document.querySelector('.error-container').classList.add('active')
+        document.querySelector('.importacion-error-container').classList.add('active')
         setTimeout(() => {
-            document.querySelector('.error-container').classList.remove('active')
+            document.querySelector('.importacion-error-container').classList.remove('active')
         }, 2000);
-
     }
 }
 
 excelInput.addEventListener("change", handleChange);
 
 //------------------------------------FILTROS--------------------------------------------------------
-function toggleOpciones(num) {
+/*function toggleOpciones(num) {
     let opciones = document.getElementById('opciones-' + num);
     opciones.style.display = (opciones.style.display === 'block') ? 'none' : 'block';
-}
+}*/
 
-function showBackOption () {
+function showBackOption() {
     let aBrowseBack = d.getElementById("a-browse-back");
     let h2BrowseResult = d.getElementById("h2-browse-result");
+    let limpiar_filtros = d.getElementById("limpiar-filtros");
 
-    if(aBrowseBack)aBrowseBack.style.display = "flex";
-    if(h2BrowseResult)h2BrowseResult.style.display = "flex";
+    if (aBrowseBack) aBrowseBack.style.display = "flex";
+    if (h2BrowseResult) h2BrowseResult.style.display = "flex";
+    if (limpiar_filtros) limpiar_filtros.style.display = "flex";
 }
 
 const functionToLoad = () => {
@@ -243,31 +250,45 @@ const functionToLoad = () => {
     let aside_filter = d.getElementById("aside-filter");
     let download_project_a = d.getElementById("download_project_a");
 
-    if(params.toString() === ""){
-        if(projects.length > 0){
-            if(right_container)right_container.style.display = "flex";
-            if(form_search_bar)form_search_bar.style.display = "flex";
-            if(aside_filter)aside_filter.style.display = "flex";
-            if(download_project_a)download_project_a.style.display = "flex";
+    if (params.toString() === "") {
+        if (projects.length > 0) {
+            if (right_container) right_container.style.display = "flex";
+            if (form_search_bar) form_search_bar.style.display = "flex";
+            if (aside_filter) aside_filter.style.display = "flex";
+            if (download_project_a) download_project_a.style.display = "flex";
         }
-    }else{
+    } else {
         d.title = "RESULTADOS | SIGIS";
         showBackOption();
-        if(form_search_bar)form_search_bar.style.display = "flex";
-        if(aside_filter)aside_filter.style.display = "flex";
-        if (right_container)right_container.style.display = "flex";
-        if (download_project_a)download_project_a.style.display = "flex";
+        if (form_search_bar) form_search_bar.style.display = "flex";
+        if (aside_filter) aside_filter.style.display = "flex";
+        if (right_container) right_container.style.display = "flex";
+        if (download_project_a) download_project_a.style.display = "flex";
 
-        if(projects.length === 0){
+        if (projects.length === 0) {
             d.title = "SIN RESULTADOS | SIGIS";
             if (right_container) {
-                if (project_filters.searchBar === null) {
+                if (project_filters.searchBar === null || project_filters.searchBar === "") {
                     right_container.innerHTML =
-                        `<h3 class=\"no-results\">NO SE ENCONTRARON RESULTADOS</h3>`;
+                        `<div class=\"no-results\">
+                        	<h3>
+                        		<span class="material-symbols-outlined" style="font-size:4rem;padding-right:0.6rem">search_off</span>
+                        		No se encontraron resultados
+                        	</h3>
+                        	<span style="font-size:1.2rem">Intentá nuevamente con otra búsqueda</span>
+                        </div>`;
                 }
-                if (project_filters.searchBar !== null) {
+                if (project_filters.searchBar !== null && project_filters.searchBar !== "") {
                     right_container.innerHTML =
-                        `<h3 class=\"no-results\">NO SE ENCONTRARON RESULTADOS PARA "<mark>${project_filters.searchBar}</mark>"</h3>`;
+                        right_container.innerHTML =
+                            `<div class=\"no-results\">
+                        	<h3>
+                        		<span class="material-symbols-outlined" style="font-size:4rem;padding-right:0.6rem">search_off</span>
+                        		No se encontraron resultados para&nbsp;
+                        		<mark>"${project_filters.searchBar}"</mark>
+                        	</h3>
+                        	<span style="font-size:1.2rem">Intentá nuevamente con otra búsqueda</span>
+                        </div>`;
                 }
             }
         }

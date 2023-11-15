@@ -36,21 +36,10 @@
 <main th:object="${event}">
     <!-- ALERTAS -->
     <!-- cambios -->
-    <div class="cambios-exito-container">
-        <div class="cambios-exito-box">
-            <img src="/img/icons/alert-exito.svg" alt="Exitosa">
-            <!--        <img src="../../static/img/icons/alert-exito.svg" alt="Exitosa">-->
-            <span>¡Evento creado exitosamente!</span>
-        </div>
-    </div>
-    <div class="cambios-error-container">
-        <div class="cambios-error-box">
-            <img src="/img/icons/alert-error.svg" alt="Error">
-            <!-- <img src="../../static/img/icons/alert-error.svg" alt="Error"> -->
-            <span>¡Lo sentimos!</span>
-            <span class="alert-text-small">El Evento no se pudo crear</span>
-        </div>
-    </div>
+    <div th:replace="fragments/alerts/event-create-success :: event-success"></div>
+    <div th:replace="fragments/alerts/event-create-error :: event-error"></div>
+    <div th:replace="fragments/alerts/event-create-fields :: event-error-fields"></div>
+    <div th:replace="fragments/alerts/event-create-time :: event-error-time"></div>
 
     <!-- <a th:href="@{/event/list}" class="volver">
       <span class="material-symbols-outlined">arrow_back</span>
@@ -60,7 +49,7 @@
     <h1>Crear nuevo Evento</h1>
 
     <div class="editar-evento-container">
-        <form id="formulario" th:action="@{/event/create}" method="post" enctype="multipart/form-data">
+        <form id="formulario" th:action="@{/event/create}" method="post" enctype="multipart/form-data" novalidate>
             <!-- left -->
             <div class="form-left">
                 <div class="option titulo">
@@ -217,7 +206,7 @@
                     </ul>
                 </div>
 
-                <div class="option ubicacion" id="ubicacion" style="display: none;">
+                <div class="option ubicacion" id="ubicacion" style="display: none">
                     <span class="campo">Ubicacion del Evento</span>
                     <input type="text" value="Dirección del lugar" th:field="*{location}" autocomplete="off">
                 </div>
@@ -233,10 +222,6 @@
                     <!-- <img src="../../static/img/evento-imagen-ejemplo.png" alt="imagen del evento"> -->
 
                     <div id="loadImageFooter" class="img-footer" style="display: none;">
-                        <button id="deleteImageButton" class="eliminar-imagen">
-                            <img src="/img/icons/eliminar-imagen.svg">
-                            <!-- <img src="../../static/img/icons/eliminar-imagen.svg"> -->
-                        </button>
                         <label id="labelEditImage" class="editar-imagen" for="image" style="cursor: pointer;">
                             <img src="/img/icons/editar-imagen.svg">
                             <!-- <img src="../../static/img/icons/editar-imagen.svg"> -->

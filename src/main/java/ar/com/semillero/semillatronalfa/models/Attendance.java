@@ -7,9 +7,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.*;
 
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Attendance implements Serializable {
@@ -21,7 +22,6 @@ public class Attendance implements Serializable {
     private String id;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    //@Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime timestamp;
     private String fullName;
     private Long dni;

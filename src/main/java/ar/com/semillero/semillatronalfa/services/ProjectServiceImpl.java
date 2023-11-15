@@ -1,10 +1,19 @@
 package ar.com.semillero.semillatronalfa.services;
 
+import ar.com.semillero.semillatronalfa.models.converters.SeedConverter;
 import ar.com.semillero.semillatronalfa.models.dtos.ProjectDto;
+import ar.com.semillero.semillatronalfa.models.dtos.ProjectSeedDto;
+import ar.com.semillero.semillatronalfa.models.dtos.SeedDto;
 import ar.com.semillero.semillatronalfa.models.filters.ProjectFilter;
 import ar.com.semillero.semillatronalfa.models.converters.ProjectConverter;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.semillero.semillatronalfa.models.project.ProjectSeed;
+import ar.com.semillero.semillatronalfa.models.seed.Seed;
+import ar.com.semillero.semillatronalfa.repositories.ProjectSeedRepository;
+import ar.com.semillero.semillatronalfa.repositories.SeedRepository;
 import ar.com.semillero.semillatronalfa.repositories.queries.ProjectQueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +41,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ProjectConverter projectConverter;
 
+    @Autowired
+    SeedRepository seedRepository;
+
+    @Autowired
+    SeedConverter seedConverter;
+
+    @Autowired
+    ProjectSeedRepository projectSeedRepository;
+
     @Override
     public List<Project> findProjects() {
         return projectRepository.findAll();
@@ -54,7 +72,23 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project findProjectById(String id) {
-        return projectRepository.findById(id).orElse(null);
+        return projectRepository.findProjectById(id);
+    }
+
+    @Override
+    public Project findProjectByName(String projectName) {
+        Project project = null;
+        try {
+            project = projectRepository.findProjectByName(projectName);
+        } catch(Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return project;
+    }
+
+    public Boolean doesProjectNameExist(String projectName) {
+        Project project = projectRepository.findProjectByName(projectName);
+        return project != null;
     }
 
     @Override
@@ -89,8 +123,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     }
 
-    public ProjectDto updateProject(ProjectDto dto) {
+    public ProjectDto updateProject(ProjectDto dto, String id) {
         Project project = projectConverter.dtoToEntity(dto);
+        project.setId(id);
         projectRepository.save(project);
         return projectConverter.entityToDto(project);
     }
@@ -108,6 +143,59 @@ public class ProjectServiceImpl implements ProjectService {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    /*@Override
+    public List<SeedDto> seedsAsignedToProjects(String projectId) {
+        List<SeedDto> seedDtoList = null;
+        try {
+            List<Seed> seedList = seedRepository.findAsignedSeedsToProject(projectId);
+            seedDtoList = seedConverter.entitiesToDto(seedList);
+        } catch(Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return seedDtoList;
+    }*/
+    @Override
+    public List<ProjectSeedDto> seedsAsignedToProjects(String projectId) {
+        List<ProjectSeedDto> projectSeedDtoList = new ArrayList<>();
+        try {
+            List<ProjectSeed> projectSeedList = projectSeedRepository.findAsignedSeedsToProject(projectId);
+            for (ProjectSeed projectSeed : projectSeedList) {
+                ProjectSeedDto projectSeedDto = new ProjectSeedDto();
+                projectSeedDto.setId(projectSeed.getId());
+                projectSeedDto.setProject(projectSeed.getProject());
+                projectSeedDto.setSeed(projectSeed.getSeed());
+                projectSeedDtoList.add(projectSeedDto);
+            }
+        } catch(Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return projectSeedDtoList;
+    }
+
+    @Override
+    public List<ProjectDto> findAsignedSeedListToProject(String seedId) {
+        List<Project> projects = projectRepository.findAsignedSeedListToProject(seedId);
+        for (Project project : projects) {
+            System.out.println(project.getProjectName());
+        }
+        List<ProjectDto> projectDto = projectConverter.entitiesToDto(projects);
+        return projectDto;
+    }
+
+    @Override
+    public List<String> projectsNamesList(List<ProjectDto> projectDtoList) {
+        List<String> namesList = new ArrayList<>();
+        for (ProjectDto projectDto : projectDtoList) {
+            namesList.add(projectDto.getProjectName());
+        }
+        return namesList;
+    }
+
+    @Override
+    public List<ProjectSeed> findProjectsListBySeedId(String seedId) {
+        return projectSeedRepository.findProjectsListBySeedId(seedId);
     }
 
     public List<String> listOfProjectCommissions() {

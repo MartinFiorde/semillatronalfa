@@ -1,6 +1,8 @@
 package ar.com.semillero.semillatronalfa.models.seed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,19 +56,25 @@ public class SeedFollowUp {
     private String certificationString;
     @Column(length = 1023)
     private String observation;
+    
+    private LocalDate startDate;
+    
+    private LocalDate endDate;
 
 //    @ElementCollection
 //    @CollectionTable(name = "follow_up_comments", joinColumns = @JoinColumn(name = "id"))
 //    @Column
 //    private List<String> comments;
 
-    public SeedFollowUp(LocalDateTime postulationDate, String commission, SeedStatus status, String recommendationString, String recommendationComment, String certificationString, String observation) {
+    public SeedFollowUp(LocalDateTime postulationDate, String commission, SeedStatus status, String recommendationString, String recommendationComment, String certificationString, String observation, LocalDate startDate, LocalDate endDate) {
         this.postulationDate = postulationDate;
         this.commission = commission;
         this.status = status;
         this.recommendationString = recommendationString;
         this.recommendationComment = recommendationComment;
         this.certificationString = certificationString;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.observation = observation;
     }
 
